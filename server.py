@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route("/")
 @app.route("/list")
 def main():
-    questions = data_manager.get_all_questions(data_manager.file_path_questions)
+    questions = data_manager.get_saved_data(data_manager.file_path_questions, header=data_manager.questions_header)
     return render_template('list.html', questions=questions)
 
 

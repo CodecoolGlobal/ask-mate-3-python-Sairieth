@@ -6,13 +6,14 @@ file_path_answers = os.getenv('file_path') if 'file_path' in os.environ else 'an
 questions_header = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 answer_header = ['id', 'submission_time', 'vote_number', 'questions_id', 'message', 'image']
 
-def get_all_questions(file_path):
+def get_saved_data(file_path, header):
     with open(file_path, newline='') as csvfile:
-        csv_data = csv.DictReader(csvfile, fieldnames=questions_header, restval="")
-        question_data = []
+        csv_data = csv.DictReader(csvfile, fieldnames=header, restval="")
+        saved_data = []
         for rows in csv_data:
-            temp_dict = {}
-            for key, value in rows.items():
-                temp_dict[key] = value
-            question_data.append(temp_dict)
-        return question_data
+            saved_data.append(rows)
+            # temp_dict = {}
+            # for key, value in rows.items():
+            #     temp_dict[key] = value
+            # question_data.append(temp_dict)
+        return saved_data
