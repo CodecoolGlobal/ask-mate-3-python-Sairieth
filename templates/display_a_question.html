@@ -5,7 +5,8 @@
     <title>Question {{  question_id }}</title>
 </head>
 <body>
-<h1></h1>
+<a href="/">Back to main page</a>
+<h1>Question</h1>
 {% for row in questions %}
     {% if row['id'] == question_id %}
 <table>
@@ -18,7 +19,7 @@
     </thead>
     <tbody>
     <tr>
-        <td>{{  }}</td>
+        <td>{{ row['id'] }}</td>
     </tr>
     </tbody>
 </table>
