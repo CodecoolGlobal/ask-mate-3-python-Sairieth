@@ -13,6 +13,13 @@ def get_time():
 
 def generate_id(questions):
     ids = []
-    for question in questions:
+    for question in questions[1:]:
         ids.append(question['id'])
-    return max(ids) + 1
+    max_id = max(ids)
+    return int(max_id) + 1
+
+
+def create_new_question(title, message, questions):
+    new_question = {'id': generate_id(questions), 'submission_time': get_time(), 'view_number': 0, 'vote_number': 0,
+                    'title': title, 'message': message}
+    return new_question
