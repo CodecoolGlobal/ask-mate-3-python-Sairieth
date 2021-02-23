@@ -20,9 +20,10 @@ def get_saved_data(file_path, header):
         return saved_data
 
 
-def write_to_file(file_path, header):
-    with open(file_path, newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=header)
+def write_to_file(file_path, header, new_dictionary):
+    with open(file_path, "a", newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=header, restval="")
+        writer.writerow(new_dictionary)
 
 
 def sort_questions(data, sort_key):
