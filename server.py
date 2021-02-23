@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import data_manager
+import util
 from util import question_picker
 app = Flask(__name__)
 
@@ -15,7 +16,9 @@ def main():
 
 @app.route("/question/<question_id>", methods=['GET'])
 def display_a_question(question_id):
-    return render_template('display_a_question.html', question_id=question_id)
+    questions = data_manager.get_saved_data(data_manager.file_path_questions, header=data_manager.questions_header)[1:]
+    question = util.question_picker(question_id, questions)
+    return render_template('display_a_question.html', question=question)
 
 
 if __name__ == "__main__":

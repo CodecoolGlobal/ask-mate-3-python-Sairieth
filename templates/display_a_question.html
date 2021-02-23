@@ -3,27 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Question {{  question_id }}</title>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+    </style>
 </head>
 <body>
-<a href="/">Back to main page</a>
 <h1>Question</h1>
-{% for row in questions %}
-    {% if row['id'] == question_id %}
 <table>
-    <thead>
     <tr>
-        <th>ID</th>
         <th>Title</th>
         <th>Question</th>
     </tr>
-    </thead>
-    <tbody>
     <tr>
-        <td>{{ row['id'] }}</td>
+        <td>{{ question['title'] }}</td>
+        <td>{{ question['message'] }}</td>
     </tr>
-    </tbody>
-</table>
-    {% endif %}
-{% endfor %}
+</table><br>
+<a href="/">Back to main page</a>
 </body>
 </html>

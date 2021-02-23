@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Questions</title>
-        <style>
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
 
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-</style>
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+    </style>
 </head>
 <body>
     <h1>Questions</h1><br>
@@ -35,7 +35,7 @@ tr:nth-child(even) {
         </tr>
         {% for question in questions %}
             <tr>
-                <td><a href="/question/<question_id>">{{ question['id'] }}</a></td>
+                <td><a href="/question/{{ question['id'] }}">{{ question['id'] }}</a></td>
                 <td>{{ question['submission_time'] }}</td>
                 <td>{{ question['view_number'] }}</td>
                 <td>{{ question['vote_number'] }}</td>
