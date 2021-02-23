@@ -14,11 +14,19 @@ def main():
     return render_template('list.html', questions=sorted_questions, header=header)
 
 
-@app.route("/question/<question_id>", methods=['GET'])
+@app.route("/question/<question_id>")
 def display_a_question(question_id):
     questions = data_manager.get_saved_data(data_manager.file_path_questions, header=data_manager.questions_header)[1:]
     question = util.question_picker(question_id, questions)
     return render_template('display_a_question.html', question=question)
+
+@app.route("/add-questions", methods=['GET', 'POST'])
+def add_question():
+    if request.method == "POST":
+        valamifunction(request.form)
+        data_manager.write_to_file(file_path_questions, questions_header):
+        return redirect("/")
+    return render_template('add-question.html')
 
 
 if __name__ == "__main__":
