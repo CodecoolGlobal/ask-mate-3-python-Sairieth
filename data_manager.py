@@ -19,9 +19,11 @@ def get_saved_data(file_path, header):
             # question_data.append(temp_dict)
         return saved_data
 
+
 def write_to_file(file_path, header):
     with open(file_path, newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=header)
+
 
 def sort_questions(data, sort_key):
     sorted_questions = sorted(data, key=lambda k: k[sort_key], reverse=True)

@@ -20,11 +20,12 @@ def display_a_question(question_id):
     question = util.question_picker(question_id, questions)
     return render_template('display_a_question.html', question=question)
 
+
 @app.route("/add-questions", methods=['GET', 'POST'])
 def add_question():
     if request.method == "POST":
-        valamifunction(request.form)
-        data_manager.write_to_file(file_path_questions, questions_header):
+       # valamifunction(request.form)
+       # data_manager.write_to_file(file_path_questions, questions_header):
         return redirect("/")
     return render_template('add-question.html')
 
