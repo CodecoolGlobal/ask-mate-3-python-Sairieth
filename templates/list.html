@@ -24,18 +24,16 @@ tr:nth-child(even) {
 <body>
     <h1>Questions</h1><br>
     <table>
+        <tr>
+        <th>{{ header['id'] }}</th>
+        <th>{{ header['submission_time'] }}</th>
+        <th>{{ header['view_number'] }}</th>
+        <th>{{ header['vote_number'] }}</th>
+        <th>{{ header['title'] }}</th>
+        <th>{{ header['message'] }}</th>
+        <th>{{ header['image'] }}</th>
+        </tr>
         {% for question in questions %}
-            {% if question == questions[0] %}
-            <tr>
-                <th>{{ question['id'] }}</th>
-                <th>{{ question['submission_time'] }}</th>
-                <th>{{ question['view_number'] }}</th>
-                <th>{{ question['vote_number'] }}</th>
-                <th>{{ question['title'] }}</th>
-                <th>{{ question['message'] }}</th>
-                <th>{{ question['image'] }}</th>
-            </tr>
-            {% else %}
             <tr>
                 <td>{{ question['id'] }}</td>
                 <td>{{ question['submission_time'] }}</td>
@@ -45,7 +43,6 @@ tr:nth-child(even) {
                 <td>{{ question['message'] }}</td>
                 <td>{{ question['image'] }}</td>
             </tr>
-            {% endif %}
         {% endfor %}
     </table>
 

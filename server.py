@@ -6,8 +6,10 @@ app = Flask(__name__)
 @app.route("/")
 @app.route("/list")
 def main():
-    questions = data_manager.get_saved_data(data_manager.file_path_questions, header=data_manager.questions_header)
-    return render_template('list.html', questions=questions)
+    questions = data_manager.get_saved_data(data_manager.file_path_questions, header=data_manager.questions_header)[1:]
+    sorted_questions = data_manager.sort_questions(questions, sort_key="submission_time")
+    header = data_manager.get_saved_data(data_manager.file_path_questions, header=data_manager.questions_header)[0]
+    return render_template('list.html', questions=sorted_questions, header=header)
 
 
 if __name__ == "__main__":
@@ -15,4 +17,5 @@ if __name__ == "__main__":
         host='0.0.0.0',
         port=8000,
         debug=True,
+
     )
