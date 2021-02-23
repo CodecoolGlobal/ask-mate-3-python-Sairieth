@@ -23,11 +23,20 @@ def display_a_question(question_id):
 
 @app.route("/add-questions", methods=['GET', 'POST'])
 def add_question():
-    if request.method == "POST":
-       # valamifunction(request.form)
-       # data_manager.write_to_file(file_path_questions, questions_header):
+    questions = data_manager.get_saved_data(data_manager.file_path_questions, header=data_manager.questions_header)
+    if request.method == "GET":
+        return render_template('add-question.html')
+    elif request.method == "POST":
+        title = request.form['issue']
+        message = request.form['question']
+        # util.create_new_question(title, message)
+        data_manager.write_to_file(data_manager.file_path_questions, data_manager.questions_header,
+                                   util.create_new_question(title, message, questions))
+
+        # valamifunction(request.form)
+        # data_manager.write_to_file(file_path_questions, questions_header):
         return redirect("/")
-    return render_template('add-question.html')
+
 
 
 if __name__ == "__main__":
