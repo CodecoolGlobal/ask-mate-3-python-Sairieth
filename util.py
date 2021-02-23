@@ -9,3 +9,10 @@ def question_picker(question_id, questions):
 
 def get_time():
     return int(time.time())
+
+
+def generate_id(questions):
+    ids = []
+    for question in questions:
+        ids.append(question['id'])
+    return max(ids) + 1
