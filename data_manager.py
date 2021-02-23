@@ -26,6 +26,10 @@ def write_to_file(file_path, header, new_dictionary):
         writer.writerow(new_dictionary)
 
 
-def sort_questions(data, sort_key):
-    sorted_questions = sorted(data, key=lambda k: k[sort_key], reverse=True)
-    return sorted_questions
+def sort_questions(data, sort_key, direction):
+    if direction == "descending":
+        sorted_questions = sorted(data, key=lambda k: k[sort_key], reverse=True)
+        return sorted_questions
+    elif direction == "ascending":
+        sorted_questions = sorted(data, key=lambda k: k[sort_key])
+        return sorted_questions
