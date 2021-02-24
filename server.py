@@ -34,24 +34,27 @@ def add_question():
         return redirect("/")
 
 
-# nem lehet 1 route alatt behívni a GET és POST methodot mert valamiért ütközik
-@app.route("/question/<int:question_id>/new-answer", methods=["GET"])
+@app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
 def route_add_answer(question_id):
-    return render_template("new_answer.html", question_id=question_id)
+    if request.method == "GET":
+        return render_template("new_answer.html", question_id=question_id)
+    elif request.method == "POST":
+        answers = get_saved_data(file_path_answers, header=answer_header)
+        new_answer = {"id": generate_id(answers),
+                      "submission_time": get_time(),
+                      "vote_number": 0,
+                      "question_id": question_id,
+                      "message": request.form.get("message")}
+        write_to_file(file_path_answers, answer_header, new_answer)
+        return redirect('/')
+
+
+
+def add_new_answer(question_id):
+    pass
 
 
 # TODO rendbe tenni a redirectet
-@app.route("/question/<question_id>/new-answer", methods=['POST'])
-def add_new_answer(question_id):
-    answers = get_saved_data(file_path_answers, header=answer_header)
-    new_answer = {"id": generate_id(answers),
-                  "submission_time": get_time(),
-                  "vote_number": 0,
-                  "question_id": question_id,
-                  "message": request.form.get("message")}
-
-    write_to_file(file_path_answers, answer_header, new_answer)
-    return redirect('/')
 
 
 if __name__ == "__main__":
