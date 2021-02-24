@@ -28,29 +28,26 @@
 </head>
 <body>
 <h1>Questions</h1><br>
-<div id="element1">
 <form method="POST" action="/">
-    <label for="options">Options</label><br>
-    <select name="options" id="options">
-        <option value="id">ID</option>
+    <div id="element1">
+    <label for="option">Options</label><br>
+    <select name="option" id="option">
         <option value="submission_time">Submission time</option>
         <option value="view_number">View number</option>
         <option value="vote_number">Vote number</option>
         <option value="title">Title</option>
         <option value="message">Message</option>
-        <option value="image">Image</option>
     </select>
-</div>
+    </div>
 <div id="element2">
-<div method="POST" action="/">
-    <label for="asc_or_desc">Order</label><br>
-    <select name="asc_or_desc" id="asc_or_desc">
+    <label for="order">Order</label><br>
+    <select name="order" id="order">
         <option value="ascending">Ascending</option>
         <option value="descending">Descending</option>
     </select>
 </div>
     <div id="element3">
-    <input type="submit" value="Submit">
+        <input type="submit" value="Submit">
     </div>
 </form>
 
