@@ -22,6 +22,13 @@ def write_to_file(file_path, header, new_dictionary):
         writer.writerow(new_dictionary)
 
 
+def update_file(file_path, header, questions):
+    with open(file_path, "w", newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=header, restval="")
+        for question in questions:
+            writer.writerow(question)
+
+
 def sort(data, sort_key, direction):
     if direction == "descending":
         if sort_key in ["submission_time","view_number", "vote_number"]:
