@@ -33,6 +33,7 @@
         <td>{{ question['message'] }}</td>
     </tr>
 </table><br>
-<a href="/">Back to main page</a>
+<a href="/">Back to main page</a><br>
+<a href="{{ url_for("route_add_answer", question_id=question_id) }}">Write an answer</a>
 </body>
 </html>
