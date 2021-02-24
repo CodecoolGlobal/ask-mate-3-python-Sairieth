@@ -70,6 +70,8 @@
             <td>{{ question['title'] }}</td>
             <td>{{ question['message'] }}</td>
             <td>{{ question['image'] }}</td>
+            <td><a href={{ url_for("question_vote_up", question_id=question_id) }}> Vote up </a></td>
+            {#  <!--<td><a href={{ url_for("question_vote_down", question_id=question_id) }}> Vote dowgin </a></td>-->#}
         </tr>
     {% endfor %}
 
