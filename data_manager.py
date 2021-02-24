@@ -13,10 +13,6 @@ def get_saved_data(file_path, header):
         saved_data = []
         for rows in csv_data:
             saved_data.append(rows)
-            # temp_dict = {}
-            # for key, value in rows.items():
-            #     temp_dict[key] = value
-            # question_data.append(temp_dict)
         return saved_data
 
 
@@ -26,10 +22,18 @@ def write_to_file(file_path, header, new_dictionary):
         writer.writerow(new_dictionary)
 
 
-def sort_questions(data, sort_key, direction):
+def sort(data, sort_key, direction):
     if direction == "descending":
-        sorted_questions = sorted(data, key=lambda k: k[sort_key], reverse=True)
-        return sorted_questions
+        if sort_key.isalnum() == True:
+            sorted_questions = sorted(data, key=lambda k: int(k[sort_key]), reverse=True)
+            return sorted_questions
+        elif sort_key.isalpha() == True:
+            sorted_questions = sorted(data, key=lambda k: k[sort_key], reverse=True)
+            return sorted_questions
     elif direction == "ascending":
-        sorted_questions = sorted(data, key=lambda k: k[sort_key])
-        return sorted_questions
+        if sort_key.isalnum() == True:
+            sorted_questions = sorted(data, key=lambda k: int(k[sort_key]))
+            return sorted_questions
+        elif sort_key.isalpha() == True:
+            sorted_questions = sorted(data, key=lambda k: k[sort_key])
+            return sorted_questions

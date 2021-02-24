@@ -9,9 +9,9 @@ app = Flask(__name__)
 @app.route("/list")
 def main():
     questions = get_saved_data(file_path_questions, header=questions_header)[1:]
-    sorted_questions = sort_questions(questions, sort_key="submission_time", direction="ascending")
+    # sorted_questions = sort(questions, sort_key="submission_time", direction="ascending")
     header = get_saved_data(file_path_questions, header=questions_header)[0]
-    return render_template('list.html', questions=sorted_questions, header=header)
+    return render_template('list.html', questions=questions, header=header)
 
 
 @app.route("/question/<question_id>")
