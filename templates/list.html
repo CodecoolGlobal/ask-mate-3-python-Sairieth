@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Questions</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+{#    #width6%_if_not_bootstrap_link#}
     <style type="text/css">
-        #element1 {display:inline-block; width:6%; padding:10px}
-        #element2 {display:inline-block; width:6%; padding:10px}
+        #element1 {display:inline-block; width:8%; padding:10px}
+        #element2 {display:inline-block; width:8%; padding:10px}
 </style>
     <style>
         table {
@@ -72,8 +74,9 @@
             <td>{{ question['image'] }}</td>
         </tr>
     {% endfor %}
-</table>
-<a href="/add-questions">Fire away!</a>
+</table><br>
+{#<a href="/add-questions">Fire away!</a>#}
+<a href="/add-questions"><button type="button" class="btn btn-danger">Fire away!</button></a><br>
 
 </body>
 </html>
