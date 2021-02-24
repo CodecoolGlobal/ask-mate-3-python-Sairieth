@@ -58,6 +58,18 @@ def route_add_answer(question_id):
         write_to_file(file_path_answers, answer_header, new_answer)
         return redirect(url_for('display_a_question', question_id=question_id))
 
+
+@app.route("/question/<question_id>/vote_up")
+def question_vote_up(question_id):
+    questions = get_saved_data(file_path_questions, header=questions_header)
+    for question in questions:
+        if question["id"] == question_id:
+            questions.get("vote_number") + 1
+    update_file(file_path_questions, questions_header, questions)
+    return redirect(url_for("main"))
+
+
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
