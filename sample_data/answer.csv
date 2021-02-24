@@ -1,8 +1,12 @@
 id,submission_time,vote_number,question_id,message,image
 1,1493398154,4,1,"You need to use brackets: my_list = []",
 2,1493088154,35,1,"Look it up in the Python docs",
-3,1614152312,0,5,ffffffffffffffffffffffffffffffffffffffffffffffffffff,
-4,1614153112,0,5,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,
-5,1614164578,0,5,Valami,
-6,1614164725,0,5,Mégvalami,
-7,1614164805,0,5,Jesus,
+
+3,1614168871,0,1,"Valami válasz
+",
+4,1614169069,0,1,Mégvalami,
+5,1614169262,0,1,adsasdasdasd,
+6,1614169328,0,1,asdasdasd,
+7,1614169376,0,1,asdasdads,
+8,1614169448,0,5,asdasdasd,
+9,1614169567,0,5,asdasdasdasd,

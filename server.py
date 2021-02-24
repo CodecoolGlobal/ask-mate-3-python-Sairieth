@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from data_manager import *
 from util import *
 
@@ -48,16 +48,7 @@ def route_add_answer(question_id):
                       "question_id": question_id,
                       "message": request.form.get("message")}
         write_to_file(file_path_answers, answer_header, new_answer)
-        return redirect('/')
-
-
-
-def add_new_answer(question_id):
-    pass
-
-
-# TODO rendbe tenni a redirectet
-
+        return redirect(url_for('display_a_question', question_id=question_id))
 
 if __name__ == "__main__":
     app.run(
