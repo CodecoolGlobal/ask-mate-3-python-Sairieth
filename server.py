@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect
 from data_manager import *
 from util import *
 
@@ -9,7 +9,7 @@ app = Flask(__name__)
 @app.route("/list")
 def main():
     questions = get_saved_data(file_path_questions, header=questions_header)[1:]
-    sorted_questions = sort_questions(questions, sort_key="submission_time")
+    sorted_questions = sort_questions(questions, sort_key="submission_time", direction="ascending")
     header = get_saved_data(file_path_questions, header=questions_header)[0]
     return render_template('list.html', questions=sorted_questions, header=header)
 
@@ -43,7 +43,6 @@ def route_add_answer(question_id):
 # TODO rendbe tenni a redirectet
 @app.route("/question/<question_id>/new-answer", methods=['POST'])
 def add_new_answer(question_id):
-    questions = get_saved_data(file_path_questions, header=questions_header)
     answers = get_saved_data(file_path_answers, header=answer_header)
     new_answer = {"id": generate_id(answers),
                   "submission_time": get_time(),
