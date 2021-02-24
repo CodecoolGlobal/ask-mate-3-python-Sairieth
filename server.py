@@ -18,7 +18,9 @@ def main():
 def display_a_question(question_id):
     questions = get_saved_data(file_path_questions, header=questions_header)[1:]
     question = question_picker(question_id, questions)
-    return render_template('display_a_question.html', question=question, question_id=question_id)
+    answer_data = get_saved_data(file_path_answers, header=answer_header)[1:]
+    answers = get_answers(question_id, answer_data)
+    return render_template('display_a_question.html', question=question, question_id=question_id, answers=answers)
 
 
 @app.route("/add-questions", methods=['GET', 'POST'])

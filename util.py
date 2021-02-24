@@ -6,6 +6,15 @@ def question_picker(question_id, questions):
         if question['id'] == question_id:
             return question
 
+def get_answers(question_id, answer_data):
+    answers = []
+    for answer in answer_data:
+        if answer['question_id'] == question_id:
+            answers.append(answer)
+    return answers
+
+
+
 
 def get_time():
     return int(time.time())
