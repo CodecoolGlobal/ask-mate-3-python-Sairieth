@@ -3,47 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <title>Questions</title>
+    <style type="text/css">
+        #element1 {display:inline-block; width:6%; padding:10px}
+        #element2 {display:inline-block; width:6%; padding:10px}
+</style>
     <style>
         table {
-          font-family: arial, sans-serif;
-          border-collapse: collapse;
-          width: 100%;
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
         }
 
         td, th {
-          border: 1px solid #dddddd;
-          text-align: left;
-          padding: 8px;
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
         }
 
         tr:nth-child(even) {
-          background-color: #dddddd;
+            background-color: #dddddd;
         }
     </style>
 </head>
 <body>
-    <h1>Questions</h1><br>
-    <form method="POST" action="/">
-        <label for="options">Options</label>
-            <select name="options" id="options">
-                <optgroup label="header" id="header">
-                    <option value="id">ID</option>
-                    <option value="submission_time">Submission time</option>
-                    <option value="view_number">View number</option>
-                    <option value="vote_number">Vote number</option>
-                    <option value="title">Title</option>
-                    <option value="message">Message</option>
-                    <option value="image">Image</option>
-                </optgroup>
-                <optgroup label="Asc_or_Desc" id="Asc_or_Desc">
-                    <option value="ascending">Ascending</option>
-                    <option value="descending">Descending</option>
-                </optgroup>
-            </select>
-    </form>
+<h1>Questions</h1><br>
+<div id="element1">
+<form method="POST" action="/">
+    <label for="options">Options</label><br>
+    <select name="options" id="options">
+        <option value="id">ID</option>
+        <option value="submission_time">Submission time</option>
+        <option value="view_number">View number</option>
+        <option value="vote_number">Vote number</option>
+        <option value="title">Title</option>
+        <option value="message">Message</option>
+        <option value="image">Image</option>
+    </select>
+</form>
+</div>
+<div id="element2">
+<form method="POST" action="/">
+    <label for="asc_or_desc">Order</label><br>
+    <select name="asc_or_desc" id="asc_or_desc">
+        <option value="ascending">Ascending</option>
+        <option value="descending">Descending</option>
+    </select>
+</form>
+</div>
 
-    <table>
-        <tr>
+<table>
+    <tr>
         <th>{{ header['id'] }}</th>
         <th>{{ header['submission_time'] }}</th>
         <th>{{ header['view_number'] }}</th>
@@ -51,20 +60,20 @@
         <th>{{ header['title'] }}</th>
         <th>{{ header['message'] }}</th>
         <th>{{ header['image'] }}</th>
+    </tr>
+    {% for question in questions %}
+        <tr>
+            <td><a href="/question/{{ question['id'] }}">{{ question['id'] }}</a></td>
+            <td>{{ question['submission_time'] }}</td>
+            <td>{{ question['view_number'] }}</td>
+            <td>{{ question['vote_number'] }}</td>
+            <td>{{ question['title'] }}</td>
+            <td>{{ question['message'] }}</td>
+            <td>{{ question['image'] }}</td>
         </tr>
-        {% for question in questions %}
-            <tr>
-                <td><a href="/question/{{ question['id'] }}">{{ question['id'] }}</a></td>
-                <td>{{ question['submission_time'] }}</td>
-                <td>{{ question['view_number'] }}</td>
-                <td>{{ question['vote_number'] }}</td>
-                <td>{{ question['title'] }}</td>
-                <td>{{ question['message'] }}</td>
-                <td>{{ question['image'] }}</td>
-            </tr>
-        {% endfor %}
-    </table>
-    <a href="/add-questions">Fire away!</a>
+    {% endfor %}
+</table>
+<a href="/add-questions">Fire away!</a>
 
 </body>
 </html>
