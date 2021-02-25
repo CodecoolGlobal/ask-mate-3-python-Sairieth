@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Delete question</title>
-<<<<<<< HEAD
     <style>
         body
         {
@@ -32,14 +31,15 @@
             background-color: #328f6c;
         }
     </style>
-=======
->>>>>>> f5506f27cdc7a4c03edcc2bf011207fae04e0a33
 </head>
 <body>
-<p>You are going to delete this question. Are you sure?</p>
+<h3>You are going to delete this question. Are you sure?</h3>
 <form action="{{ url_for("delete_question", question_id=question_id) }}" method="POST">
     <button type="submit">100% SURE</button>
 </form>
-<p><a href="{{ url_for("display_a_question", question_id=question_id) }}" >HELL NO! Go back to question page.</a></p>
+<br>
+<form action="{{ url_for("display_a_question", question_id=question_id) }}">
+<button type="submit">Not Sure</button>
+</form>
 </body>
 </html>

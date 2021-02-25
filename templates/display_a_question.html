@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Question {{  question_id }}</title>
-<<<<<<< HEAD
         <style>
         body
         {
@@ -20,23 +19,20 @@
             color: #0d420c;
         }
 
-=======
-    <style>
->>>>>>> f5506f27cdc7a4c03edcc2bf011207fae04e0a33
         table {
-          font-family: arial, sans-serif;
-          border-collapse: collapse;
-          width: 100%;
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
         }
 
         td, th {
-          border: 1px solid #dddddd;
-          text-align: left;
-          padding: 8px;
+            border: 1px solid #e0e2e1;
+            text-align: left;
+            padding: 8px;
         }
 
         tr:nth-child(even) {
-          background-color: #dddddd;
+            background-color: #328f6c;
         }
     </style>
 </head>
@@ -65,11 +61,10 @@
             <td>{{ answer["vote_number"]}}</td>
             <td><a href="/answer/{{ answer['id'] }}/vote_up">Vote up</a></td>
             <td><a href="/answer/{{ answer['id'] }}/vote_down">Vote down</a></td>
-
+            <td><a href="/answer/{{ answer['id'] }}/delete">Delete</a></td>
         </tr>
         {% endfor %}
     {% endif %}
-
 </table><br>
 <a href="/">Back to main page</a><br>
 <a href="{{ url_for("route_add_answer", question_id=question_id) }}">Write an answer</a><br>

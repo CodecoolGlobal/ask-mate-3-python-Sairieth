@@ -16,6 +16,14 @@
         #element3 {display:inline-block; width:6%; padding:10px}
 </style>
     <style>
+        body {
+            background-color: #bbd1aa;
+        }
+
+        h1 {
+            color: #0d420c;
+        }
+
         table {
             font-family: arial, sans-serif;
             border-collapse: collapse;
@@ -23,18 +31,18 @@
         }
 
         td, th {
-            border: 1px solid #dddddd;
+            border: 1px solid #e0e2e1;
             text-align: left;
             padding: 8px;
         }
 
         tr:nth-child(even) {
-            background-color: #dddddd;
+            background-color: #328f6c;
         }
     </style>
 </head>
 <body>
-<h1>Questions</h1><br>
+<h1>Askm8</h1><br>
 <form method="POST" action="/">
     <div id="element1">
     <label for="option">Options</label><br>
@@ -83,7 +91,9 @@
     {% endfor %}
 
 </table>
-<a href="/add-questions">Fire away!</a>
-
+<br>
+<form action="/add-questions">
+    <button type="submit">Fire away!</button>
+</form>
 </body>
 </html>

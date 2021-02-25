@@ -1,18 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for
 from data_manager import *
 from util import *
-from werkzeug.utils import secure_filename
-
-#PICTURE_UPLOADS = "static/picture_uploads"
-#ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = "static/uploads"
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['SECRET_KEY'] = 'super secret key'
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/list", methods=['GET', 'POST'])
@@ -48,9 +39,9 @@ def add_question():
     elif request.method == "POST":
         title = request.form['issue']
         message = request.form['question']
+        image = request.form['pic']
         # util.create_new_question(title, message)
-        write_to_file(file_path_questions, questions_header, create_new_question(title, message, questions, image='None'))
-        upload()
+        write_to_file(file_path_questions, questions_header, create_new_question(title, message, image, questions))
         return redirect("/")
 
 
@@ -82,7 +73,6 @@ def route_add_answer(question_id):
                       "question_id": question_id,
                       "message": request.form.get("message")}
         write_to_file(file_path_answers, answer_header, new_answer)
-        upload()
         return redirect(url_for('display_a_question', question_id=question_id))
 
 
@@ -94,6 +84,18 @@ def delete_question(question_id):
         delete_question_from_file(question_id)
         delete_answer_from_file(question_id)
         return redirect('/')
+
+
+@app.route('/answer/<answer_id>/delete', methods=['GET'])
+def delete(answer_id):
+    answers = get_saved_data(file_path_answers, header=answer_header)[1:]
+    for answer in answers:
+        if answer["id"] == answer_id:
+            question_id = int(answer["question_id"])
+            index = answers.index(answer)
+            del answers[index]
+    update_file(file_path_answers, answer_header, answers)
+    return redirect(url_for("display_a_question", question_id=question_id))
 
 
 @app.route("/question/<question_id>/vote_up")
@@ -140,30 +142,6 @@ def answer_vote_down(answer_id):
             answer['vote_number'] = str(temp_number)
     update_file(file_path_answers, answer_header, answers)
     return redirect(url_for("display_a_question", question_id=question_id))
-
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-#@app.route("/photo", methods=["GET", "POST"])
-def upload():
-    if request.method == 'POST':
-        if 'photo' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['photo']
-        # if user does not select file, browser also
-        # submit a empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            #return redirect(url_for('add_question', filename=filename))
-    #return render_template('/add_photo.html')
 
 
 if __name__ == "__main__":
