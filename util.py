@@ -22,9 +22,9 @@ def get_time():
 def generate_id(questions):
     ids = []
     for question in questions[1:]:
-        ids.append(question['id'])
+        ids.append(int(question['id']))
     max_id = max(ids)
-    return int(max_id) + 1
+    return max_id + 1
 
 
 def create_new_question(title, message, image, questions):
