@@ -84,12 +84,34 @@ def delete_question(question_id):
 
 @app.route("/question/<question_id>/vote_up")
 def question_vote_up(question_id):
-    questions = get_saved_data(file_path_questions, header=questions_header)
+    questions = get_saved_data(file_path_questions, header=questions_header)[1:]
     for question in questions:
         if question["id"] == question_id:
-            questions.get("vote_number") + 1
+            temp_number = int(question['vote_number']) + 1
+            question['vote_number'] = str(temp_number)
     update_file(file_path_questions, questions_header, questions)
     return redirect(url_for("main"))
+
+
+@app.route("/question/<question_id>/vote_down")
+def question_vote_down(question_id):
+    questions = get_saved_data(file_path_questions, header=questions_header)[1:]
+    for question in questions:
+        if question["id"] == question_id:
+            temp_number = int(question['vote_number']) - 1
+            question['vote_number'] = str(temp_number)
+    update_file(file_path_questions, questions_header, questions)
+    return redirect(url_for("main"))
+
+
+# @app.route("/question/<question_id>/vote_up")
+# def question_vote_up(question_id):
+#     questions = get_saved_data(file_path_questions, header=questions_header)
+#     for question in questions:
+#         if question["id"] == question_id:
+#             question.get("vote_number") + 1
+#     update_file(file_path_questions, questions_header, questions)
+#     return redirect(url_for("main"))
 
 
 if __name__ == "__main__":
