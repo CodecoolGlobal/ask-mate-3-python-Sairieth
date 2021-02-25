@@ -47,3 +47,20 @@ def sort(data, sort_key, direction):
             return sorted_questions
 
 
+def delete_question_from_file(question_id):
+    questions = get_saved_data(file_path_questions, header=questions_header)[1:]
+    for question in questions:
+        if question["id"] == question_id:
+            index = questions.index(question)
+            del questions[index]
+    update_file(file_path_questions, questions_header, questions)
+
+
+def delete_answer_from_file(question_id):
+    answers = get_saved_data(file_path_answers, header=answer_header)[1:]
+    for _ in range(len(answers)):
+        for answer in answers:
+            if answer["question_id"] == question_id:
+                index = answers.index(answer)
+                del answers[index]
+    update_file(file_path_answers, answer_header, answers)

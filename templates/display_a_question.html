@@ -36,6 +36,7 @@
         {% for answer in answers %}
         <tr>
             <td>{{ answer["message"] }}</td>
+            <form name="answer_id"><td><a href="/question/{{ question['id'] }}">Del</a></td></form>
         </tr>
         {% endfor %}
     {% endif %}

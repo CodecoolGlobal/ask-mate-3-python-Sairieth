@@ -1,12 +1,5 @@
 id,submission_time,vote_number,question_id,message,image
-1,1493398154,4,1,"You need to use brackets: my_list = []",
-2,1493088154,35,1,"Look it up in the Python docs",
-
-3,1614168871,0,1,"Valami válasz
-",
-4,1614169069,0,1,Mégvalami,
-5,1614169262,0,1,adsasdasdasd,
-6,1614169328,0,1,asdasdasd,
-7,1614169376,0,1,asdasdads,
-8,1614169448,0,5,asdasdasd,
-9,1614169567,0,5,asdasdasdasd,
+1,1493398154,4,2,You need to use brackets: my_list = [],
+5,1614263242,0,4,I AM LEGEND,
+6,1614263256,0,4,the cake is a lie,
+7,1614263499,0,2,damn I like that,
