@@ -50,7 +50,7 @@ def edit_question(question_id):
         question = question_picker(question_id, questions)
         return render_template("edit_question.html", question=question, question_id=question_id)
     if request.method == "POST":
-        questions = get_saved_data(file_path_questions, header=questions_header)
+        questions = get_saved_data(file_path_questions, header=questions_header)[1:]
         for question in questions:
             if question["id"] == question_id:
                 question["title"] = request.form["title"]
@@ -102,6 +102,31 @@ def question_vote_down(question_id):
             question['vote_number'] = str(temp_number)
     update_file(file_path_questions, questions_header, questions)
     return redirect(url_for("main"))
+
+
+@app.route("/answer/<answer_id>/vote_up")
+def answer_vote_up(answer_id):
+    answers = get_saved_data(file_path_answers, header=answer_header)[1:]
+    for answer in answers:
+        if answer["id"] == answer_id:
+            question_id = int(answers["question_id"])
+            temp_number = int(answer['vote_number']) + 1
+            answer['vote_number'] = str(temp_number)
+    update_file(file_path_answers, answer_header, answers)
+    return redirect(url_for("display_a_question", question_id=int(question_id)))
+
+
+@app.route("/answer/<answer_id>/vote_up")
+def answer_vote_down(answer_id):
+    answers = get_saved_data(file_path_answers, header=answer_header)[1:]
+    for answer in answers:
+        if answer["id"] == answer_id:
+            question_id = int(answers["question_id"])
+            temp_number = int(answer['vote_number']) - 1
+            answer['vote_number'] = str(temp_number)
+    update_file(file_path_answers, answer_header, answers)
+    return redirect(url_for("display_a_question", question_id=int(question_id)))
+
 
 
 @app.route("/question/<question_id>/delete_question2")
