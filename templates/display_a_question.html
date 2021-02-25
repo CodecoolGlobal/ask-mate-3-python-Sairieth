@@ -32,10 +32,21 @@
         <td>{{ question['title'] }}</td>
         <td>{{ question['message'] }}</td>
     </tr>
+
+</table><br>
+<h1>Answers</h1><br>
+<table>
+    <tr>
+        <th>Answers</th>
+    </tr>
     {% if answers %}
         {% for answer in answers %}
         <tr>
             <td>{{ answer["message"] }}</td>
+            <td>{{ answer["vote_number"]}}</td>
+            <td><a href="/answer/{{ answer['id'] }}/vote_up">Vote up</a></td>
+            <td><a href="/answer/{{ answer['id'] }}/vote_up">Vote down</a></td>
+
         </tr>
         {% endfor %}
     {% endif %}
