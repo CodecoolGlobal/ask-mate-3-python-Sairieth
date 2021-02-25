@@ -5,13 +5,21 @@ from util import *
 app = Flask(__name__)
 
 
-@app.route("/")
-@app.route("/list")
+@app.route("/", methods=['GET', 'POST'])
+@app.route("/list", methods=['GET', 'POST'])
 def main():
-    questions = get_saved_data(file_path_questions, header=questions_header)[1:]
-    # sorted_questions = sort(questions, sort_key="submission_time", direction="ascending")
-    header = get_saved_data(file_path_questions, header=questions_header)[0]
-    return render_template('list.html', questions=questions, header=header)
+    if request.method == "GET":
+        questions = get_saved_data(file_path_questions, header=questions_header)[1:]
+        # sorted_questions = sort(questions, sort_key="submission_time", direction="ascending")
+        header = get_saved_data(file_path_questions, header=questions_header)[0]
+        return render_template('list.html', questions=questions, header=header)
+    elif request.method == "POST":
+        questions = get_saved_data(file_path_questions, header=questions_header)[1:]
+        sort_key = request.form['option']
+        direction = request.form['order']
+        questions = sort(questions, sort_key=sort_key, direction=direction)
+        header = get_saved_data(file_path_questions, header=questions_header)[0]
+        return render_template('list.html', questions=questions, header=header)
 
 
 @app.route("/question/<question_id>")
@@ -57,6 +65,16 @@ def delete_question(question_id):
         return render_template("delete_question.html", question_id=question_id)
     if request.method == 'POST':
         return redirect('/')
+
+
+@app.route("/question/<question_id>/vote_up")
+def question_vote_up(question_id):
+    questions = get_saved_data(file_path_questions, header=questions_header)
+    for question in questions:
+        if question["id"] == question_id:
+            questions.get("vote_number") + 1
+    update_file(file_path_questions, questions_header, questions)
+    return redirect(url_for("main"))
 
 
 if __name__ == "__main__":
