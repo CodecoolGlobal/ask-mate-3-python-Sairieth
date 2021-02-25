@@ -3,12 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Questions</title>
+        <style>
+        body
+        {
+        background-image:url('https://cdn.suwalls.com/wallpapers/anime/totoro-33207-2560x1440.jpg');
+        background-size: cover;
+        }
+    </style>
     <style type="text/css">
         #element1 {display:inline-block; width:6%; padding:10px}
         #element2 {display:inline-block; width:6%; padding:10px}
         #element3 {display:inline-block; width:6%; padding:10px}
 </style>
     <style>
+        body {
+            background-color: #bbd1aa;
+        }
+
+        h1 {
+            color: #0d420c;
+        }
+
         table {
             font-family: arial, sans-serif;
             border-collapse: collapse;
@@ -16,18 +31,18 @@
         }
 
         td, th {
-            border: 1px solid #dddddd;
+            border: 1px solid #e0e2e1;
             text-align: left;
             padding: 8px;
         }
 
         tr:nth-child(even) {
-            background-color: #dddddd;
+            background-color: #328f6c;
         }
     </style>
 </head>
 <body>
-<h1>Questions</h1><br>
+<h1>Askm8</h1><br>
 <form method="POST" action="/">
     <div id="element1">
     <label for="option">Options</label><br>
@@ -72,12 +87,13 @@
             <td>{{ question['image'] }}</td>
             <td><a href="/question/{{ question['id'] }}/vote_up">Vote up</a></td>
             <td><a href="/question/{{ question['id'] }}/vote_down">Vote down</a></td>
-            {#  <!--<td><a href={{ url_for("question_vote_down", question_id=question_id) }}> Vote dowgin </a></td>-->#}
         </tr>
     {% endfor %}
 
 </table>
-<a href="/add-questions">Fire away!</a>
-
+<br>
+<form action="/add-questions">
+    <button type="submit">Fire away!</button>
+</form>
 </body>
 </html>
