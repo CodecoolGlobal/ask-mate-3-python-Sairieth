@@ -3,13 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Questions</title>
-        <style>
-        body
-        {
-        background-image:url('https://cdn.suwalls.com/wallpapers/anime/totoro-33207-2560x1440.jpg');
-        background-size: cover;
-        }
-    </style>
     <style type="text/css">
         #element1 {display:inline-block; width:6%; padding:10px}
         #element2 {display:inline-block; width:6%; padding:10px}
@@ -87,6 +80,7 @@
             <td>{{ question['image'] }}</td>
             <td><a href="/question/{{ question['id'] }}/vote_up">Vote up</a></td>
             <td><a href="/question/{{ question['id'] }}/vote_down">Vote down</a></td>
+            {#  <!--<td><a href={{ url_for("question_vote_down", question_id=question_id) }}> Vote dowgin </a></td>-->#}
         </tr>
     {% endfor %}
 
