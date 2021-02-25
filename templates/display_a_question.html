@@ -9,13 +9,11 @@
           border-collapse: collapse;
           width: 100%;
         }
-
         td, th {
           border: 1px solid #dddddd;
           text-align: left;
           padding: 8px;
         }
-
         tr:nth-child(even) {
           background-color: #dddddd;
         }
@@ -46,11 +44,10 @@
             <td>{{ answer["vote_number"]}}</td>
             <td><a href="/answer/{{ answer['id'] }}/vote_up">Vote up</a></td>
             <td><a href="/answer/{{ answer['id'] }}/vote_down">Vote down</a></td>
-
+            <td><a href="/answer/{{ answer['id'] }}/delete">Delete</a></td>
         </tr>
         {% endfor %}
     {% endif %}
-
 </table><br>
 <a href="/">Back to main page</a><br>
 <a href="{{ url_for("route_add_answer", question_id=question_id) }}">Write an answer</a><br>
