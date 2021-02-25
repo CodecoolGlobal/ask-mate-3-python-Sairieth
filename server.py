@@ -43,6 +43,21 @@ def add_question():
         write_to_file(file_path_questions, questions_header, create_new_question(title, message, questions))
         return redirect("/")
 
+@app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
+def edit_question(question_id):
+    if request.method == "GET":
+        questions = get_saved_data(file_path_questions, header=questions_header)[1:]
+        question = question_picker(question_id, questions)
+        return render_template("edit_question.html", question=question, question_id=question_id)
+    if request.method == "POST":
+        questions = get_saved_data(file_path_questions, header=questions_header)
+        for question in questions:
+            if question["id"] == question_id:
+                question["title"] = request.form["title"]
+                question["message"] = request.form["message"]
+        update_file(file_path_questions, questions_header, questions)
+        return redirect(url_for('display_a_question', question_id=question_id))
+
 
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
 def route_add_answer(question_id):

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit</title>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Edit question</h1><br><br>
+    <form method="POST">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" value={{ question['title'] }}><br><br>
+
+        <label for="message">Message:</label><br>
+        <textarea id="message:" name="message" rows="15" cols="60">{{ question['message'] }}</textarea><br><br>
+
+        <button type="submit">Edit</button>
+    </form>
+</body>
+</html>
