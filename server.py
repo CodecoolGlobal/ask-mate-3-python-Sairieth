@@ -5,6 +5,11 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
+UPLOAD_FOLDER = "static/uploads"
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['SECRET_KEY'] = 'super secret key'
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/list", methods=['GET', 'POST'])
