@@ -3,6 +3,6 @@ id,submission_time,vote_number,question_id,message,image
 2,1493088154,41,1,Look it up in the Python docs,
 12,1614277995,1,1,"Or give up. No just kiddin' really.
 Use [] to make lists. You can make nested lists as well.",
-13,1614278258,3,4,"The problem is, that the jpeg file's resolution is very tiny.
+13,1614278258,2,4,"The problem is, that the jpeg file's resolution is very tiny.
 Or the code is not magnified enough. ",
-14,1614278284,4,4,I can do some magic with PS. wait a bit pls. ,
+14,1614278284,3,4,I can do some magic with PS. wait a bit pls. ,
