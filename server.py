@@ -39,8 +39,9 @@ def add_question():
     elif request.method == "POST":
         title = request.form['issue']
         message = request.form['question']
+        image = request.form['pic']
         # util.create_new_question(title, message)
-        write_to_file(file_path_questions, questions_header, create_new_question(title, message, questions))
+        write_to_file(file_path_questions, questions_header, create_new_question(title, message, image, questions))
         return redirect("/")
 
 @app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
