@@ -1,6 +1,19 @@
 id,submission_time,vote_number,question_id,message,image
 1,1493398154,14,1,You need to use brackets: my_list = [],
 2,1493088154,41,1,Look it up in the Python docs,
+<<<<<<< HEAD
 13,1614278258,3,4,"The problem is, that the jpeg file's resolution is very tiny.
 Or the code is not magnified enough. ",
 14,1614278284,4,4,I can do some magic with PS. wait a bit pls. ,
+=======
+3,1614168871,0,1,"Valami válasz
+",
+4,1614169069,1,1,Mégvalami,
+5,1614169262,0,1,adsasdasdasd,
+6,1614169328,1,1,asdasdasd,
+7,1614169376,2,1,asdasdads,
+8,1614266705,3,4,aaaaaaaaaaaaaaaaaaaaaaaa,
+9,1614266712,3,4,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb,
+10,1614266717,5,4,cccccccccccccccccccccccccccccccccccc,
+10,1614266731,2,4,dddddddddddddddddddddddddddddddddd,
+>>>>>>> f5506f27cdc7a4c03edcc2bf011207fae04e0a33

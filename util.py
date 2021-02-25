@@ -27,7 +27,7 @@ def generate_id(questions):
     return max_id + 1
 
 
-def create_new_question(title, message, image, questions):
+def create_new_question(title, message, questions, image='None'):
     new_question = {'id': generate_id(questions), 'submission_time': get_time(), 'view_number': 0, 'vote_number': 0,
-                    'title': title, 'message': message, "image": image}
+                    'title': title, 'message': message, "image": image }
     return new_question
