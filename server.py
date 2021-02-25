@@ -46,8 +46,8 @@ def add_question():
         title = request.form['issue']
         message = request.form['question']
         # util.create_new_question(title, message)
-        write_to_file(file_path_questions, questions_header, create_new_question(title, message, questions, image='None'))
-        upload()
+        image_name = upload()
+        write_to_file(file_path_questions, questions_header, create_new_question(title, message, questions, image_name))
         return redirect("/")
 
 
@@ -170,6 +170,7 @@ def upload():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    return f"static/uploads{filename}"
             #return redirect(url_for('add_question', filename=filename))
     #return render_template('/add_photo.html')
 
