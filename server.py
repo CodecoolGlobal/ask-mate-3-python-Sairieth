@@ -50,6 +50,15 @@ def route_add_answer(question_id):
         write_to_file(file_path_answers, answer_header, new_answer)
         return redirect(url_for('display_a_question', question_id=question_id))
 
+
+@app.route("/question/<question_id>/delete", methods=["GET", "POST"])
+def delete_question(question_id):
+    if request.method == 'GET':
+        return render_template("delete_question.html", question_id=question_id)
+    if request.method == 'POST':
+        return redirect('/')
+
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
