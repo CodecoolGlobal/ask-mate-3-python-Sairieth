@@ -25,6 +25,7 @@ def write_to_file(file_path, header, new_dictionary):
 def update_file(file_path, header, questions):
     with open(file_path, "w", newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=header, restval="")
+        writer.writeheader()
         for question in questions:
             writer.writerow(question)
 
