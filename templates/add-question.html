@@ -6,16 +6,16 @@
 </head>
 <body>
     <h1>Any questions?</h1><br>
-    <form method="POST">
+    <form method="POST" class="col-12" enctype="multipart/form-data">
 
     <label for="issue">Issue</label><br>
         <input type="text" id="issue" name="issue" placeholder="Issue title" required><br><br>
 
     <label for="question">How can we help?</label><br>
-        <textarea id="question" name="question" placeholder="Write a question here..." required></textarea><br>
-    <button type="submit">Submit question</button><br><br>
-    <label for="pic">Select a file:</label><br>
-    <input type="file" id="pic" name="pic">
+        <textarea id="question" name="question" placeholder="Write a question here..." required></textarea><br><br>
+        <label for="input-id">Upload a picture:</label><br><br>
+              <input id="input-id" type="file" name="photo" class="file form-control" multiple data-preview-file-type="text" data-allowed-file-extensions='["png", "jpg"]'><br><br>
+        <button type="submit">Submit question</button><br><br>
     </form>
     <br>
 <a href='/'><button class=grey>Return to Main Page</button></a><br>
