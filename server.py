@@ -34,6 +34,9 @@ def display_a_question(question_id):
     question = question_picker(question_id, questions)
     answer_data = get_saved_data(file_path_answers, header=answer_header)[1:]
     answers = get_answers(question_id, answer_data)
+    temp_view_number = int(question['view_number']) + 1
+    question['view_number'] = temp_view_number
+    update_file(file_path_questions, questions_header, questions)
     return render_template('display_a_question.html', question=question, question_id=question_id, answers=answers)
 
 
