@@ -172,7 +172,7 @@ def upload():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    return f"static/uploads{filename}"
+    return f"static/uploads/{filename}"
             #return redirect(url_for('add_question', filename=filename))
     #return render_template('/add_photo.html')
 
