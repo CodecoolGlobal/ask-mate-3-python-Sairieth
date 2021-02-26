@@ -47,6 +47,8 @@ def add_question():
         message = request.form['question']
         # util.create_new_question(title, message)
         image_name = upload()
+        if "[302 FOUND]" in str(image_name):
+            image_name = "None"
         write_to_file(file_path_questions, questions_header, create_new_question(title, message, questions, image_name))
         return redirect("/")
 
