@@ -79,31 +79,31 @@
     </div>
 </form>
 
-<table>
-    <tr>
-        <th>{{ header['id'] }}</th>
-        <th>{{ header['submission_time'] }}</th>
-        <th>{{ header['view_number'] }}</th>
-        <th>{{ header['vote_number'] }}</th>
-        <th>{{ header['title'] }}</th>
-        <th>{{ header['message'] }}</th>
-        <th>{{ header['image'] }}</th>
-    </tr>
-    {% for question in questions %}
-        <tr>
-            <td><a href="/question/{{ question['id'] }}">{{ question['id'] }}</a></td>
-            <td>{{ question['submission_time'] }}</td>
-            <td>{{ question['view_number'] }}</td>
-            <td>{{ question['vote_number'] }}</td>
-            <td>{{ question['title'] }}</td>
-            <td>{{ question['message'] }}</td>
-            <td><img src= {{ question['image'] }} alt="" onerror="this.style.display='none'"></td>
-            <td><a href="/question/{{ question['id'] }}/vote_up">Vote up</a></td>
-            <td><a href="/question/{{ question['id'] }}/vote_down">Vote down</a></td>
-        </tr>
-    {% endfor %}
-
-</table>
+{#<table>#}
+{#    <tr>#}
+{#        <th>{{ header['id'] }}</th>#}
+{#        <th>{{ header['submission_time'] }}</th>#}
+{#        <th>{{ header['view_number'] }}</th>#}
+{#        <th>{{ header['vote_number'] }}</th>#}
+{#        <th>{{ header['title'] }}</th>#}
+{#        <th>{{ header['message'] }}</th>#}
+{#        <th>{{ header['image'] }}</th>#}
+{#    </tr>#}
+{#    {% for question in questions %}#}
+{#        <tr>#}
+{#            <td><a href="/question/{{ question['id'] }}">{{ question['id'] }}</a></td>#}
+{#            <td>{{ question['submission_time'] }}</td>#}
+{#            <td>{{ question['view_number'] }}</td>#}
+{#            <td>{{ question['vote_number'] }}</td>#}
+{#            <td>{{ question['title'] }}</td>#}
+{#            <td>{{ question['message'] }}</td>#}
+{#            <td><img src= {{ question['image'] }} alt="" onerror="this.style.display='none'"></td>#}
+{#            <td><a href="/question/{{ question['id'] }}/vote_up">Vote up</a></td>#}
+{#            <td><a href="/question/{{ question['id'] }}/vote_down">Vote down</a></td>#}
+{#        </tr>#}
+{#    {% endfor %}#}
+{##}
+{#</table>#}
 <br>
 <form action="/add-questions">
     <button type="submit">Fire away!</button>
