@@ -53,41 +53,43 @@
             background-color: #328f6c;
         }
     </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <h1>Askm8</h1><br>
-<form method="POST" action="/">
-    <div id="element1">
-    <label for="option">Options</label><br>
-    <select name="option" id="option">
-        <option value="submission_time">Submission time</option>
-        <option value="view_number">View number</option>
-        <option value="vote_number">Vote number</option>
-        <option value="title">Title</option>
-        <option value="message">Message</option>
-    </select>
-    </div>
-<div id="element2">
-    <label for="order">Order</label><br>
-    <select name="order" id="order">
-        <option value="ascending">Ascending</option>
-        <option value="descending">Descending</option>
-    </select>
-</div>
-    <div id="element3">
-        <input type="submit" value="Submit">
-    </div>
-</form>
 
 <table>
     <tr>
-        <th>{{ header['id'] }}</th>
-        <th>{{ header['submission_time'] }}</th>
-        <th>{{ header['view_number'] }}</th>
-        <th>{{ header['vote_number'] }}</th>
-        <th>{{ header['title'] }}</th>
-        <th>{{ header['message'] }}</th>
-        <th>{{ header['image'] }}</th>
+        <th>
+            ID
+        </th>
+        <th>
+            <a href="{{ url_for('main', attribute="submission_time", order="ASC")}}"><i class="fa fa-angle-up"></i></a>
+            Submission_time
+            <a href="{{ url_for('main', attribute="submission_time", order="DESC")}}"><i class="fa fa-angle-down"></i></a>
+        </th>
+        <th>
+            <a href="{{ url_for('main', attribute="view_number", order="ASC")}}"><i class="fa fa-angle-up"></i></a>
+            View_number
+            <a href="{{ url_for('main', attribute="view_number", order="DESC")}}"><i class="fa fa-angle-down"></i></a>
+        </th>
+        <th>
+            <a href="{{ url_for('main', attribute="vote_number", order="ASC")}}"><i class="fa fa-angle-up"></i></a>
+            Vote_number
+            <a href="{{ url_for('main', attribute="vote_number", order="DESC")}}"><i class="fa fa-angle-down"></i></a>
+        </th>
+        <th>
+            <a href="{{ url_for('main', attribute="title", order="ASC")}}"><i class="fa fa-angle-up"></i></a>
+            Title
+            <a href="{{ url_for('main', attribute="title", order="DESC")}}"><i class="fa fa-angle-down"></i></a>
+        </th>
+        <th>
+            <a href="{{ url_for('main', attribute="message", order="ASC")}}"><i class="fa fa-angle-up"></i></a>
+            Message
+            <a href="{{ url_for('main', attribute="message", order="DESC")}}"><i class="fa fa-angle-down"></i></a>
+        </th>
+        <th>Image</th>
     </tr>
     {% for question in questions %}
         <tr>

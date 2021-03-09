@@ -11,21 +11,18 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = 'super secret key'
 
-@app.route("/", methods=['GET', 'POST'])
-@app.route("/list", methods=['GET', 'POST'])
+@app.route("/")
+@app.route("/list")
 def main():
-    if request.method == "GET":
-        questions = get_saved_data(file_path_questions, header=questions_header)[1:]
-        # sorted_questions = sort(questions, sort_key="submission_time", direction="ascending")
-        header = get_saved_data(file_path_questions, header=questions_header)[0]
-        return render_template('list.html', questions=questions, header=header)
-    elif request.method == "POST":
-        questions = get_saved_data(file_path_questions, header=questions_header)[1:]
-        sort_key = request.form['option']
-        direction = request.form['order']
-        questions = sort(questions, sort_key=sort_key, direction=direction)
-        header = get_saved_data(file_path_questions, header=questions_header)[0]
-        return render_template('list.html', questions=questions, header=header)
+    attribute = request.args.get('attribute')
+    order = request.args.get('order')
+
+    if attribute and order:
+        questions = get_questions_by_order(attribute, order)
+        return render_template('list.html', questions=questions)
+    else:
+        questions = get_questions()
+        return render_template('list.html', questions=questions)
 
 
 @app.route("/question/<question_id>")
