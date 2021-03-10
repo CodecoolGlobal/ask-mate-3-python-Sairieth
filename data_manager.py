@@ -70,6 +70,24 @@ def question_vote_down(cursor: RealDictCursor, question_id : int):
 
 
 @database_common.connection_handler
+def answer_vote_up(cursor: RealDictCursor, question_id : int):
+    query = """
+    UPDATE answer
+    SET vote_number =  vote_number + 1
+    WHERE id = {}""".format(question_id)
+    cursor.execute(query)
+
+
+@database_common.connection_handler
+def answer_vote_down(cursor: RealDictCursor, question_id : int):
+    query = """
+    UPDATE answer
+    SET vote_number =  vote_number - 1
+    WHERE id = {}""".format(question_id)
+    cursor.execute(query)
+
+
+@database_common.connection_handler
 def add_a_question(cursor, dictionary):
     cursor.execute("""
                     INSERT INTO question(submission_time, view_number, vote_number, title, message, image)

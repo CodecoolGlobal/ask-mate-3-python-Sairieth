@@ -47,6 +47,17 @@ def vote_down_question(question_id):
     return redirect(url_for("main"))
 
 
+@app.route('/answer/<question_id>/vote_up')
+def vote_up_answer(question_id):
+    answer_vote_up(question_id)
+    return redirect(url_for("display_a_question", question_id=question_id))
+
+
+@app.route('/answer/<question_id>/vote_down')
+def vote_down_asnwer(question_id):
+    answer_vote_down(question_id)
+    return redirect(url_for("display_a_question", question_id=question_id))
+
 @app.route('/add_questions', methods=['GET', "POST"])
 def add_question():
     if request.method == 'GET':
