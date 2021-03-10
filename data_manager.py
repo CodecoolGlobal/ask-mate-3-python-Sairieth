@@ -27,3 +27,12 @@ def add_a_question(cursor, dictionary):
                     'title': dictionary['title'],
                     'message': dictionary['message'],
                     'image': dictionary['image']})
+
+
+@database_common.connection_handler
+def delete_a_question(cursor, question_id):
+    cursor.execute("""
+                   DELETE FROM question
+                   WHERE id = %(question_id)s;
+                   """,
+                   {'question_id': question_id})

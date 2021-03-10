@@ -11,21 +11,27 @@ def list_question():
     return render_template("list.html")
 
 
-@app.route('/add-questions', methods=["GET"])
-def route_question():
-    return render_template("add-question.html",
-                           title="Add question")
-
-
-@app.route('/add_questions', methods=["POST"])
+@app.route('/add_questions', methods=['GET', "POST"])
 def add_question():
-    new_question = {"view_number": 0,
-                    "vote_number": 0,
-                    "title": request.form.get("title"),
-                    "message": request.form.get("message"),
-                    "image": None}
-    add_a_question(new_question)
-    return redirect("/")
+    if request.method == 'GET':
+        return render_template("add-question.html")
+    if request.method == 'POST':
+        new_question = {"view_number": 0,
+                        "vote_number": 0,
+                        "title": request.form.get("title"),
+                        "message": request.form.get("message"),
+                        "image": None}
+        add_a_question(new_question)
+        return redirect("/")
+
+
+@app.route('/question/<question_id>/delete', methods=['GET', "POST"])
+def delete_question(question_id):
+    if request.method == 'GET':
+        return render_template("delete_question.html", question_id=question_id)
+    if request.method == 'POST':
+        delete_a_question(question_id)
+        return redirect('/')
 
 
 if __name__ == "__main__":
