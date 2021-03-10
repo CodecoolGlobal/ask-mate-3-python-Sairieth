@@ -47,6 +47,29 @@ def vote_down_question(question_id):
     return redirect(url_for("main"))
 
 
+@app.route('/add_questions', methods=['GET', "POST"])
+def add_question():
+    if request.method == 'GET':
+        return render_template("add-question.html")
+    if request.method == 'POST':
+        new_question = {"view_number": 0,
+                        "vote_number": 0,
+                        "title": request.form.get("title"),
+                        "message": request.form.get("message"),
+                        "image": None}
+        add_a_question(new_question)
+        return redirect("/")
+
+
+@app.route('/question/<question_id>/delete', methods=['GET', "POST"])
+def delete_question(question_id):
+    if request.method == 'GET':
+        return render_template("delete_question.html", question_id=question_id)
+    if request.method == 'POST':
+        delete_a_question(question_id)
+        return redirect('/')
+
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
