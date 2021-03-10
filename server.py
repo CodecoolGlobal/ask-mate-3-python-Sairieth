@@ -18,10 +18,10 @@ def main():
     order = request.args.get('order')
 
     if attribute and order:
-        questions = get_questions_by_order(attribute, order)
+        questions = get_all_questions_by_order(attribute, order)
         return render_template('list.html', questions=questions)
     else:
-        questions = get_questions()
+        questions = get_all_questions()
         return render_template('list.html', questions=questions)
 
 
@@ -37,13 +37,13 @@ def display_a_question(question_id):
 
 @app.route('/question/<question_id>/vote_up')
 def vote_up_question(question_id):
-    vote_up(question_id)
+    question_vote_up(question_id)
     return redirect(url_for("main"))
 
 
 @app.route('/question/<question_id>/vote_down')
 def vote_down_question(question_id):
-    vote_down(question_id)
+    question_vote_down(question_id)
     return redirect(url_for("main"))
 
 

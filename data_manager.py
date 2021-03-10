@@ -9,17 +9,7 @@ datedata = datetime.now().strftime("%Y-%m-%d %H:%M")
 
 
 @database_common.connection_handler
-def get_questions(cursor: RealDictCursor ) -> list:
-    query = """
-        SELECT *
-        FROM question
-        ORDER BY id;"""
-    cursor.execute(query)
-    return cursor.fetchall()
-
-
-@database_common.connection_handler
-def get_questions(cursor: RealDictCursor) -> list:
+def get_all_questions(cursor: RealDictCursor) -> list:
     query = """
     SELECT *
     FROM question
@@ -30,7 +20,7 @@ def get_questions(cursor: RealDictCursor) -> list:
 
 
 @database_common.connection_handler
-def get_questions_by_order(cursor: RealDictCursor, attribute: str, order: str) -> list:
+def get_all_questions_by_order(cursor: RealDictCursor, attribute: str, order: str) -> list:
     query = """
     SELECT *
     FROM question
@@ -62,7 +52,7 @@ def get_answer(cursor: RealDictCursor, question_id: int) -> list:
 
 
 @database_common.connection_handler
-def vote_up(cursor: RealDictCursor, question_id : int):
+def question_vote_up(cursor: RealDictCursor, question_id : int):
     query = """
     UPDATE question
     SET vote_number =  vote_number + 1
@@ -71,7 +61,7 @@ def vote_up(cursor: RealDictCursor, question_id : int):
 
 
 @database_common.connection_handler
-def vote_down(cursor: RealDictCursor, question_id : int):
+def question_vote_down(cursor: RealDictCursor, question_id : int):
     query = """
     UPDATE question
     SET vote_number =  vote_number - 1
