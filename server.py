@@ -11,8 +11,18 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = 'super secret key'
 
+@app.route("/")
+@app.route("/list")
+def main():
+    attribute = request.args.get('attribute')
+    order = request.args.get('order')
 
-
+    if attribute and order:
+        questions = get_questions_by_order(attribute, order)
+        return render_template('list.html', questions=questions)
+    else:
+        questions = get_questions()
+        return render_template('list.html', questions=questions)
 
 
 @app.route("/question/<question_id>")
