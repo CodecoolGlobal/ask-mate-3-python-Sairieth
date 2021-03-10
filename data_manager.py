@@ -108,3 +108,13 @@ def delete_a_question(cursor, question_id):
                    WHERE id = %(question_id)s;
                    """,
                    {'question_id': question_id})
+
+
+@database_common.connection_handler
+def get_all_comments(cursor: RealDictCursor, question_id) -> list:
+    query = """
+    SELECT *
+    FROM comment
+    """
+    cursor.execute(query)
+    return cursor.fetchall()

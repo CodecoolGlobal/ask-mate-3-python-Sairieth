@@ -47,8 +47,22 @@
         <td>{{ question['title'] }}</td>
         <td>{{ question['message'] }}</td>
     </tr>
-
 </table><br>
+        <a href="/question/{{ question_id }}/new_comment">Comment for question</a>
+<h3>Comments for question</h3>
+<table>
+    <tr>
+        <th>Message</th>
+        <th>Submission time</th>
+    </tr>
+    {% for comment in comments%}
+    <tr>
+        <td>{{ comment["message"] }}</td>
+        <td>{{ comment["submission_time"] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
 <h1>Answers</h1><br>
 <table>
     <tr>
