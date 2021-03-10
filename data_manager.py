@@ -145,3 +145,19 @@ def delete_answer(cursor, answer_id):
                 WHERE id = %(answer_id)s;
                 """,
                 {'answer_id': answer_id})
+
+
+@database_common.connection_handler
+def get_search_results(cursor: RealDictCursor, phrase: str) -> list:
+    query = """
+    SELECT DISTINCT question.id, question.submission_time, question.view_number,
+     question.vote_number, question.title, question.message, question.image
+    FROM question
+    FULL JOIN answer on question.id = answer.question_id
+    WHERE answer.message ILIKE %(PHRASE)s
+    OR question.message ILIKE %(PHRASE)s 
+    OR question.title ILIKE %(PHRASE)s
+    """
+    var = {'PHRASE': f'%{phrase}%'}
+    cursor.execute(query, var)
+    return cursor.fetchall()

@@ -12,13 +12,18 @@ app.config['SECRET_KEY'] = 'super secret key'
 
 @app.route("/")
 @app.route("/list")
+@app.route("/search")
 def main():
     attribute = request.args.get('attribute')
     order = request.args.get('order')
+    phrase = request.args.get('phrase')
 
     if attribute and order:
         questions = get_all_questions_by_order(attribute, order)
         return render_template('list.html', questions=questions)
+    elif phrase:
+        questions = get_search_results(phrase)
+        return render_template("list.html", questions=questions)
     else:
         questions = get_all_questions()
         return render_template('list.html', questions=questions)
