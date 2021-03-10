@@ -61,6 +61,17 @@ def add_question():
         return redirect("/")
 
 
+@app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
+def edit_question(question_id):
+    if request.method == "GET":
+        question = get_question(question_id)
+        return render_template("edit_question.html", question=question, question_id=question_id)
+    if request.method == "POST":
+        edited_data = request.form
+        update_question(edited_data, question_id)
+        return redirect(url_for('display_a_question', question_id=question_id))
+
+
 @app.route('/question/<question_id>/delete', methods=['GET', "POST"])
 def delete_question(question_id):
     if request.method == 'GET':
