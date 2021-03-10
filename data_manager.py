@@ -70,20 +70,20 @@ def question_vote_down(cursor: RealDictCursor, question_id : int):
 
 
 @database_common.connection_handler
-def answer_vote_up(cursor: RealDictCursor, question_id : int):
+def answer_vote_up(cursor: RealDictCursor, answer_id: int) -> list:
     query = """
     UPDATE answer
-    SET vote_number =  vote_number + 1
-    WHERE id = {}""".format(question_id)
+    SET vote_number = vote_number + 1
+    WHERE id = {}""".format(answer_id)
     cursor.execute(query)
 
 
 @database_common.connection_handler
-def answer_vote_down(cursor: RealDictCursor, question_id : int):
+def answer_vote_down(cursor: RealDictCursor, answer_id: int) -> list:
     query = """
     UPDATE answer
-    SET vote_number =  vote_number - 1
-    WHERE id = {}""".format(question_id)
+    SET vote_number = vote_number - 1
+    WHERE id = {}""".format(answer_id)
     cursor.execute(query)
 
 
@@ -115,6 +115,16 @@ def get_all_comments(cursor: RealDictCursor, question_id) -> list:
     query = """
     SELECT *
     FROM comment
-    """
+    where question_id = {}""".format(question_id)
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_question_id(cursor: RealDictCursor, answer_id: int) -> list:
+    query = """
+        SELECT question_id 
+        FROM answer
+        WHERE id = {}""".format(answer_id)
+    cursor.execute(query)
+    return cursor.fetchone()

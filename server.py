@@ -48,15 +48,18 @@ def vote_down_question(question_id):
     return redirect(url_for("main"))
 
 
-@app.route('/answer/<question_id>/vote_up')
-def vote_up_answer(question_id):
-    answer_vote_up(question_id)
+
+@app.route('/answer/<answer_id>/vote_up')
+def vote_up_answer(answer_id):
+    answer_vote_up(answer_id)
+    question_id = get_question_id(answer_id)['question_id']
     return redirect(url_for("display_a_question", question_id=question_id))
 
 
-@app.route('/answer/<question_id>/vote_down')
-def vote_down_asnwer(question_id):
-    answer_vote_down(question_id)
+@app.route('/answer/<answer_id>/vote_down')
+def vote_down_answer(answer_id):
+    answer_vote_down(answer_id)
+    question_id = get_question_id(answer_id)['question_id']
     return redirect(url_for("display_a_question", question_id=question_id))
 
 
@@ -85,10 +88,7 @@ def delete_question(question_id):
 
 @app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
 def new_question_comment(question_id):
-    if request.method == "GET":
-        return render_template("new_question_comment.html", question_id=question_id)
-    elif request.method == "POST":
-        return render_template("new_question_comment.html", question_id=question_id)
+    pass
 
 
 if __name__ == "__main__":
