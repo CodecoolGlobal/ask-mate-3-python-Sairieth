@@ -102,6 +102,7 @@
             <td><img src= {{ question['image'] }} alt="" onerror="this.style.display='none'"></td>
             <td><a href="/question/{{ question['id'] }}/vote_up">Vote up</a></td>
             <td><a href="/question/{{ question['id'] }}/vote_down">Vote down</a></td>
+            <td><a href="/question/{{ question['id'] }}/delete">Trash this</a></td>
         </tr>
     {% endfor %}
 

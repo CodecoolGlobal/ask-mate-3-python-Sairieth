@@ -4,12 +4,11 @@ from util import *
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-
 UPLOAD_FOLDER = "static/uploads"
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
-
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = 'super secret key'
+
 
 @app.route("/")
 @app.route("/list")
@@ -47,7 +46,7 @@ def vote_down_question(question_id):
     return redirect(url_for("main"))
 
 
-@app.route('/add_questions', methods=['GET', "POST"])
+@app.route('/add_questions', methods=['GET', 'POST'])
 def add_question():
     if request.method == 'GET':
         return render_template("add-question.html")
@@ -61,12 +60,33 @@ def add_question():
         return redirect("/")
 
 
-@app.route('/question/<question_id>/delete', methods=['GET', "POST"])
+@app.route('/question/<question_id>/delete', methods=['GET', 'POST'])
 def delete_question(question_id):
     if request.method == 'GET':
         return render_template("delete_question.html", question_id=question_id)
     if request.method == 'POST':
         delete_a_question(question_id)
+        return redirect('/')
+
+
+@app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
+def route_add_answer(question_id):
+    if request.method == 'GET':
+        return render_template("new_answer.html", question_id=question_id)
+    if request.method == 'POST':
+        new_answer = {'vote_number': 0,
+                      'question_id': question_id,
+                      'message': request.form.get('message'),
+                      'image': None}
+        add_new_answer(new_answer)
+        return redirect(url_for("display_a_question", question_id=question_id))
+
+
+@app.route('/answer/<answer_id>/delete', methods=["GET"])
+def delete(answer_id):
+    if request.method == 'GET':
+        question_id = request.args.get("question_id")
+        delete_answer(answer_id)
         return redirect('/')
 
 
