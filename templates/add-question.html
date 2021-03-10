@@ -39,17 +39,17 @@
     </style>
 </head>
 <body>
-    <h1>Any questions?</h1><br>
-    <form method="POST" class="col-12" enctype="multipart/form-data">
+    <h1>Do you have a question m8?</h1><br>
+   <form action="{{ url_for("add_question") }}", method="POST">
+        <p>Question title<br>
+        <input type="text" name="title" required minlength="10" size="51">
+        </p>
 
-    <label for="issue">Issue</label><br>
-        <input type="text" id="issue" name="issue" placeholder="Issue title" required><br><br>
-
-    <label for="question">How can we help?</label><br>
-        <textarea id="question" name="question" placeholder="Write a question here..." required></textarea><br>
-        <label for="input-id">Upload a picture:</label><br><br>
-              <input id="input-id" type="file" name="photo" class="file form-control" multiple data-preview-file-type="text" data-allowed-file-extensions='["png", "jpg"]'><br><br>
-        <button type="submit">Submit question</button><br><br>
+        <p>Question message<br>
+        <textarea cols="50" rows="10" name="message" autofocus required minlength="10"></textarea>
+        </p>
+        <br>
+        <button type="submit">Submit</button>
     </form>
     <br>
 <a href='/'><button class=grey>Return to Main Page</button></a><br>

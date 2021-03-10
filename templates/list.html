@@ -80,15 +80,7 @@
 </form>
 
 <table>
-    <tr>
-        <th>{{ header['id'] }}</th>
-        <th>{{ header['submission_time'] }}</th>
-        <th>{{ header['view_number'] }}</th>
-        <th>{{ header['vote_number'] }}</th>
-        <th>{{ header['title'] }}</th>
-        <th>{{ header['message'] }}</th>
-        <th>{{ header['image'] }}</th>
-    </tr>
+
     {% for question in questions %}
         <tr>
             <td><a href="/question/{{ question['id'] }}">{{ question['id'] }}</a></td>

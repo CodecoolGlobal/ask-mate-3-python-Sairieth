@@ -39,3 +39,19 @@ def get_answer(cursor: RealDictCursor, question_id: int) -> list:
     return cursor.fetchall()
 
 
+@database_common.connection_handler
+def vote_up(cursor: RealDictCursor, question_id : int):
+    query = """
+    UPDATE question
+    SET vote_number =  vote_number + 1
+    WHERE id = {}""".format(question_id)
+    cursor.execute(query)
+
+
+@database_common.connection_handler
+def vote_down(cursor: RealDictCursor, question_id : int):
+    query = """
+    UPDATE question
+    SET vote_number =  vote_number - 1
+    WHERE id = {}""".format(question_id)
+    cursor.execute(query)
