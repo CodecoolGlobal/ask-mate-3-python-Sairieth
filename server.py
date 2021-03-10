@@ -58,6 +58,7 @@ def vote_down_asnwer(question_id):
     answer_vote_down(question_id)
     return redirect(url_for("display_a_question", question_id=question_id))
 
+
 @app.route('/add_questions', methods=['GET', "POST"])
 def add_question():
     if request.method == 'GET':
