@@ -90,7 +90,14 @@ def delete_question(question_id):
 
 
 
-#@app.route("/photo", methods=["GET", "POST"])
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+
+
+
 def upload():
     if request.method == 'POST':
         if 'photo' not in request.files:
@@ -103,6 +110,9 @@ def upload():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        random_name = create_random_name
+        os.rename(UPLOAD_FOLDER + filename, UPLOAD_FOLDER + random_name()) # not sure if I even need these the problem is maybe elsewhere
+        file_name = random_name
     return f"static/uploads/{filename}"
 
 
