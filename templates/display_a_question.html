@@ -66,6 +66,8 @@
         {% endfor %}
     {% endif %}
 </table><br>
+<a href="{{ url_for("route_add_answer", question_id=question_id) }}">Write an answer</a><br>
 <a href="/">Back to main page</a><br>
+<a href="{{ url_for("edit_question", question_id=question_id) }}">Edit question</a><br>
 </body>
 </html>
