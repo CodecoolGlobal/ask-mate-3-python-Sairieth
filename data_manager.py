@@ -253,3 +253,13 @@ def get_all_answers_image_path(cursor: RealDictCursor, question_id: str) -> list
     WHERE question_id = (%s)"""
     cursor.execute(query, (question_id,))
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def modify_view_number(cursor: RealDictCursor, question_id: str, view_number: str) -> list:
+    query = """
+    UPDATE question
+    SET view_number (%s)
+    WHERE id = (%s)"""
+    cursor.execute(query, (view_number, question_id,))
+    return cursor.fetchall()
