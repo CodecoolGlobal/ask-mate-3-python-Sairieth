@@ -29,7 +29,7 @@ def main():
 def display_a_question(question_id):
     question = get_question(question_id)
     answers = get_answer(question_id)
-    comments = get_all_comments(question_id)
+    comments = get_comments(question_id)
     #temp_view_number = int(question['view_number']) + 1
     #question['view_number'] = temp_view_number
     #update_file(file_path_questions, questions_header, questions)
@@ -86,9 +86,16 @@ def delete_question(question_id):
         return redirect('/')
 
 
-@app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
+@app.route('/question/<int:question_id>/new_comment', methods=['GET', 'POST'])
 def new_question_comment(question_id):
-    pass
+    if request.method == "GET":
+        return render_template("new_question_comment.html", question_id=str(question_id))
+    elif request.method == "POST":
+        new_comment = request.form["new_comment"]
+        write_question_comment(question_id, new_comment)
+        return redirect("/question/" + str(question_id))
+
+
 
 
 if __name__ == "__main__":

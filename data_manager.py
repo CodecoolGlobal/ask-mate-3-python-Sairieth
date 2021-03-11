@@ -111,7 +111,7 @@ def delete_a_question(cursor, question_id):
 
 
 @database_common.connection_handler
-def get_all_comments(cursor: RealDictCursor, question_id) -> list:
+def get_comments(cursor: RealDictCursor, question_id) -> list:
     query = """
     SELECT *
     FROM comment
@@ -128,3 +128,14 @@ def get_question_id(cursor: RealDictCursor, answer_id: int) -> list:
         WHERE id = {}""".format(answer_id)
     cursor.execute(query)
     return cursor.fetchone()
+
+
+
+
+@database_common.connection_handler
+def write_question_comment(cursor: RealDictCursor, question_id: int, new_comment: str) -> list:
+    query = """
+    INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
+    VALUES ({}, NULL ,'{}',CURRENT_TIMESTAMP,0);""".format(question_id, new_comment)
+    cursor.execute(query)
+
