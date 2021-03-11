@@ -9,6 +9,17 @@ datedata = datetime.now().strftime("%Y-%m-%d %H:%M")
 
 
 @database_common.connection_handler
+def get_last_5(cursor):
+    cursor.execute("""
+                    SELECT * FROM question
+                    ORDER BY submission_time DESC
+                    LIMIT 5;
+                    """)
+    questions = cursor.fetchall()
+    return questions
+
+
+@database_common.connection_handler
 def get_all_questions(cursor: RealDictCursor) -> list:
     query = """
     SELECT *
@@ -136,15 +147,12 @@ def get_question_id(cursor: RealDictCursor, answer_id: int) -> list:
     return cursor.fetchone()
 
 
-
-
 @database_common.connection_handler
 def write_question_comment(cursor: RealDictCursor, question_id: int, new_comment: str) -> list:
     query = """
     INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
     VALUES ({}, NULL ,'{}',CURRENT_TIMESTAMP,0);""".format(question_id, new_comment)
     cursor.execute(query)
-
 
 
 @database_common.connection_handler

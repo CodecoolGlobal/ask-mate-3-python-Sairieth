@@ -12,7 +12,12 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = 'super secret key'
 
 
-@app.route("/")
+@app.route('/')
+def get_last_5_question_ordered_by_time():
+    questions = get_last_5()
+    return render_template("list.html", questions=questions)
+
+
 @app.route("/list")
 @app.route("/search")
 def main():
