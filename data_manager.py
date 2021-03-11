@@ -244,3 +244,12 @@ def get_image_name_by_question_id(cursor: RealDictCursor, question_id: str) -> l
     WHERE id = (%s)"""
     cursor.execute(query, (question_id,))
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_all_answers_image_path(cursor: RealDictCursor, question_id: str) -> list:
+    query = """
+    SELECT id FROM answer
+    WHERE question_id = (%s)"""
+    cursor.execute(query, (question_id,))
+    return cursor.fetchall()
