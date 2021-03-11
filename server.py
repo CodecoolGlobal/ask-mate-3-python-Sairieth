@@ -148,22 +148,25 @@ def create_random_name():
 
 
 def upload():
-    if request.method == 'POST':
-        # if 'photo' not in request.files:
-        #     flash('No file part')
-        #     return redirect(request.url)
-        file = request.files['photo']
-        # if file.filename == '':
-        #     flash('No selected file')
-        #     return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            random_name = create_random_name()
-            filename = str(random_name)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        #os.rename(UPLOAD_FOLDER + filename, UPLOAD_FOLDER + random_name()) # not sure if I even need these the problem is maybe elsewhere
-        #file_name = random_name
-    return f"static/uploads/{filename}"
+    try:
+        if request.method == 'POST':
+                # if 'photo' not in request.files:
+                #     flash('No file part')
+                #     return redirect(request.url)
+                file = request.files['photo']
+                # if file.filename == '':
+                #     flash('No selected file')
+                #     return redirect(request.url)
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    random_name = create_random_name()
+                    filename = str(random_name)
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                #os.rename(UPLOAD_FOLDER + filename, UPLOAD_FOLDER + random_name()) # not sure if I even need these the problem is maybe elsewhere
+                #file_name = random_name
+        return f"static/uploads/{filename}" 
+    except UnboundLocalError:
+        return "None"
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
