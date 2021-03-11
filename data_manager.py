@@ -104,7 +104,60 @@ def add_a_question(cursor, dictionary):
 @database_common.connection_handler
 def delete_a_question(cursor, question_id):
     cursor.execute("""
+                   DELETE FROM answer
+                   WHERE question_id = %(question_id)s;
+                
                    DELETE FROM question
                    WHERE id = %(question_id)s;
                    """,
                    {'question_id': question_id})
+
+
+@database_common.connection_handler
+def update_question(cursor: RealDictCursor, edited_data: dict, question_id: int):
+    query = """
+        UPDATE question
+        SET title=%(title)s, message=%(message)s
+        WHERE id=%(id)s"""
+    var = {'title': edited_data['title'], 'message': edited_data['message'], 'id': question_id}
+    cursor.execute(query, var)
+
+
+@database_common.connection_handler
+def add_new_answer(cursor, dictionary):
+    cursor.execute("""
+                    INSERT INTO answer(submission_time, vote_number, question_id, message, image)
+                    VALUES(%(submission_time)s, %(vote_number)s, %(question_id)s, %(message)s, %(image)s);
+                    """,
+                   {'submission_time': datedata,
+                    'vote_number': dictionary['vote_number'],
+                    'question_id': dictionary['question_id'],
+                    'message': dictionary['message'],
+                    'image': dictionary['image']})
+
+
+@database_common.connection_handler
+def delete_answer(cursor, answer_id):
+    cursor.execute("""
+                DELETE FROM comment
+                WHERE answer_id = %(answer_id)s;
+                DELETE FROM answer
+                WHERE id = %(answer_id)s;
+                """,
+                {'answer_id': answer_id})
+
+
+@database_common.connection_handler
+def get_search_results(cursor: RealDictCursor, phrase: str) -> list:
+    query = """
+    SELECT DISTINCT question.id, question.submission_time, question.view_number,
+     question.vote_number, question.title, question.message, question.image
+    FROM question
+    FULL JOIN answer on question.id = answer.question_id
+    WHERE answer.message ILIKE %(PHRASE)s
+    OR question.message ILIKE %(PHRASE)s 
+    OR question.title ILIKE %(PHRASE)s
+    """
+    var = {'PHRASE': f'%{phrase}%'}
+    cursor.execute(query, var)
+    return cursor.fetchall()
