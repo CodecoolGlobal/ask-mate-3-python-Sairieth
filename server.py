@@ -101,6 +101,13 @@ def delete_question(question_id):
     if request.method == 'GET':
         return render_template("delete_question.html", question_id=question_id)
     if request.method == 'POST':
+        image_path = get_image_name_by_question_id(question_id)
+        for answer in image_path:
+            image_name = answer["image"]
+        if os.path.exists(image_name):
+            os.remove(image_name)
+        else:
+            print("The file does not exist") 
         delete_a_question(question_id)
         return redirect('/')
 
@@ -153,6 +160,13 @@ def route_add_answer(question_id):
 def delete(answer_id):
     if request.method == 'GET':
         question_id = request.args.get("question_id")
+        image_path = get_image_name_by_answer_id(answer_id)
+        for answer in image_path:
+            image_name = answer["image"]
+        if os.path.exists(image_name):
+            os.remove(image_name)
+        else:
+            print("The file does not exist") 
         delete_answer(answer_id)
         return redirect('/')
 
