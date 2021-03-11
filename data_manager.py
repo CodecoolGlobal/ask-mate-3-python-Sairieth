@@ -43,7 +43,7 @@ def get_question(cursor: RealDictCursor, question_id: int) -> list:
 @database_common.connection_handler
 def get_answer(cursor: RealDictCursor, question_id: int) -> list:
     query = """
-        SELECT id, message, submission_time, vote_number
+        SELECT id, message, submission_time, vote_number, image
         FROM answer
         WHERE question_id = {}
         ORDER BY id""".format(question_id)
