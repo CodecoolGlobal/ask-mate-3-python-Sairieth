@@ -151,7 +151,6 @@ def update_question(cursor: RealDictCursor, edited_data: dict, question_id: int,
         SET title=%(title)s, message=%(message)s, image=%(image)s
         WHERE id=%(id)s"""
     var = {'title': edited_data['title'], 'message': edited_data['message'],'image': image_name, 'id': question_id}
-    print(image_name)
     cursor.execute(query, var)
 
 
