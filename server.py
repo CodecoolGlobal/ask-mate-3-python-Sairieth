@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory
 from data_manager import *
-from util import *
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -34,7 +33,7 @@ def main():
 @app.route("/question/<question_id>")
 def display_a_question(question_id):
     question = get_question(question_id)
-    answers = get_answer(question_id)
+    answers = get_answer_by_question_id(question_id)
     question_comments = get_question_comments(question_id)
     #temp_view_number = int(question['view_number']) + 1
     #question['view_number'] = temp_view_number

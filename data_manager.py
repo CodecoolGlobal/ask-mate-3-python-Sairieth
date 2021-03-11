@@ -53,7 +53,7 @@ def get_answer_by_question_id(cursor: RealDictCursor, question_id: int) -> list:
 @database_common.connection_handler
 def get_answers(cursor: RealDictCursor, answer_id: int) -> list:
     query = """
-        SELECT id, message, submission_time, vote_number
+        SELECT *
         FROM answer
         WHERE id = {}""".format(answer_id)
     cursor.execute(query)
