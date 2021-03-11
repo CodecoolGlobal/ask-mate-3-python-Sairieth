@@ -88,14 +88,13 @@ def delete_question(question_id):
         return redirect('/')
 
 
-
-
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-
+def create_random_name():
+   return str(random.randint(100000, 999999))
 
 
 def upload():
