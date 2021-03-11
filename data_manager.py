@@ -271,7 +271,6 @@ def increase_view_number(cursor: RealDictCursor, question_id: str) -> list:
     SET view_number = view_number + 1
     WHERE id = (%s)"""
     cursor.execute(query, (question_id,))
-    return cursor.fetchall()
 
 
 
