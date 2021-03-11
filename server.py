@@ -38,6 +38,7 @@ def display_a_question(question_id):
     question = get_question(question_id)
     answers = get_answer(question_id)
     comments = get_comments(question_id)
+    modify_view_number(question_id)
     #temp_view_number = int(question['view_number']) + 1
     #question['view_number'] = temp_view_number
     #update_file(file_path_questions, questions_header, questions)
