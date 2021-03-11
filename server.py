@@ -95,7 +95,6 @@ def edit_question(question_id):
         return redirect(url_for('display_a_question', question_id=question_id))
 
 
-@app.route('/question/<question_id>/delete', methods=['GET', "POST"])
 @app.route('/question/<question_id>/delete', methods=['GET', 'POST'])
 def delete_question(question_id):
     if request.method == 'GET':
