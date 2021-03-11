@@ -161,3 +161,14 @@ def get_search_results(cursor: RealDictCursor, phrase: str) -> list:
     var = {'PHRASE': f'%{phrase}%'}
     cursor.execute(query, var)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_image_name_by_answer_id(cursor: RealDictCursor, answer_id: str) -> list:
+    query = """
+    SELECT image FROM answer
+    WHERE id = (%s)"""
+    cursor.execute(query, (answer_id,))
+    return cursor.fetchall()
+
+
