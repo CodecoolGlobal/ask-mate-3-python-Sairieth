@@ -145,12 +145,13 @@ def write_question_comment(cursor: RealDictCursor, question_id: int, new_comment
 
 
 @database_common.connection_handler
-def update_question(cursor: RealDictCursor, edited_data: dict, question_id: int):
+def update_question(cursor: RealDictCursor, edited_data: dict, question_id: int, image_name:str):
     query = """
         UPDATE question
-        SET title=%(title)s, message=%(message)s
+        SET title=%(title)s, message=%(message)s, image=%(image)s
         WHERE id=%(id)s"""
-    var = {'title': edited_data['title'], 'message': edited_data['message'], 'id': question_id}
+    var = {'title': edited_data['title'], 'message': edited_data['message'],'image': image_name, 'id': question_id}
+    print(image_name)
     cursor.execute(query, var)
 
 
