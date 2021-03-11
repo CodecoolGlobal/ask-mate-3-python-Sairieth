@@ -10,6 +10,19 @@
         background-size: cover;
         }
     </style>
+    <style>
+        img {
+          border: 1px solid #ddd; /* Gray border */
+          border-radius: 4px;  /* Rounded border */
+          padding: 5px; /* Some padding */
+          width: 150px; /* Set a small width */
+        }
+        
+        /* Add a hover effect (blue shadow) */
+        img:hover {
+          box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+        }
+        </style>
         <style>
         body {
             background-color: #bbd1aa;
@@ -62,6 +75,7 @@
             <td><a href="/answer/{{ answer['id'] }}/vote_up">Vote up</a></td>
             <td><a href="/answer/{{ answer['id'] }}/vote_down">Vote down</a></td>
             <td><a href="/answer/{{ answer['id'] }}/delete">Delete</a></td>
+            <td><img src= /{{ answer['image'] }} alt="" onerror="this.style.display='none'"></td>
         </tr>
         {% endfor %}
     {% endif %}
