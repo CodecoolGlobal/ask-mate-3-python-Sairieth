@@ -152,6 +152,15 @@ def edit_answer(answer_id):
         update_answer(new_answer)
         return redirect(url_for("display_a_question", question_id=question_id))
 
+@app.route('/delete_comment_conformation')
+def are_you_sure(comment, question_id, comment_id):
+    return render_template('delete_comment_confirmation.html',
+                           comment=comment, question_id=question_id, comment_id=comment_id)
+
+@app.route('/comments/<comment_id>/delete')
+def delete_comment(comment_id):
+    delete_a_comment(comment_id)
+    return redirect(url_for('display_a_question'))
 
 if __name__ == "__main__":
     app.run(

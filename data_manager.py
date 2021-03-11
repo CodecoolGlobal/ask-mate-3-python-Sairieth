@@ -216,3 +216,13 @@ def update_answer(cursor, dictionary):
                     'question_id': dictionary['question_id'],
                     'message': dictionary['message'],
                     'image': dictionary['image']})
+
+
+@database_common.connection_handler
+def delete_a_comment(cursor: RealDictCursor, comment_id: int):
+    query = """
+    DELETE FROM comment
+    WHERE id=%(ID)s; 
+    """
+    var = {'ID': f'{comment_id}'}
+    cursor.execute(query, var)

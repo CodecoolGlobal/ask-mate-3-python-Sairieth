@@ -61,6 +61,9 @@
     <tr>
         <td>{{ comment["message"] }}</td>
         <td>{{ comment["submission_time"] }}</td>
+        <td><a href="{{url_for("are_you_sure", comment=comment["message"],
+         comment_id=comment["id"], question_id=question_id)}}" >
+            <button type="button" >&#9851;</button></a></td>
     </tr>
     {% endfor %}
 </table>
