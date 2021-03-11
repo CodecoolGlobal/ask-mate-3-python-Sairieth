@@ -210,11 +210,14 @@ def edit_answer(answer_id):
         answers = get_answer_by_id(answer_id, question_id)
         return render_template('edit_answer.html', answers=answers, answer_id=answer_id, question_id=question_id)
     if request.method == 'POST':
+        image_name = upload()
+        if "[302 FOUND]" in str(image_name):
+            image_name = "None"
         question_id = request.args.get('question_id')
         new_answer = {'id': answer_id,
                       'question_id': question_id,
                       'message': request.form.get('message'),
-                      'image': None}
+                      'image': image_name}
         update_answer(new_answer)
         return redirect(url_for("display_a_question", question_id=question_id))
 
