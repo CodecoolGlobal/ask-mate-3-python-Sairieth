@@ -158,6 +158,10 @@ def edit_answer(answer_id):
         return redirect(url_for("display_a_question", question_id=question_id))
 
 
+@app.route("/ASKM8")
+def askm8():
+    return render_template('projectinfo.html')
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
