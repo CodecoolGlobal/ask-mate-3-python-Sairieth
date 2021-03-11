@@ -113,6 +113,15 @@ def delete_question(question_id):
             os.remove(image_name)
         else:
             print("The file does not exist")
+        answer_ids = extract_answer_image_paths(question_id)
+        for id in answer_ids:
+            image_path = get_image_name_by_answer_id(id)
+            for answer in image_path:
+                image_name = answer["image"]
+            if os.path.exists(image_name):
+                os.remove(image_name)
+            else:
+                print("The file does not exist")
         delete_a_question(question_id)
         return redirect('/')
 
@@ -216,6 +225,12 @@ def delete_comment(comment_id):
     question_id = request.args.get('question_id')
     delete_a_comment(comment_id)
     return redirect(url_for('display_a_question', question_id=question_id))
+
+
+def extract_answer_image_paths(question_id):
+    answer_paths = get_all_answers_image_path(question_id)
+    return [(answer['id']) for answer in answer_paths]
+
 
 if __name__ == "__main__":
     app.run(
