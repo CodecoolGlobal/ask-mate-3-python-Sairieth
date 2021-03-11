@@ -35,7 +35,7 @@ def main():
 @app.route("/question/<question_id>")
 def display_a_question(question_id):
     question = get_question(question_id)
-   # modify_view_number(question_id)
+    increase_view_number(question_id)
     answers = get_answer_by_question_id(question_id)
     question_comments = get_question_comments(question_id)
     #temp_view_number = int(question['view_number']) + 1
@@ -121,6 +121,8 @@ def delete_question(question_id):
             image_path = get_image_name_by_answer_id(id)
             for answer in image_path:
                 image_name = answer["image"]
+            if image_name == None:
+                image_name = "None"
             if os.path.exists(image_name):
                 os.remove(image_name)
             else:
