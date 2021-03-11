@@ -96,8 +96,11 @@ def edit_question(question_id):
         question = get_question(question_id)
         return render_template("edit_question.html", question=question, question_id=question_id)
     if request.method == "POST":
+        image_name = upload()
+        if "[302 FOUND]" in str(image_name):
+            image_name = "None"
         edited_data = request.form
-        update_question(edited_data, question_id)
+        update_question(edited_data, question_id, image_name)
         return redirect(url_for('display_a_question', question_id=question_id))
 
 
