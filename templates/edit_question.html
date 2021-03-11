@@ -38,7 +38,7 @@
 </head>
 <body>
     <h1>Edit question</h1><br><br>
-    <form method="POST" action="{{ url_for('edit_question', question_id=question_id) }}">
+    <form method="POST" action="{{ url_for('edit_question', question_id=question_id) }}" enctype="multipart/form-data">
         <label for="title">Title:</label><br>
         <input type="text" id="title" name="title" value={{ question['title'] }}><br><br>
 
