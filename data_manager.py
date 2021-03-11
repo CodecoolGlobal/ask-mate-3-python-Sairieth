@@ -296,7 +296,7 @@ def get_question_comments(cursor: RealDictCursor, question_id:int):
 @database_common.connection_handler
 def get_answer_comments(cursor: RealDictCursor, answer_id:int):
     query = """
-    SELECT answer_id, message, submission_time
+    SELECT * 
     FROM comment
     WHERE answer_id = {};""".format(answer_id)
     cursor.execute(query)

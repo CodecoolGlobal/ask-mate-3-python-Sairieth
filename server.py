@@ -259,7 +259,7 @@ def get_answers_comments():
     answer = get_answers(answer_id)
     question = get_question(question_id)
     answer_comments = get_answer_comments(answer_id)
-    return render_template("answers.html", answer_id=answer_id, answer_comments=answer_comments, answer=answer, question=question)
+    return render_template("answers.html", question_id=question_id, answer_id=answer_id, answer_comments=answer_comments, answer=answer, question=question)
 
 if __name__ == "__main__":
     app.run(
