@@ -38,8 +38,10 @@
 </head>
 <body>
 <h1>Write an answer m8</h1>
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
     <textarea name="message" minlength="5" rows="15" cols="60" placeholder="Write your answer here..." required></textarea><br>
+    <label for="input-id">Upload a picture:</label><br><br>
+    <input id="input-id" type="file" name="photo" class="file form-control" multiple data-preview-file-type="text" data-allowed-file-extensions='["png", "jpg"]'><br><br>
     <button type="submit">Submit your answer</button>
 </form>
 </body>
