@@ -104,6 +104,9 @@ def add_a_question(cursor, dictionary):
 @database_common.connection_handler
 def delete_a_question(cursor, question_id):
     cursor.execute("""
+                   DELETE FROM comment
+                   WHERE question_id = %(question_id)s;
+                   
                    DELETE FROM answer
                    WHERE question_id = %(question_id)s;
                 
