@@ -35,7 +35,7 @@
 
 <body>
     <h1>Write a comment for the answer</h1>
-        <form action="/question/{{ question_id }}/answer/{{ answer_id }}/new_comment" method="POST">
+                <form method="POST" action="{{ url_for('new_answer_comment',answer_id=answer_id ) }}">
             <label>Comment: <br> <textarea name="new_comment"></textarea></label><br>
             <input type="submit" value="Send!">
         </form>

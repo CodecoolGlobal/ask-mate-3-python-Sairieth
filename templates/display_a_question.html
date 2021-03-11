@@ -10,6 +10,19 @@
         background-size: cover;
         }
     </style>
+    <style>
+        img {
+          border: 1px solid #ddd; /* Gray border */
+          border-radius: 4px;  /* Rounded border */
+          padding: 5px; /* Some padding */
+          width: 150px; /* Set a small width */
+        }
+
+        /* Add a hover effect (blue shadow) */
+        img:hover {
+          box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+        }
+        </style>
         <style>
         body {
             background-color: #bbd1aa;
@@ -57,10 +70,11 @@
         <th>Message</th>
         <th>Submission time</th>
     </tr>
-    {% for comment in comments%}
+    {% for comment in question_comments%}
     <tr>
         <td>{{ comment["message"] }}</td>
         <td>{{ comment["submission_time"] }}</td>
+
     </tr>
     {% endfor %}
 </table>
@@ -78,12 +92,20 @@
             <td><a href="/answer/{{ answer['id'] }}/vote_up">Vote up</a></td>
             <td><a href="/answer/{{ answer['id'] }}/vote_down">Vote down</a></td>
             <td><a href="/answer/{{ answer['id'] }}/delete">Delete</a></td>
+            <td><img src= /{{ answer['image'] }} alt="" onerror="this.style.display='none'"></td>
             <td><a href="{{ url_for('edit_answer', answer_id=answer["id"], question_id=question_id) }}">Edit</a></td>
+            <td><a href="/answer/{{ answer['id'] }}/new_comment">Comment to answer </a></td>
+            <td><a href="{{ url_for("get_answers_comments", answer_id=answer["id"], question_id=question["id"]) }}">Show comments </a></td>
         </tr>
         {% endfor %}
     {% endif %}
 </table><br>
+
 <a href="{{ url_for("route_add_answer", question_id=question_id) }}">Write an answer</a><br>
 <a href="/">Back to main page</a><br>
 </body>
 </html>
+
+
+
+

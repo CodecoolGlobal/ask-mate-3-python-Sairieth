@@ -35,11 +35,11 @@ def main():
 def display_a_question(question_id):
     question = get_question(question_id)
     answers = get_answer(question_id)
-    comments = get_comments(question_id)
+    question_comments = get_question_comments(question_id)
     #temp_view_number = int(question['view_number']) + 1
     #question['view_number'] = temp_view_number
     #update_file(file_path_questions, questions_header, questions)
-    return render_template('display_a_question.html', question=question, question_id=question_id, answers=answers, comments=comments)
+    return render_template('display_a_question.html', question=question, question_id=question_id, answers=answers, question_comments=question_comments)
 
 
 @app.route('/question/<question_id>/vote_up')
@@ -115,7 +115,6 @@ def new_question_comment(question_id):
 
 
 
-
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def route_add_answer(question_id):
     if request.method == 'GET':
@@ -152,6 +151,26 @@ def edit_answer(answer_id):
         update_answer(new_answer)
         return redirect(url_for("display_a_question", question_id=question_id))
 
+
+@app.route('/answer/<answer_id>/new_comment', methods=['GET', 'POST'])
+def new_answer_comment(answer_id):
+    if request.method == "GET":
+        return render_template("new_answer_comment.html", answer_id=answer_id)
+    elif request.method == "POST":
+        new_comment = request.form["new_comment"]
+        question_id = get_question_id(answer_id)['question_id']
+        write_answer_comment( answer_id, new_comment)
+        return redirect(url_for("display_a_question",question_id=question_id))
+
+
+@app.route('/answer/show_answers')
+def get_answers_comments():
+    answer_id = request.args.get("answer_id")
+    question_id = request.args.get("question_id")
+    answer = get_answers(answer_id)
+    question = get_question(question_id)
+    answer_comments = get_answer_comments(answer_id)
+    return render_template("answers.html", answer_id=answer_id, answer_comments=answer_comments, answer=answer, question=question)
 
 if __name__ == "__main__":
     app.run(
