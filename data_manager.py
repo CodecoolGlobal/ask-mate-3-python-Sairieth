@@ -43,7 +43,7 @@ def get_question(cursor: RealDictCursor, question_id: int) -> list:
 @database_common.connection_handler
 def get_answer(cursor: RealDictCursor, question_id: int) -> list:
     query = """
-        SELECT id, message, submission_time, vote_number
+        SELECT id, message, submission_time, vote_number, image
         FROM answer
         WHERE question_id = {}
         ORDER BY id""".format(question_id)
@@ -226,3 +226,21 @@ def delete_a_comment(cursor: RealDictCursor, comment_id: int):
     """
     var = {'ID': f'{comment_id}'}
     cursor.execute(query, var)
+
+
+@database_common.connection_handler
+def get_image_name_by_answer_id(cursor: RealDictCursor, answer_id: str) -> list:
+    query = """
+    SELECT image FROM answer
+    WHERE id = (%s)"""
+    cursor.execute(query, (answer_id,))
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_image_name_by_question_id(cursor: RealDictCursor, question_id: str) -> list:
+    query = """
+    SELECT image FROM question
+    WHERE id = (%s)"""
+    cursor.execute(query, (question_id,))
+    return cursor.fetchall()

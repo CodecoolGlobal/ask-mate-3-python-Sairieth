@@ -40,7 +40,7 @@
 </head>
 <body>
     <h1>Do you have a question m8?</h1><br>
-   <form action="{{ url_for("add_question") }}", method="POST">
+   <form action="{{ url_for("add_question") }}", method="POST" enctype="multipart/form-data">
         <p>Question title<br>
         <input type="text" name="title" required minlength="5" size="51">
         </p>
@@ -48,6 +48,8 @@
         <textarea cols="50" rows="10" name="message" autofocus required minlength="5"></textarea>
         </p>
         <br>
+        <label for="input-id">Upload a picture:</label><br><br>
+        <input id="input-id" type="file" name="photo" class="file form-control" multiple data-preview-file-type="text" data-allowed-file-extensions='["png", "jpg"]'><br><br>
         <button type="submit">Submit</button>
     </form>
     <br>
