@@ -13,7 +13,12 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = 'super secret key'
 
 
-@app.route("/")
+@app.route('/')
+def get_last_5_question_ordered_by_time():
+    questions = get_last_5()
+    return render_template("list.html", questions=questions)
+
+
 @app.route("/list")
 @app.route("/search")
 def main():
@@ -262,6 +267,10 @@ def get_answers_comments():
     question = get_question(question_id)
     answer_comments = get_answer_comments(answer_id)
     return render_template("answers.html", question_id=question_id, answer_id=answer_id, answer_comments=answer_comments, answer=answer, question=question)
+
+@app.route("/ASKM8")
+def askm8():
+    return render_template('projectinfo.html')
 
 if __name__ == "__main__":
     app.run(
