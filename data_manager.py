@@ -161,3 +161,27 @@ def get_search_results(cursor: RealDictCursor, phrase: str) -> list:
     var = {'PHRASE': f'%{phrase}%'}
     cursor.execute(query, var)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_answer_by_id(cursor, answer_id, question_id):
+    cursor.execute("""
+                    SELECT * FROM answer
+                    WHERE id = %(answer_id)s AND question_id = %(question_id)s;
+                    """,
+                   {'answer_id': answer_id, 'question_id': question_id})
+    question_answers_data = cursor.fetchall()
+    return question_answers_data
+
+
+@database_common.connection_handler
+def update_answer(cursor, dictionary):
+    cursor.execute("""
+                    UPDATE answer
+                    SET message = %(message)s, image = %(image)s
+                    WHERE id = %(answer_id)s AND question_id = %(question_id)s;
+                    """,
+                   {'answer_id': dictionary['id'],
+                    'question_id': dictionary['question_id'],
+                    'message': dictionary['message'],
+                    'image': dictionary['image']})

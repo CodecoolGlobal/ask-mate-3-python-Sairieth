@@ -120,6 +120,22 @@ def delete(answer_id):
         return redirect('/')
 
 
+@app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
+def edit_answer(answer_id):
+    if request.method == 'GET':
+        question_id = request.args.get('question_id')
+        answers = get_answer_by_id(answer_id, question_id)
+        return render_template('edit_answer.html', answers=answers, answer_id=answer_id, question_id=question_id)
+    if request.method == 'POST':
+        question_id = request.args.get('question_id')
+        new_answer = {'id': answer_id,
+                      'question_id': question_id,
+                      'message': request.form.get('message'),
+                      'image': None}
+        update_answer(new_answer)
+        return redirect(url_for("display_a_question", question_id=question_id))
+
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
