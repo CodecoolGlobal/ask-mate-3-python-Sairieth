@@ -43,7 +43,7 @@ def get_question(cursor: RealDictCursor, question_id: int) -> list:
 @database_common.connection_handler
 def get_answer_by_question_id(cursor: RealDictCursor, question_id: int) -> list:
     query = """
-        SELECT id, message, submission_time, vote_number
+        SELECT id, message, submission_time, vote_number, image
         FROM answer
         WHERE question_id = {}
         ORDER BY id""".format(question_id)
@@ -154,12 +154,12 @@ def write_question_comment(cursor: RealDictCursor, question_id: int, new_comment
 
 
 @database_common.connection_handler
-def update_question(cursor: RealDictCursor, edited_data: dict, question_id: int):
+def update_question(cursor: RealDictCursor, edited_data: dict, question_id: int, image_name:str):
     query = """
         UPDATE question
-        SET title=%(title)s, message=%(message)s
+        SET title=%(title)s, message=%(message)s, image=%(image)s
         WHERE id=%(id)s"""
-    var = {'title': edited_data['title'], 'message': edited_data['message'], 'id': question_id}
+    var = {'title': edited_data['title'], 'message': edited_data['message'],'image': image_name, 'id': question_id}
     cursor.execute(query, var)
 
 
@@ -225,6 +225,54 @@ def update_answer(cursor, dictionary):
                     'question_id': dictionary['question_id'],
                     'message': dictionary['message'],
                     'image': dictionary['image']})
+
+
+@database_common.connection_handler
+def delete_a_comment(cursor: RealDictCursor, comment_id: int):
+    query = """
+    DELETE FROM comment
+    WHERE id=%(ID)s; 
+    """
+    var = {'ID': f'{comment_id}'}
+    cursor.execute(query, var)
+
+
+@database_common.connection_handler
+def get_image_name_by_answer_id(cursor: RealDictCursor, answer_id: str) -> list:
+    query = """
+    SELECT image FROM answer
+    WHERE id = (%s)"""
+    cursor.execute(query, (answer_id,))
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_image_name_by_question_id(cursor: RealDictCursor, question_id: str) -> list:
+    query = """
+    SELECT image FROM question
+    WHERE id = (%s)"""
+    cursor.execute(query, (question_id,))
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_all_answers_image_path(cursor: RealDictCursor, question_id: str) -> list:
+    query = """
+    SELECT id FROM answer
+    WHERE question_id = (%s)"""
+    cursor.execute(query, (question_id,))
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def modify_view_number(cursor: RealDictCursor, question_id: str, view_number: str) -> list:
+    query = """
+    UPDATE question
+    SET view_number (%s)
+    WHERE id = (%s)"""
+    cursor.execute(query, (view_number, question_id,))
+    return cursor.fetchall()
+
 
 
 @database_common.connection_handler

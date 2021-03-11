@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>New answer for question {{ question_id }}</title>
-        <style>
+    <title>Delete question</title>
+    <style>
         body
         {
         background-image:url('https://cdn.suwalls.com/wallpapers/anime/totoro-33207-2560x1440.jpg');
@@ -11,10 +11,6 @@
         }
     </style>
     <style>
-        body {
-            background-color: #bbd1aa;
-        }
-
         h1 {
             color: #0d420c;
         }
@@ -37,12 +33,15 @@
     </style>
 </head>
 <body>
-<h1>Write an answer m8</h1>
-<form method="POST" enctype="multipart/form-data">
-    <textarea name="message" minlength="5" rows="15" cols="60" placeholder="Write your answer here..." required></textarea><br>
-    <label for="input-id">Upload a picture:</label><br><br>
-    <input id="input-id" type="file" name="photo" class="file form-control" multiple data-preview-file-type="text" data-allowed-file-extensions='["png", "jpg"]'><br><br>
-    <button type="submit">Submit your answer</button>
+<h3>You are going to delete the comment below. Are you sure?</h3>
+<p>{{ comment }}</p>
+<form action="/comments/{{ comment_id }}/delete">
+    <input type="hidden" name="question_id" value="{{ question_id }}">
+    <button type="submit">100% SURE</button>
 </form>
+<br>
+<a href="{{ url_for("display_a_question", question_id=question_id) }}">
+<button type="button">NOPE</button>
+</a>
 </body>
 </html>
