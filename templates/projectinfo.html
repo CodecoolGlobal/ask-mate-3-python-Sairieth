@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Something About Us</title>
+    <style>
+    .clicker {
+      display: inline-block;
+
+    }
+    .clicker.hidden {
+      display: none;
+    }
+    .hiddendiv {
+      height: 0px;
+
+      overflow: hidden;
+
+    }
+    .hiddendiv.nr2 {
+
+    }
+
+    #showdiv1:target ~ div a[href="#showdiv1"],
+    #showdiv2:target ~ div a[href="#showdiv2"] {
+      display: none;
+    }
+    #showdiv1:target ~ div a[href="#hidediv1"],
+    #showdiv2:target ~ div a[href="#hidediv2"] {
+      display: inline-block;
+    }
+    #showdiv1:target ~ div .hiddendiv.nr1,
+    #showdiv2:target ~ div .hiddendiv.nr2 {
+
+    }
+    .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+                    }
+    .bigger {
+            font-size: x-large;
+            }
+    body {
+         background-color: #060b0d;
+        }
+    .fold {
+	background: -webkit-linear-gradient(top, #4b674a, #1c2c1e);
+	padding: 10px;
+	width: 360px;
+	height: 400px;
+	color: white;
+    font: 12px Inconsolata, monospace;
+	-webkit-transition: all 0.3s linear;
+	-moz-transition: all 0.3s linear;
+	transition: all 0.3s linear;
+}
+
+.unfolder { display: none; }
+
+.toggle-label {
+	display: inline-block;
+	cursor: pointer;
+
+    color: white;
+    font: 1em Inconsolata, monospace;
+	border-radius: 5px;
+	padding: 5px;
+}
+.unfold-icon, .fold-icon {
+  color: #999;
+  // fixed width to stop the icon from wiggling
+  width: 50px;
+  display: inline-block;
+}
+.unfolder ~ .fold {
+  display: none;
+}
+.unfolder ~ label .fold-icon {
+  display: none;
+}
+
+.unfolder:checked ~ .fold {
+  display: block;
+}
+.unfolder:checked ~ label .fold-icon {
+  display: inline-block;
+}
+.unfolder:checked ~ label .unfold-icon {
+  display: none;
+}
+#shadowBox {
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.2);
+    /* Black w/opacity/see-through */
+    border: 3px solid;
+}
+
+.rainbow {
+    text-align: Left;
+    text-decoration: underline;
+    font-size: 32px;
+    font-family: monospace;
+    letter-spacing: 5px;
+}
+.rainbow_text_animated {
+    background: linear-gradient(to right, #6666ff, #0099ff , #00ff00, #ff3399, #6666ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: rainbow_animation 6s ease-in-out infinite;
+    background-size: 400% 100%;
+}
+
+@keyframes rainbow_animation {
+    0%,100% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 100% 0;
+    }
+}
+    </style>
+</head>
+<body>
+<div id="shadowBox">
+    <h1 class="rainbow rainbow_text_animated">ASKM8</h1>
+</div>
+<div>
+  <input type="checkbox" id="toggle" class="unfolder"/>
+  <label for="toggle" class="toggle-label"><span class="unfold-icon">&#9654;</span><span class="fold-icon">&#9660;</span> Team-</label>
+
+  <div class="fold">
+    <h2 align="left">Welcome! We are the Askm8 team</h2>
+    <h2 align='right'>     Gabi, Konrád, Riki, Roland</h2>
+      <p align="center">#     #     #</p>
+     <p align="justify">
+          Our site represents the team's effort to make this
+          Codecool Journey project called "Askmate" possible.
+          A 'stackoverflow' like web application made with
+          Jinja, Flask, HTML5, CSS, PostgreSQL technologies
+          to help users get their answers for their questions.</p>
+      <img src="https://media1.giphy.com/media/dwmNhd5H7YAz6/200w.webp?cid=ecf05e47dizc4k3fngpmhbk4bl28rmof3ipstnoixi2xrmz7&rid=200w.webp" align="center" alt="websurfer">
+   </div>
+</div>
+<div>
+  <input type="checkbox" id="toggle2" class="unfolder"/>
+  <label for="toggle2" class="toggle-label"><span class="unfold-icon">&#9654;</span><span class="fold-icon">&#9660;</span> This project-</label>
+
+  <div class="fold">
+    <h2 align="left">Our Sprint 2</h2>
+      <p align="center">#     #     #</p>
+        <p align="justify">
+        This was however, not our first sprint, but <br>
+        our first sprint coordinated with agile tools. <br>
+
+        We used SCRUM during this project to get full <br>
+        advantage of it's project management aspect <br>
+        and make our precious time useful and our <br>
+        project well groomed.</p>
+      <img src="static/scrum.png" alt="psycopg2 error" height="300px">
+   </div>
+</div>
+<div class="grid-container">
+    <div class="grid-child toggletext">
+        <div>
+          <input type="checkbox" id="toggle3" class="unfolder"/>
+          <label for="toggle3" class="toggle-label"><span class="unfold-icon">&#9654;</span><span class="fold-icon">&#9660;</span> Learned on the field-</label>
+
+            <div class="fold">
+          <h2 align="left">We learned a <span class="bigger"><strong>LOT</strong></span><br>
+                                    And got a lot of errors along the way...</h2>
+          <p align="center">#     #     #</p>
+            <p align="justify">
+            Psycopg2 bombarded us with tons of messages about
+            the following timeless classics:
+                <ul>
+                    <li>-Key Errors</li>
+                    <li>-Programming Errors</li>
+                    <li>-Various Value Errors</li>
+                    <li>-ForeignKeyViolations (Roland's favourite)</li>
+                </ul>
+            We overcame these obstacles with teamwork,<br>
+            Massive amount of mentor help (thanks a lot! :) btw)<br>
+            Documentation diving, Stackoverflow <br>
+            And of course youtube channels from India.</p>
+            <img src="static/psycopg2error.png" alt="psycopg2 error" height="100px">
+            </div>
+            </div>
+        </div>
+</div>
+<div>
+  <input type="checkbox" id="toggle4" class="unfolder"/>
+  <label for="toggle4" class="toggle-label"><span class="unfold-icon">&#9654;</span><span class="fold-icon">&#9660;</span> Thanks!-</label>
+
+  <div class="fold">
+    <h2 align="left">
+    We are dedicated to make our <br>
+        Project better and better with <br>
+            Time, effort and agile tools</h2>
+      <p align="center">#     #     #</p>
+        <p align="justify">
+        Thanks for stopping by! We love to do demos for you!<br>
+            Let's try <span class="bigger"><a href="/">Askm8</a></span>, our best thing ...yet.</p>
+      <img src="https://i.kym-cdn.com/photos/images/newsfeed/000/538/716/7f5.gif" alt="thumbs up gif" align="center" height="200">
+   </div>
+</div>
+</body>
+</html>
