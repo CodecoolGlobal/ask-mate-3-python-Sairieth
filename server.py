@@ -72,8 +72,8 @@ def add_question():
         return render_template("add-question.html")
     if request.method == 'POST':
         image_name = upload()
-        #if "[302 FOUND]" in str(image_name):
-            #image_name = "None"
+        if "[302 FOUND]" in str(image_name):
+            image_name = "None"
         new_question = {"view_number": 0,
                         "vote_number": 0,
                         "title": request.form.get("title"),
@@ -116,19 +116,20 @@ def create_random_name():
 
 def upload():
     if request.method == 'POST':
-        if 'photo' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
+        # if 'photo' not in request.files:
+        #     flash('No file part')
+        #     return redirect(request.url)
         file = request.files['photo']
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
+        # if file.filename == '':
+        #     flash('No selected file')
+        #     return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
+            random_name = create_random_name()
+            filename = str(random_name)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        random_name = create_random_name
-        os.rename(UPLOAD_FOLDER + filename, UPLOAD_FOLDER + random_name()) # not sure if I even need these the problem is maybe elsewhere
-        file_name = random_name
+        #os.rename(UPLOAD_FOLDER + filename, UPLOAD_FOLDER + random_name()) # not sure if I even need these the problem is maybe elsewhere
+        #file_name = random_name
     return f"static/uploads/{filename}"
 
 
@@ -137,10 +138,13 @@ def route_add_answer(question_id):
     if request.method == 'GET':
         return render_template("new_answer.html", question_id=question_id)
     if request.method == 'POST':
+        image_name = upload()
+        if "[302 FOUND]" in str(image_name):
+            image_name = "None"
         new_answer = {'vote_number': 0,
                       'question_id': question_id,
                       'message': request.form.get('message'),
-                      'image': None}
+                      'image': image_name}
         add_new_answer(new_answer)
         return redirect(url_for("display_a_question", question_id=question_id))
 
