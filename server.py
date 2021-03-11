@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash, sen
 from data_manager import *
 from util import *
 from werkzeug.utils import secure_filename
+import os
+import random
 
 app = Flask(__name__)
 
@@ -64,11 +66,15 @@ def add_question():
     if request.method == 'GET':
         return render_template("add-question.html")
     if request.method == 'POST':
+        image_name = upload()
+        #if "[302 FOUND]" in str(image_name):
+            #image_name = "None"
         new_question = {"view_number": 0,
                         "vote_number": 0,
                         "title": request.form.get("title"),
                         "message": request.form.get("message"),
-                        "image": None}
+                        "image": image_name}
+        
         add_a_question(new_question)
         return redirect("/")
 
@@ -80,6 +86,24 @@ def delete_question(question_id):
     if request.method == 'POST':
         delete_a_question(question_id)
         return redirect('/')
+
+
+
+
+#@app.route("/photo", methods=["GET", "POST"])
+def upload():
+    if request.method == 'POST':
+        if 'photo' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['photo']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    return f"static/uploads/{filename}"
 
 
 if __name__ == "__main__":
