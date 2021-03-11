@@ -50,6 +50,21 @@
 
 </table><br>
 <a href="{{ url_for("edit_question", question_id=question_id) }}">Edit question</a><br>
+        <a href="/question/{{ question_id }}/new_comment">Comment for question</a>
+<h3>Comments for question</h3>
+<table>
+    <tr>
+        <th>Message</th>
+        <th>Submission time</th>
+    </tr>
+    {% for comment in comments%}
+    <tr>
+        <td>{{ comment["message"] }}</td>
+        <td>{{ comment["submission_time"] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
 <h1>Answers</h1><br>
 <table>
     <tr>
