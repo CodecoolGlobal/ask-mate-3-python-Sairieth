@@ -146,8 +146,6 @@ def new_question_comment(question_id):
         return redirect("/question/" + str(question_id))
 
 
-
-
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -198,7 +196,7 @@ def route_add_answer(question_id):
 @app.route('/answer/<answer_id>/delete', methods=["GET"])
 def delete(answer_id):
     if request.method == 'GET':
-        question_id = request.args.get("question_id")
+        question_id = request.args.get('question_id')
         image_path = get_image_name_by_answer_id(answer_id)
         for answer in image_path:
             image_name = answer["image"]
@@ -207,7 +205,7 @@ def delete(answer_id):
         else:
             print("The file does not exist")
         delete_answer(answer_id)
-        return redirect('/')
+        return redirect("/")
 
 
 @app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
@@ -268,9 +266,11 @@ def get_answers_comments():
     answer_comments = get_answer_comments(answer_id)
     return render_template("answers.html", question_id=question_id, answer_id=answer_id, answer_comments=answer_comments, answer=answer, question=question)
 
+
 @app.route("/ASKM8")
 def askm8():
     return render_template('projectinfo.html')
+
 
 if __name__ == "__main__":
     app.run(
