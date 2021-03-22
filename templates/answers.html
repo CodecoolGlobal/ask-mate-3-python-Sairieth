@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Comments</title>
+    <style>
+        body
+        {
+        background-image:url('https://cdn.suwalls.com/wallpapers/anime/totoro-33207-2560x1440.jpg');
+        background-size: cover;
+        }
+    </style>
+    <style>
+        h1 {
+            color: #0d420c;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #e0e2e1;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #328f6c;
+        }
+    </style>
+</head>
+<body>
+<h1>Comments for answer below</h1>
+<h3>This is this question: </h3>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Message</th>
+    </tr>
+    <tr>
+        <td>{{ question['title'] }}</td>
+        <td>{{ question['message'] }}</td>
+    </tr>
+
+</table><br>
+<h3>Answer to the question: </h3>
+<table>
+<tr>
+    <th>Message</th>
+    <th>Submission time</th>
+</tr>
+    {% for answer in answer: %}
+
+<tr>
+    <td>{{ answer['message'] }}</td>
+    <td>{{ answer['submission_time'] }}</td>
+</tr>
+    {% endfor %}
+</table><br>
+<h3>Comments: </h3>
+<table>
+    <tr>
+        <th>Message</th>
+        <th>Submission_time</th>
+    </tr>
+        {% for comment in answer_comments: %}
+    <tr>
+        <td>{{ comment['message'] }}</td>
+        <td>{{ comment['submission_time'] }}</td>
+        <td><a href="{{url_for("are_you_sure", comment=comment["message"],
+         comment_id=comment["id"], question_id=question_id)}}" >
+            <button type="button" >&#9851;</button></a></td>
+    </tr>
+    {% endfor %}
+</table><br>
+<a href="/">Back to main page</a><br>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>How can we help?</title>
+    <style>
+        body
+        {
+        background-image:url('https://cdn.suwalls.com/wallpapers/anime/totoro-33207-2560x1440.jpg');
+        background-size: cover;
+        }
+    </style>
+    <style>
+        body {
+            background-color: #bbd1aa;
+        }
+
+        h1 {        <label for="input-id">Upload a picture:</label><br><br>
+              <input id="input-id" type="file" name="photo" class="file form-control" multiple data-preview-file-type="text" data-allowed-file-extensions='["png", "jpg"]'><br><br>
+        <button type="submit">Submit question</button><br><br>
+    </form>
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #e0e2e1;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #328f6c;
+        }
+    </style>
+</head>
+<body>
+    <h1>Do you have a question m8?</h1><br>
+   <form action="{{ url_for("add_question") }}", method="POST" enctype="multipart/form-data">
+        <p>Question title<br>
+        <input type="text" name="title" required minlength="5" size="51">
+        </p>
+        <p>Question message<br>
+        <textarea cols="50" rows="10" name="message" autofocus required minlength="5"></textarea>
+        </p>
+        <br>
+        <label for="input-id">Upload a picture:</label><br><br>
+        <input id="input-id" type="file" name="photo" class="file form-control" multiple data-preview-file-type="text" data-allowed-file-extensions='["png", "jpg"]'><br><br>
+        <button type="submit">Submit</button>
+    </form>
+    <br>
+<a href='/'><button class=grey>Return to Main Page</button></a><br>
+</body>
+</html>
