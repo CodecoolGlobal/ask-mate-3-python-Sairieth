@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>login</title>
+  <meta charset="UTF-8">
+  <title>Edit comment</title>
         <style>
         body
         {
@@ -34,19 +34,13 @@
         tr:nth-child(even) {
             background-color: #328f6c;
         }
-
     </style>
 </head>
 <body>
-    <form action="/login" method="POST">
-        <h1> LOGIN </h1>
-          {% if error %}
-              <p><strong>Error:</strong> {{ error }}</p><br><br>
-            {% endif %}
-        <input type="username" name="username" placeholder="Email"><br><br>
-        <input type="password" name="password"placeholder="Password">
-        <input type="submit" name="login" value="login"><br><br>
-    </form>
-<a href="/">Back to main page</a><br>
+    <h1>Edit comment</h1>
+        <form method="POST" action="{{ url_for('edit_comment', question_id=question_id) }}" enctype="multipart/form-data">
+            <label for="message">Message:</label><br>
+            <textarea id="message" rows="15" cols="40">{{ comment["message"] }}</textarea><br>
+            <button type="submit">Edit</button>
 </body>
 </html>

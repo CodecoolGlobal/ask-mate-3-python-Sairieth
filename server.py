@@ -3,6 +3,8 @@ from data_manager import *
 from werkzeug.utils import secure_filename
 import os
 import random
+import util
+import bcrypt
 
 app = Flask(__name__)
 
@@ -287,12 +289,20 @@ def login():
     if request.method == "GET":
         return render_template("login.html")
     elif request.method == "POST":
-        email = request.form["username"]
-        password = request.form["password"]
-        pass
-
-
-
+        if get_user_data(request.form["username"], request.form["password"]):
+            username = request.form["username"]
+            password = request.form["password"]
+            user_data = get_user_data(username, password)
+            user_password = user_data["password"]
+            if user_password == password:
+                session["username"] = username
+                return redirect("/")
+            else:
+                error = "Invalid login attempt!"
+                return render_template("login.html", error=error)
+        else:
+            error = "Invalid login attempt!"
+            return render_template("login.html", error=error)
 
 if __name__ == "__main__":
     app.run(

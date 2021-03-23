@@ -312,3 +312,12 @@ def get_answer_comments(cursor: RealDictCursor, answer_id:int):
     cursor.execute(query)
     return cursor.fetchall()
 
+@database_common.connection_handler
+def get_user_data(cursor: RealDictCursor ,username:str, password):
+    query = """
+        SELECT id, username, 
+        CONVERT_FROM(password, 'UTF8') AS password
+        FROM users
+        WHERE username= %(username)s"""
+    cursor.execute(query, {'username': username,})
+    return cursor.fetchone()
