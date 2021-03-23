@@ -326,3 +326,13 @@ def show_tags(cursor, question_id):
     tags_list = []
     tags_list.append(tags)
     return tags_list
+
+
+@database_common.connection_handler
+def add_new_tag(cursor, dictionary):
+    cursor.execute("""
+                    INSERT INTO tag(name)
+                    VALUES(%(name)s);
+                    
+                    """,
+                   {'name': dictionary['name']})

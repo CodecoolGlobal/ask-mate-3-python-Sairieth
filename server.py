@@ -229,6 +229,7 @@ def edit_answer(answer_id):
         update_answer(new_answer)
         return redirect(url_for("display_a_question", question_id=question_id))
 
+
 @app.route('/delete_comment_conformation')
 def are_you_sure():
     comment = request.args.get('comment')
@@ -236,6 +237,7 @@ def are_you_sure():
     question_id = request.args.get('question_id')
     return render_template('delete_comment_confirmation.html',
                            comment=comment, question_id=question_id, comment_id=comment_id)
+
 
 @app.route('/comments/<comment_id>/delete')
 def delete_comment(comment_id):
@@ -256,7 +258,7 @@ def new_answer_comment(answer_id):
     elif request.method == "POST":
         new_comment = request.form["new_comment"]
         question_id = get_question_id(answer_id)['question_id']
-        write_answer_comment( answer_id, new_comment)
+        write_answer_comment(answer_id, new_comment)
         return redirect(url_for("display_a_question",question_id=question_id))
 
 
@@ -268,6 +270,17 @@ def get_answers_comments():
     question = get_question(question_id)
     answer_comments = get_answer_comments(answer_id)
     return render_template("answers.html", question_id=question_id, answer_id=answer_id, answer_comments=answer_comments, answer=answer, question=question)
+
+
+@app.route("/question/<question_id>/new-tag", methods=['GET', 'POST'])
+def add_tag(question_id):
+    if request.method == 'GET':
+        return render_template("new_tag.html", question_id=question_id)
+    if request.method == 'POST':
+        new_tag = {'name': request.form.get('name')}
+        add_new_tag(new_tag)
+        return redirect(url_for("display_a_question", question_id=question_id))
+
 
 
 @app.route("/ASKM8")
