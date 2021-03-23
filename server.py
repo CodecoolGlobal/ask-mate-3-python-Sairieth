@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, make_response, Markup
+from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, make_response
 from data_manager import *
 from werkzeug.utils import secure_filename
 import os
 import random
+import datetime
+import bcrypt
 
 
 app = Flask(__name__)
@@ -284,6 +286,25 @@ def add_tag(question_id):
         add_new_tag(new_tag, question_id)
         return redirect(url_for("display_a_question", question_id=question_id))
 
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        registration_date = datetime.datetime.now()
+        if not username:
+            return 'Missing Username!', 400
+        if not password:
+            return 'Missing Password!', 400
+        hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        print(hashed)
+        add_new_user(username, hashed, registration_date, count_of_asked_questions=0, count_of_answers=0, count_of_comments=0, reputation=0)
+        #return f'Welcome {email}'
+        #return redirect(url_for('login'))
+        return redirect(url_for('main'))
+    return render_template('registration.html')
 
 
 @app.route("/ASKM8")
