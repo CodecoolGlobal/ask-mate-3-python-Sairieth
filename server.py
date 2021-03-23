@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, make_response
+from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, make_response, Markup
 from data_manager import *
 from werkzeug.utils import secure_filename
 import os
 import random
+
 
 app = Flask(__name__)
 
@@ -30,8 +31,10 @@ def main():
         questions = get_all_questions_by_order(attribute, order)
         return render_template('list.html', questions=questions)
     elif phrase:
-        questions = get_search_results(phrase)
-        return render_template("list.html", questions=questions)
+        questions = get_question_by_phrase(phrase)
+        answers = get_answers_by_phrase(phrase)
+        tag = Markup(f"<mark>{phrase}</mark>")
+        return render_template("list.html", questions=questions, answers=answers, phrase=phrase, tag=tag)
     else:
         questions = get_all_questions()
         return render_template('list.html', questions=questions)
