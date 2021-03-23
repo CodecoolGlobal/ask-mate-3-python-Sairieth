@@ -278,9 +278,10 @@ def register():
             return 'Missing Password!', 400
         hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         print(hashed)
-        add_new_user(username, hashed, registration_date)
+        add_new_user(username, hashed, registration_date, count_of_asked_questions=0, count_of_answers=0, count_of_comments=0, reputation=0)
         #return f'Welcome {email}'
-        return redirect(url_for('login'))
+        #return redirect(url_for('login'))
+        return redirect(url_for('main'))
     return render_template('registration.html')
 
 
