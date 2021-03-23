@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, make_response
+from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, make_response, session
 from data_manager import *
 from werkzeug.utils import secure_filename
 import os
@@ -25,7 +25,6 @@ def main():
     attribute = request.args.get('attribute')
     order = request.args.get('order')
     phrase = request.args.get('phrase')
-
     if attribute and order:
         questions = get_all_questions_by_order(attribute, order)
         return render_template('list.html', questions=questions)
@@ -77,7 +76,10 @@ def vote_down_answer(answer_id):
 @app.route('/add_questions', methods=['GET', 'POST'])
 def add_question():
     if request.method == 'GET':
-        return render_template("add-question.html")
+        if "username" in session:
+            return render_template("add-question.html")
+        else:
+            return redirect("/login")
     if request.method == 'POST':
         image_name = upload()
         if "[302 FOUND]" in str(image_name):
@@ -136,7 +138,10 @@ def delete_question(question_id):
 @app.route('/question/<int:question_id>/new_comment', methods=['GET', 'POST'])
 def new_question_comment(question_id):
     if request.method == "GET":
-        return render_template("new_question_comment.html", question_id=str(question_id))
+        if "username" in session:
+            return render_template("new_question_comment.html", question_id=str(question_id))
+        else:
+            return redirect("/login")
     elif request.method == "POST":
         new_comment = request.form["new_comment"]
         write_question_comment(question_id, new_comment)
@@ -177,7 +182,10 @@ def upload():
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def route_add_answer(question_id):
     if request.method == 'GET':
-        return render_template("new_answer.html", question_id=question_id)
+        if "username" in session:
+            return render_template("new_answer.html", question_id=question_id)
+        else:
+            return redirect("/login")
     if request.method == 'POST':
         image_name = upload()
         if "[302 FOUND]" in str(image_name):
@@ -223,6 +231,7 @@ def edit_answer(answer_id):
         update_answer(new_answer)
         return redirect(url_for("display_a_question", question_id=question_id))
 
+
 @app.route('/delete_comment_conformation')
 def are_you_sure():
     comment = request.args.get('comment')
@@ -246,7 +255,10 @@ def extract_answer_image_paths(question_id):
 @app.route('/answer/<answer_id>/new_comment', methods=['GET', 'POST'])
 def new_answer_comment(answer_id):
     if request.method == "GET":
-        return render_template("new_answer_comment.html", answer_id=answer_id)
+        if "username" in session:
+            return render_template("new_answer_comment.html", answer_id=answer_id)
+        else:
+            return redirect("/login")
     elif request.method == "POST":
         new_comment = request.form["new_comment"]
         question_id = get_question_id(answer_id)['question_id']
@@ -267,6 +279,19 @@ def get_answers_comments():
 @app.route("/ASKM8")
 def askm8():
     return render_template('projectinfo.html')
+
+
+
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    if request.method == "GET":
+        return render_template("login.html")
+    elif request.method == "POST":
+        email = request.form["username"]
+        password = request.form["password"]
+        pass
+
+
 
 
 if __name__ == "__main__":
