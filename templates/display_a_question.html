@@ -60,6 +60,10 @@
         <td>{{ question['title'] }}</td>
         <td>{{ question['message'] }}</td>
     </tr>
+    <br>
+    {% for tag in question_tags %}
+        <td>{{ tag['name'] }}</td>
+    {% endfor %}
 
 </table><br>
 <a href="{{ url_for("edit_question", question_id=question_id) }}">Edit question</a><br>

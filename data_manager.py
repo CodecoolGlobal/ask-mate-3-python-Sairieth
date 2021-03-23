@@ -284,7 +284,6 @@ def increase_view_number(cursor: RealDictCursor, question_id: str) -> list:
     cursor.execute(query, (question_id,))
 
 
-
 @database_common.connection_handler
 def write_answer_comment(cursor: RealDictCursor, answer_id: int, new_comment: str) -> list:
     query = """
@@ -312,3 +311,18 @@ def get_answer_comments(cursor: RealDictCursor, answer_id:int):
     cursor.execute(query)
     return cursor.fetchall()
 
+
+@database_common.connection_handler
+def show_tags(cursor, question_id):
+    cursor.execute("""
+        SELECT name 
+        FROM tag
+        JOIN question_tag 
+        ON tag.id = question_tag.tag_id
+        WHERE question_tag.question_id=%(question_id)s;
+                    """,
+                   {'question_id': question_id})
+    tags = cursor.fetchone()
+    tags_list = []
+    tags_list.append(tags)
+    return tags_list

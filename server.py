@@ -41,9 +41,15 @@ def main():
 def display_a_question(question_id):
     question = get_question(question_id)
     increase_view_number(question_id)
+    question_tags = show_tags(question_id)
     answers = get_answer_by_question_id(question_id)
     question_comments = get_question_comments(question_id)
-    return render_template('display_a_question.html', question=question, question_id=question_id, answers=answers, question_comments=question_comments)
+    return render_template('display_a_question.html',
+                           question=question,
+                           question_id=question_id,
+                           answers=answers,
+                           question_comments=question_comments,
+                           question_tags=question_tags)
 
 
 @app.route('/question/<question_id>/vote_up')
