@@ -312,3 +312,12 @@ def get_answer_comments(cursor: RealDictCursor, answer_id:int):
     cursor.execute(query)
     return cursor.fetchall()
 
+
+@database_common.connection_handler
+def add_new_user(cursor: RealDictCursor, username, password, registration_date, count_of_asked_questions, count_of_answers, count_of_comments, reputation):
+    query = """
+    INSERT INTO users (username, password, registration_date, count_of_asked_questions, 
+    count_of_answers, count_of_comments, reputation) 
+    VALUES (%(username)s, %(password)s, %(registration_date)s, %(count_of_asked_questions)s, %(count_of_answers)s, %(count_of_comments)s, %(reputation)s)"""
+    cursor.execute(query, {'username': username, 'password': password, 'registration_date': registration_date, 'count_of_asked_questions': count_of_asked_questions, 
+    'count_of_answers': count_of_answers, 'count_of_comments': count_of_comments, 'reputation': reputation},)
