@@ -90,18 +90,14 @@
         </th>
         <th>Image</th>
     </tr>
-
     {% for question in questions %}
         <tr>
             <td><a href="/question/{{ question['id'] }}">{{ question['id'] }}</a></td>
             <td>{{ question['submission_time'] }}</td>
             <td>{{ question['view_number'] }}</td>
             <td>{{ question['vote_number'] }}</td>
-            <td>{{ question['title'] }}</td>
-            {#if phrase in question #}
-            {# question.message.replace(phrase, tag)#}
+            <td>{{ question['message']|replace(phrase, tag) }}</td>
             <td>{{ question['message'] }}</td>
-            {# endif #}
             <td><img src= {{ question['image'] }} alt="" onerror="this.style.display='none'"></td>
             <td><a href="/question/{{ question['id'] }}/vote_up">Vote up</a></td>
             <td><a href="/question/{{ question['id'] }}/vote_down">Vote down</a></td>
@@ -121,7 +117,7 @@
         <tr >
             <td>{{ answer['id'] }}</td>
             <td>{{ answer['title'] }}</td>
-            <td style="word-break: break-word; white-space: pre-wrap" colspan="7">{{ answer['message'] }}</td>
+            <td style="word-break: break-word; white-space: pre-wrap" colspan="7">{{ answer['message']|replace(phrase, tag) }}</td>
         </tr>
     {% endfor %}
         </table>
