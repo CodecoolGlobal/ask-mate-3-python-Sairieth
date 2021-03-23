@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+        <style>
+        body
+        {
+        background-image:url('https://cdn.suwalls.com/wallpapers/anime/totoro-33207-2560x1440.jpg');
+        background-size: cover;
+        }
+    </style>
+    <style>
+        body {
+            background-color: #bbd1aa;
+        }
+
+        h1 {
+            color: #0d420c;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #e0e2e1;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #328f6c;
+        }
+
+    </style>
+</head>
+<body>
+    <form action="/login" method="POST">
+        <h1> LOGIN </h1>
+          {% if error %}
+              <p><strong>Error:</strong> {{ error }}</p><br><br>
+            {% endif %}
+        <input type="username" name="username" placeholder="Email"><br><br>
+        <input type="password" name="password"placeholder="Password">
+        <input type="submit" name="login" value="login"><br><br>
+    </form>
+<a href="/">Back to main page</a><br>
+</body>
+</html>

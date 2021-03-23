@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit comment</title>
+        <style>
+        body
+        {
+        background-image:url('https://cdn.suwalls.com/wallpapers/anime/totoro-33207-2560x1440.jpg');
+        background-size: cover;
+        }
+    </style>
+    <style>
+        body {
+            background-color: #bbd1aa;
+        }
+
+        h1 {
+            color: #0d420c;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #e0e2e1;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #328f6c;
+        }
+    </style>
+</head>
+<body>
+    <h1>Edit comment</h1>
+        <form method="POST" action="{{ url_for('edit_comment', question_id=question_id) }}" enctype="multipart/form-data">
+            <label for="message">Message:</label><br>
+            <textarea id="message" rows="15" cols="40">{{ comment["message"] }}</textarea><br>
+            <button type="submit">Edit</button>
+</body>
+</html>
