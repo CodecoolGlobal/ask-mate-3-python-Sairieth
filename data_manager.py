@@ -313,7 +313,7 @@ def get_answer_comments(cursor: RealDictCursor, answer_id:int):
     return cursor.fetchall()
 
 @database_common.connection_handler
-def get_user_data(cursor: RealDictCursor ,username:str, password):
+def get_user_data(cursor: RealDictCursor ,username:str, password:int):
     query = """
         SELECT id, username, 
         CONVERT_FROM(password, 'UTF8') AS password

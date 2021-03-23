@@ -304,6 +304,12 @@ def login():
             error = "Invalid login attempt!"
             return render_template("login.html", error=error)
 
+@app.route("/logout")
+def logout():
+    session.pop("username", None)
+    return redirect("/")
+
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
