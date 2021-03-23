@@ -3,6 +3,8 @@ from data_manager import *
 from werkzeug.utils import secure_filename
 import os
 import random
+import datetime
+import bcrypt
 
 app = Flask(__name__)
 
@@ -267,16 +269,16 @@ def get_answers_comments():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form['email']
+        username = request.form['username']
         password = request.form['password']
         registration_date = datetime.datetime.now()
-        if not email:
-            return 'Missing Email!', 400
+        if not username:
+            return 'Missing Username!', 400
         if not password:
             return 'Missing Password!', 400
         hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         print(hashed)
-        data.add_new_user(email, hashed)
+        add_new_user(username, hashed, registration_date)
         #return f'Welcome {email}'
         return redirect(url_for('login'))
     return render_template('registration.html')
