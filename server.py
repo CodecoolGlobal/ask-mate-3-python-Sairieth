@@ -277,8 +277,8 @@ def add_tag(question_id):
     if request.method == 'GET':
         return render_template("new_tag.html", question_id=question_id)
     if request.method == 'POST':
-        new_tag = {'name': request.form.get('name')}
-        add_new_tag(new_tag)
+        new_tag = request.form.get('name')
+        add_new_tag(new_tag, question_id)
         return redirect(url_for("display_a_question", question_id=question_id))
 
 
