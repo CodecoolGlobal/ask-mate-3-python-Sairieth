@@ -296,7 +296,6 @@ def increase_view_number(cursor: RealDictCursor, question_id: str) -> list:
     cursor.execute(query, (question_id,))
 
 
-
 @database_common.connection_handler
 def write_answer_comment(cursor: RealDictCursor, answer_id: int, new_comment: str) -> list:
     query = """
@@ -324,3 +323,41 @@ def get_answer_comments(cursor: RealDictCursor, answer_id:int):
     cursor.execute(query)
     return cursor.fetchall()
 
+
+@database_common.connection_handler
+def show_tags(cursor, question_id):
+    cursor.execute("""
+                    SELECT tag.* 
+                    FROM tag, question_tag
+                    WHERE tag.id = question_tag.tag_id 
+                    AND question_tag.question_id = %(question_id)s;
+                    """,
+                   {'question_id': question_id})
+    question_tags = cursor.fetchall()
+    return question_tags
+
+
+# Strategy: First add new name, Second collect ID of the tag, Third Insert tag into related table to form conection WIN
+@database_common.connection_handler
+def add_new_tag(cursor, dictionary, question_id):
+    cursor.execute("""
+                    INSERT INTO tag(name)
+                    VALUES (%(name)s);
+                    """,
+                   {'name': dictionary})
+
+    cursor.execute("""
+                    SELECT id 
+                    FROM tag
+                    WHERE name = %(name)s;
+                    """,
+                   {'name': dictionary})
+    tag_id_dict = cursor.fetchone()
+    tag_id = tag_id_dict['id']
+
+    cursor.execute("""
+                    INSERT INTO question_tag(question_id, tag_id)
+                    VALUES (%(question_id)s, %(tag_id)s);
+                    """,
+                   {'question_id': question_id,
+                    'tag_id': tag_id})
