@@ -264,6 +264,24 @@ def get_answers_comments():
     return render_template("answers.html", question_id=question_id, answer_id=answer_id, answer_comments=answer_comments, answer=answer, question=question)
 
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['email']
+        password = request.form['password']
+        registration_date = datetime.datetime.now()
+        if not email:
+            return 'Missing Email!', 400
+        if not password:
+            return 'Missing Password!', 400
+        hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        print(hashed)
+        data.add_new_user(email, hashed)
+        #return f'Welcome {email}'
+        return redirect(url_for('login'))
+    return render_template('registration.html')
+
+
 @app.route("/ASKM8")
 def askm8():
     return render_template('projectinfo.html')
