@@ -52,6 +52,12 @@ def list_users():
     else:
         return redirect(url_for("main"))
 
+@app.route('/user/<user_id>')
+def get_user_page(user_id):
+    if "username" in session:
+        user = get_user_details(user_id)
+
+
 @app.route("/question/<question_id>")
 def display_a_question(question_id):
     question = get_question(question_id)
@@ -350,6 +356,7 @@ def login():
             user_data = get_user_data(username, password)
             user_password = user_data["password"]
             if bcrypt.checkpw(password.encode('utf-8'), user_password.encode('utf-8')):
+                session["user_id"] = get_user_id(username)
                 session["username"] = username
                 return redirect("/")
             else:
@@ -366,9 +373,7 @@ def logout():
     return redirect("/")
 
 
-@app.route("/user/<user_id>")
-def user_page(user_id):
-    pass
+
 
 
 if __name__ == "__main__":

@@ -439,3 +439,26 @@ def get_all_users(cursor: RealDictCursor) -> list:
         ORDER BY username ASC"""
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_user_id(cursor: RealDictCursor, username: str):
+    query = """
+        SELECT id
+        FROM users
+        WHERE username = %(usr)s"""
+    usr = {'usr': username}
+    cursor.execute(query, usr)
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_user_details(cursor: RealDictCursor, user_id: str):
+    query = """
+        SELECT id, username, registration_date, count_of_asked_questions,
+         count_of_answers, count_of_comments, reputation
+        FROM users
+        WHERE username = %(usr_id)s"""
+    usr_id = {'usr_id': user_id}
+    cursor.execute(query, usr_id)
+    return cursor.fetchone()
