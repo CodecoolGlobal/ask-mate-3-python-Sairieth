@@ -108,6 +108,15 @@
             <td><a href="{{ url_for('edit_answer', answer_id=answer["id"], question_id=question_id) }}">Edit</a></td>
             <td><a href="/answer/{{ answer['id'] }}/new_comment">Comment to answer </a></td>
             <td><a href="{{ url_for("get_answers_comments", answer_id=answer["id"], question_id=question["id"]) }}">Show comments </a></td>
+            {% if not status %}
+            <td>Declined</td>
+            <td><a href="{{ url_for('login') }}"><button id='logout_button' class="btn" type="submit">Mark as accepted</button></a></td>
+            {% elif status %}
+            <td>Accepted</td>
+            <td><a href="{{ url_for('login') }}"><button id='logout_button' class="btn" type="submit">Mark as declined</button></a></td>
+            {% else %}
+            <td>{{status}}</td>
+            {% endif %}
         </tr>
         {% endfor %}
     {% endif %}
