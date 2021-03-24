@@ -65,7 +65,7 @@
     <p>Tags: </p>
 {% if question_tags %}
     {% for tag in question_tags %}
-      <tr>{{ tag['name'] }}</tr>
+      <tr>{{ tag['name'] }} <a href="{{ url_for("delete_a_tag", question_id=question_id, tag_id=tag_id)}}">X</a></tr>
     {% endfor %}
 {% endif %}
 <br>
