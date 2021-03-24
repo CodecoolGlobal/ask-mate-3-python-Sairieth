@@ -439,3 +439,39 @@ def get_all_users(cursor: RealDictCursor) -> list:
         ORDER BY username ASC"""
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def reputation_up(cursor: RealDictCursor, user_id: int, value:int):
+    query = """
+    UPDATE users
+    SET reputation = reputation + %(value)s
+    WHERE id = %(user_id)s
+    """
+    dict = {"user_id": user_id, "value": value}
+    cursor.execute(query, dict)
+
+
+@database_common.connection_handler
+def reputation_down(cursor: RealDictCursor, user_id: int, value:int):
+    query = """
+    UPDATE users
+    SET reputation = reputation - %(value)s
+    WHERE id = %(user_id)s
+    """
+    dict = {"user_id": user_id, "value": value}
+    cursor.execute(query, dict)
+
+
+@database_common.connection_handler
+def get_user_id(cursor: RealDictCursor, username: str):
+    query = """
+        SELECT id
+        FROM users
+        WHERE username = %(usr)s"""
+    usr = {'usr': username}
+    cursor.execute(query, usr)
+    return cursor.fetchone()
+
+
+

@@ -69,8 +69,13 @@ def display_a_question(question_id):
 
 @app.route('/question/<question_id>/vote_up')
 def vote_up_question(question_id):
-    question_vote_up(question_id)
-    return redirect(url_for("main"))
+    if "user_id" in session:
+        reputation_up(user_id, 5)
+        return redirect(url_for("main"))
+
+    else:
+        question_vote_up(question_id)
+        return redirect(url_for("main"))
 
 
 @app.route('/question/<question_id>/vote_down')
@@ -350,6 +355,7 @@ def login():
             user_data = get_user_data(username, password)
             user_password = user_data["password"]
             if bcrypt.checkpw(password.encode('utf-8'), user_password.encode('utf-8')):
+                session["user_id"] = get_user_id(username)
                 session["username"] = username
                 return redirect("/")
             else:
@@ -363,6 +369,8 @@ def login():
 @app.route("/logout")
 def logout():
     session.pop("username", None)
+    session.pop("user_id", None)
+
     return redirect("/")
 
 
