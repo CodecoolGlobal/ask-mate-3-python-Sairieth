@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, make_response, session
+from flask import Flask, render_template, request, redirect, url_for, \
+    flash, send_from_directory, make_response, session, Markup
 from data_manager import *
 from werkzeug.utils import secure_filename
 import os

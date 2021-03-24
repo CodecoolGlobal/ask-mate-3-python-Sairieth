@@ -199,7 +199,7 @@ def delete_answer(cursor, answer_id):
 
 
 @database_common.connection_handler
-def get_search_results(cursor: RealDictCursor, phrase: str) -> list:
+def get_question_by_phrase(cursor: RealDictCursor, phrase: str) -> list:
     query = """
     SELECT DISTINCT question.id, question.submission_time, question.view_number,
      question.vote_number, question.title, question.message, question.image
