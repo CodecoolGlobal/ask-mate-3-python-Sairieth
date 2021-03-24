@@ -300,6 +300,11 @@ def add_tag(question_id):
         return redirect(url_for("display_a_question", question_id=question_id))
 
 
+@app.route('/question/<question_id>/tag/<tag_id>/delete')
+def delete_a_tag(question_id, tag_id):
+    delete_tag(tag_id)
+    return redirect(url_for('display_a_question', question_id=question_id))
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
