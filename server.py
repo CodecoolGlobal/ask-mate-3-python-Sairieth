@@ -341,7 +341,7 @@ def login():
             password = request.form["password"]
             user_data = get_user_data(username, password)
             user_password = user_data["password"]
-            if user_password == password:
+            if bcrypt.checkpw(password.encode('utf-8'), user_password.encode('utf-8')):
                 session["username"] = username
                 return redirect("/")
             else:
