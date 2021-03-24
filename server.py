@@ -287,7 +287,8 @@ def get_answers_comments():
     answer = get_answers(answer_id)
     question = get_question(question_id)
     answer_comments = get_answer_comments(answer_id)
-    return render_template("answers.html", question_id=question_id, answer_id=answer_id, answer_comments=answer_comments, answer=answer, question=question)
+    status = set_status()
+    return render_template("answers.html", question_id=question_id, answer_id=answer_id, answer_comments=answer_comments, answer=answer, question=question, status=status)
 
 
 @app.route("/question/<question_id>/new-tag", methods=['GET', 'POST'])
@@ -355,6 +356,16 @@ def login():
 def logout():
     session.pop("username", None)
     return redirect("/")
+
+
+def set_status(status):
+    try:
+        if status:
+            status = False
+        else:
+            status = True
+    except NameError:
+        status = "Not Set"
 
 
 if __name__ == "__main__":
