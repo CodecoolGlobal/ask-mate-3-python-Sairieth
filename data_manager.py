@@ -324,7 +324,7 @@ def get_answer_comments(cursor: RealDictCursor, answer_id:int):
     return cursor.fetchall()
 
 @database_common.connection_handler
-def get_user_data(cursor: RealDictCursor ,username:str, password:int):
+def get_user_data(cursor: RealDictCursor, username:str, password:int):
     query = """
         SELECT id, username, 
         CONVERT_FROM(password, 'UTF8') AS password
@@ -402,3 +402,12 @@ def delete_tag(cursor, tag_id):
                     WHERE id = %(tag_id)s;
                     """,
                    {'tag_id': tag_id})
+
+@database_common.connection_handler
+def get_all_users(cursor: RealDictCursor) -> list:
+    query = """
+        SELECT username, registration_date, count_of_asked_questions, count_of_answers, count_of_comments, reputation
+        FROM users
+        ORDER BY username ASC"""
+    cursor.execute(query)
+    return cursor.fetchall()

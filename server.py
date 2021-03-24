@@ -44,6 +44,14 @@ def main():
         return render_template('list.html', questions=questions)
 
 
+@app.route("/users")
+def list_users():
+    if "username" in session:
+        users = get_all_users()
+        return render_template('users.html', users=users)
+    else:
+        return redirect(url_for("main"))
+
 @app.route("/question/<question_id>")
 def display_a_question(question_id):
     question = get_question(question_id)
