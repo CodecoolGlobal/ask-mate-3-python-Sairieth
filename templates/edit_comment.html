@@ -36,11 +36,14 @@
         }
     </style>
 </head>
+
 <body>
     <h1>Edit comment</h1>
         <form action="/comment/{{ comment_id}}/edit_comment"  method="POST">
-            <label for="new-message">Message:</label><br>
-            <textarea id="new-message" name="new-message" rows="15" cols="40">{{ comment["message"] }}</textarea><br>
-            <button type="submit">Edit</button>
+            <label for="new-message:">Message:</label><br>
+            {% for c in comment %}
+                <textarea id="new-message" name="new-message" cols="30" rows="10" required>{{ c["message"] }}</textarea>
+            {% endfor %}
+        <button type="submit">Edit</button>
 </body>
 </html>

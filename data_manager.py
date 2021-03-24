@@ -392,10 +392,11 @@ def add_new_user(cursor: RealDictCursor, username, password, registration_date, 
 def update_comments(cursor: RealDictCursor, message:dict):
     query = """ 
             UPDATE comment
-            SET message = %(message)s
+            SET message = %(message)s,
+            submission_time = %(submission_time)s
             WHERE id = %(id)s
         """
-    value = {'message' : message["message"], "id": message["id"]}
+    value = {'message' : message["message"], "id": message["id"], "submission_time": datedata}
     cursor.execute(query,value)
 
 
@@ -409,3 +410,23 @@ def get_comment_by_id(cursor : RealDictCursor, id: int):
     data = {'id': id}
     cursor.execute(query, data)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def increase_edit_number(cursor: RealDictCursor, comment_id : int):
+    query = """
+            UPDATE comment
+            SET edited_count = edited_count + 1
+            WHERE id = (%s)
+    """
+    cursor.execute(query, (comment_id))
+
+
+@database_common.connection_handler
+def get_question_id_from_comment(cursor: RealDictCursor, comment_id: int) -> list:
+    query = """
+        SELECT question_id 
+        FROM comment
+        WHERE id = {}""".format(comment_id)
+    cursor.execute(query)
+    return cursor.fetchone()

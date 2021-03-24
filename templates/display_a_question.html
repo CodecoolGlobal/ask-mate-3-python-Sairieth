@@ -78,11 +78,14 @@
     <tr>
         <th>Message</th>
         <th>Submission time</th>
+        <th>Edited count</th>
     </tr>
     {% for comment in question_comments%}
     <tr>
         <td>{{ comment["message"] }}</td>
         <td>{{ comment["submission_time"] }}</td>
+        <td>{{ comment["edited_count"] }}</td>
+
         <td><a href="{{url_for("are_you_sure", comment=comment["message"],
          comment_id=comment["id"], question_id=question_id)}}" >
 

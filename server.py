@@ -357,14 +357,19 @@ def logout():
 def edit_comment(comment_id):
     if request.method == "GET":
         comment = get_comment_by_id(comment_id)
-        print(comment)
         return render_template("edit_comment.html", comment=comment, comment_id=comment_id)
     elif request.method == "POST":
-        updated_comment = {"message" : request.form.get("new-message"), "id" : comment_id}
-        print(updated_comment)
-        question_id = request.args.get('question_id')
+        updated_comment = {
+            "message" : request.form.get("new-message"),
+            "id" : comment_id,
+            "submission_time": datedata}
+        question_id = get_question_id_from_comment(comment_id)['question_id']
+        increase_edit_number(comment_id)
         update_comments(updated_comment)
-        return redirect("/")
+        if question_id:
+            return redirect('/question/' + str(question_id))
+        else:
+            return redirect("/")
     return redirect(url_for("display_a_question", question_id=question_id))
 
 
