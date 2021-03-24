@@ -359,13 +359,15 @@ def edit_comment(comment_id):
         comment = get_comment_by_id(comment_id)
         return render_template("edit_comment.html", comment=comment, comment_id=comment_id)
     elif request.method == "POST":
+        current_time = datedata
         updated_comment = {
             "message" : request.form.get("new-message"),
             "id" : comment_id,
-            "submission_time": datedata}
+            "submission_time": current_time}
+        print(updated_comment)
         question_id = get_question_id_from_comment(comment_id)['question_id']
-        increase_edit_number(comment_id)
         update_comments(updated_comment)
+        increase_edit_number(comment_id)
         if question_id:
             return redirect('/question/' + str(question_id))
         else:
