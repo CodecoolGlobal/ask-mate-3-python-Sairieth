@@ -120,8 +120,8 @@ def add_question():
                         "vote_number": 0,
                         "title": request.form.get("title"),
                         "message": request.form.get("message"),
-                        "image": image_name}
-
+                        "image": image_name,
+                        "user_id": session.get('user_id')}
         add_a_question(new_question)
         return redirect("/")
 
@@ -176,7 +176,8 @@ def new_question_comment(question_id):
             return redirect("/login")
     elif request.method == "POST":
         new_comment = request.form["new_comment"]
-        write_question_comment(question_id, new_comment)
+        user_id = session.get('user_id')
+        write_question_comment(question_id, new_comment, user_id)
         return redirect("/question/" + str(question_id))
 
 
@@ -225,7 +226,8 @@ def route_add_answer(question_id):
         new_answer = {'vote_number': 0,
                       'question_id': question_id,
                       'message': request.form.get('message'),
-                      'image': image_name}
+                      'image': image_name,
+                      "user_id": session.get('user_id')}
         add_new_answer(new_answer)
         return redirect(url_for("display_a_question", question_id=question_id))
 
@@ -295,7 +297,8 @@ def new_answer_comment(answer_id):
     elif request.method == "POST":
         new_comment = request.form["new_comment"]
         question_id = get_question_id(answer_id)['question_id']
-        write_answer_comment(answer_id, new_comment)
+        user_id = session.get('user_id')
+        write_answer_comment(answer_id, new_comment, user_id)
         return redirect(url_for("display_a_question",question_id=question_id))
 
 

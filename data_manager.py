@@ -111,15 +111,17 @@ def answer_vote_down(cursor: RealDictCursor, answer_id: int) -> list:
 @database_common.connection_handler
 def add_a_question(cursor, dictionary):
     cursor.execute("""
-                    INSERT INTO question(submission_time, view_number, vote_number, title, message, image)
-                    VALUES(%(submission_time)s, %(view_number)s, %(vote_number)s, %(title)s, %(message)s, %(image)s);
+                    INSERT INTO question(submission_time, view_number, vote_number, title, message, image, user_id)
+                    VALUES(%(submission_time)s, %(view_number)s, %(vote_number)s, %(title)s, %(message)s, %(image)s,
+                     %(user_id)s);
                      """,
                    {'submission_time': datedata,
                     'view_number': dictionary['view_number'],
                     'vote_number': dictionary['vote_number'],
                     'title': dictionary['title'],
                     'message': dictionary['message'],
-                    'image': dictionary['image']})
+                    'image': dictionary['image'],
+                    'user_id': dictionary['user_id']})
 
 
 @database_common.connection_handler
@@ -181,10 +183,10 @@ def get_question_id(cursor: RealDictCursor, answer_id: int) -> list:
 
 
 @database_common.connection_handler
-def write_question_comment(cursor: RealDictCursor, question_id: int, new_comment: str) -> list:
+def write_question_comment(cursor: RealDictCursor, question_id: int, new_comment: str, user_id: int) -> list:
     query = """
-    INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
-    VALUES ({}, NULL ,'{}',CURRENT_TIMESTAMP,0);""".format(question_id, new_comment)
+    INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count, user_id)
+    VALUES ({}, NULL ,'{}',CURRENT_TIMESTAMP,0, {});""".format(question_id, new_comment, user_id)
     cursor.execute(query)
 
 
@@ -201,14 +203,15 @@ def update_question(cursor: RealDictCursor, edited_data: dict, question_id: int,
 @database_common.connection_handler
 def add_new_answer(cursor, dictionary):
     cursor.execute("""
-                    INSERT INTO answer(submission_time, vote_number, question_id, message, image)
-                    VALUES(%(submission_time)s, %(vote_number)s, %(question_id)s, %(message)s, %(image)s);
+                    INSERT INTO answer(submission_time, vote_number, question_id, message, image, user_id)
+                    VALUES(%(submission_time)s, %(vote_number)s, %(question_id)s, %(message)s, %(image)s, %(user_id)s);
                     """,
                    {'submission_time': datedata,
                     'vote_number': dictionary['vote_number'],
                     'question_id': dictionary['question_id'],
                     'message': dictionary['message'],
-                    'image': dictionary['image']})
+                    'image': dictionary['image'],
+                    'user_id': dictionary['user_id']})
 
 
 @database_common.connection_handler
@@ -322,10 +325,10 @@ def increase_view_number(cursor: RealDictCursor, question_id: str) -> list:
 
 
 @database_common.connection_handler
-def write_answer_comment(cursor: RealDictCursor, answer_id: int, new_comment: str) -> list:
+def write_answer_comment(cursor: RealDictCursor, answer_id: int, new_comment: str, user_id: int) -> list:
     query = """
-    INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
-    VALUES (NULl, {} ,'{}',CURRENT_TIMESTAMP,0);""".format( answer_id, new_comment)
+    INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count, user_id)
+    VALUES (NULl, {} ,'{}',CURRENT_TIMESTAMP,0,{});""".format(answer_id, new_comment, user_id)
     cursor.execute(query)
 
 
@@ -430,6 +433,7 @@ def delete_tag(cursor, tag_id):
                     WHERE id = %(tag_id)s;
                     """,
                    {'tag_id': tag_id})
+
 
 @database_common.connection_handler
 def get_all_users(cursor: RealDictCursor) -> list:
