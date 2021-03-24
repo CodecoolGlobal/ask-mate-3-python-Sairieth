@@ -183,10 +183,10 @@ def get_question_id(cursor: RealDictCursor, answer_id: int) -> list:
 
 
 @database_common.connection_handler
-def write_question_comment(cursor: RealDictCursor, question_id: int, new_comment: str) -> list:
+def write_question_comment(cursor: RealDictCursor, question_id: int, new_comment: str, user_id: int) -> list:
     query = """
-    INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
-    VALUES ({}, NULL ,'{}',CURRENT_TIMESTAMP,0);""".format(question_id, new_comment)
+    INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count, user_id)
+    VALUES ({}, NULL ,'{}',CURRENT_TIMESTAMP,0, {});""".format(question_id, new_comment, user_id)
     cursor.execute(query)
 
 
@@ -325,10 +325,10 @@ def increase_view_number(cursor: RealDictCursor, question_id: str) -> list:
 
 
 @database_common.connection_handler
-def write_answer_comment(cursor: RealDictCursor, answer_id: int, new_comment: str) -> list:
+def write_answer_comment(cursor: RealDictCursor, answer_id: int, new_comment: str, user_id: int) -> list:
     query = """
-    INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
-    VALUES (NULl, {} ,'{}',CURRENT_TIMESTAMP,0);""".format( answer_id, new_comment)
+    INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count, user_id)
+    VALUES (NULl, {} ,'{}',CURRENT_TIMESTAMP,0,{});""".format(answer_id, new_comment, user_id)
     cursor.execute(query)
 
 
