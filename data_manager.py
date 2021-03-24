@@ -203,14 +203,15 @@ def update_question(cursor: RealDictCursor, edited_data: dict, question_id: int,
 @database_common.connection_handler
 def add_new_answer(cursor, dictionary):
     cursor.execute("""
-                    INSERT INTO answer(submission_time, vote_number, question_id, message, image)
-                    VALUES(%(submission_time)s, %(vote_number)s, %(question_id)s, %(message)s, %(image)s);
+                    INSERT INTO answer(submission_time, vote_number, question_id, message, image, user_id)
+                    VALUES(%(submission_time)s, %(vote_number)s, %(question_id)s, %(message)s, %(image)s, %(user_id)s);
                     """,
                    {'submission_time': datedata,
                     'vote_number': dictionary['vote_number'],
                     'question_id': dictionary['question_id'],
                     'message': dictionary['message'],
-                    'image': dictionary['image']})
+                    'image': dictionary['image'],
+                    'user_id': dictionary['user_id']})
 
 
 @database_common.connection_handler
