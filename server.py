@@ -56,8 +56,12 @@ def list_users():
 @app.route('/user/<user_id>')
 def get_user_page(user_id):
     if "username" in session:
-        user = get_user_details(user_id)
-        return render_template('user_page.html', user=user)
+        user_details = get_user_details(user_id)
+        user_questions = get_user_questions(user_id)
+        user_answers = get_user_answers(user_id)
+        user_comments = get_user_comments(user_id)
+        return render_template('user_page.html', user_details=user_details, user_questions=user_questions,
+                               user_answers=user_answers, user_comments=user_comments )
     else:
         return redirect(url_for("main"))
 

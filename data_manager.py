@@ -466,3 +466,37 @@ def get_user_details(cursor: RealDictCursor, user_id: str):
     usr_id = {'usr_id': user_id}
     cursor.execute(query, usr_id)
     return cursor.fetchone()
+
+@database_common.connection_handler
+def get_user_questions(cursor: RealDictCursor, user_id: str):
+    query = """
+        SELECT DISTINCT id, title, message
+        FROM question
+        WHERE question.user_id = %(usr_id)s"""
+    usr_id = {'usr_id': user_id}
+    cursor.execute(query, usr_id)
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_user_answers(cursor: RealDictCursor, user_id: str):
+    query = """
+        SELECT DISTINCT question.id as id, question.title as title, question.message as q_message,
+         answer.message as a_message
+        FROM question
+        INNER JOIN answer ON answer.question_id = question.id
+        WHERE question.user_id = %(usr_id)s"""
+    usr_id = {'usr_id': user_id}
+    cursor.execute(query, usr_id)
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_user_comments(cursor: RealDictCursor, user_id: str):
+    query = """
+        SELECT DISTINCT question.id as id, question.title as title, question.message as q_message,
+         comment.message as c_message
+        FROM question
+        INNER JOIN comment ON comment.question_id = question.id
+        WHERE question.user_id = %(usr_id)s"""
+    usr_id = {'usr_id': user_id}
+    cursor.execute(query, usr_id)
+    return cursor.fetchall()

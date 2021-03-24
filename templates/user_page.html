@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Delete question</title>
+    <title>{{ session["username"] }}</title>
     <style>
         body
         {
@@ -33,7 +33,7 @@
     </style>
 </head>
 <body>
-<h1>Registered users:</h1>
+<h1>User:</h1>
 <table>
     <tr>
         <th>ID</th>
@@ -45,18 +45,62 @@
         <th>Reputation</th>
     </tr>
     <tr>
-        <td>{{ user['id'] }}</td>
-        <td>{{ user['username'] }}</td>
-        <td>{{ user['registration_date'] }}</td>
-        <td>{{ user['count_of_asked_questions'] }}</td>
-        <td>{{ user['count_of_answers'] }}</td>
-        <td>{{ user['count_of_comments'] }}</td>
-        <td>{{ user['reputation'] }}</td>
+        <td>{{ user_details['id'] }}</td>
+        <td>{{ user_details['username'] }}</td>
+        <td>{{ user_details['registration_date'] }}</td>
+        <td>{{ user_details['count_of_asked_questions'] }}</td>
+        <td>{{ user_details['count_of_answers'] }}</td>
+        <td>{{ user_details['count_of_comments'] }}</td>
+        <td>{{ user_details['reputation'] }}</td>
     </tr>
 </table><br><br>
+<h3>Questions:</h3>
 <table>
+    <tr>
+        <th>QuestionID</th>
+        <th>Title</th>
+        <th>Message</th>
+    </tr>
+{% for questions in user_questions %}
+    <tr>
+        <td><a href="{{ url_for('display_a_question', question_id=questions['id']) }}">{{ questions['id'] }}</a></td>
+        <td>{{ questions['title'] }}</td>
+        <td>{{ questions['message'] }}</td>
+    </tr>
+{% endfor %}
+</table><br><br>
 
-</table>
+<h3>Answers:</h3>
+<table>
+    <tr>
+        <th>QuestionID</th>
+        <th>Answer</th>
+        <th>Message</th>
+    </tr>
+{% for answer in user_answers %}
+    <tr>
+        <td><a href="{{ url_for('display_a_question', question_id=answer['id']) }}">{{ answer['id'] }}</a></td>
+        <td>{{ answer['title'] }}</td>
+        <td>{{ answer['a_message'] }}</td>
+    </tr>
+{% endfor %}
+</table><br><br>
+
+<h3>Comments:</h3>
+<table>
+    <tr>
+        <th>QuestionID</th>
+        <th>Title</th>
+        <th>Message</th>
+    </tr>
+{% for comment in user_comments %}
+    <tr>
+        <td><a href="{{ url_for('display_a_question', question_id=comment['id']) }}">{{ comment['id'] }}</a></td>
+        <td>{{ comment['title'] }}</td>
+        <td>{{ comment['c_message'] }}</td>
+    </tr>
+{% endfor %}
+</table><br><br>
 <button type="button"><a href="/">Back to main page</a></button>
 </body>
 </html>
