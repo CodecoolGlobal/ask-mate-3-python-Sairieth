@@ -387,3 +387,18 @@ def add_new_user(cursor: RealDictCursor, username, password, registration_date, 
 #     INSERT INTO users (username, password, registration_date)
 #     VALUES (%(username)s, %(password)s, %(registration_date)s)"""
 #     cursor.execute(query, {'username': username, 'password': password, 'registration_date': registration_date},)
+
+
+@database_common.connection_handler
+def delete_tag(cursor, tag_id):
+    cursor.execute("""
+                    DELETE FROM question_tag
+                    WHERE tag_id = %(tag_id)s;
+                    """,
+                   {'tag_id': tag_id})
+
+    cursor.execute("""
+                    DELETE FROM tag
+                    WHERE id = %(tag_id)s;
+                    """,
+                   {'tag_id': tag_id})
