@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, make_response, session
+from flask import Flask, render_template, request, redirect, url_for, \
+    flash, send_from_directory, make_response, session, Markup
 from data_manager import *
 from werkzeug.utils import secure_filename
 import os
@@ -41,6 +42,23 @@ def main():
     else:
         questions = get_all_questions()
         return render_template('list.html', questions=questions)
+
+
+@app.route("/users")
+def list_users():
+    if "username" in session:
+        users = get_all_users()
+        return render_template('users.html', users=users)
+    else:
+        return redirect(url_for("main"))
+
+@app.route('/user/<user_id>')
+def get_user_page(user_id):
+    if "username" in session:
+        user = get_user_details(user_id)
+        return render_template('user_page.html', user=user)
+    else:
+        return redirect(url_for("main"))
 
 
 @app.route("/question/<question_id>")
@@ -223,7 +241,7 @@ def delete(answer_id):
         else:
             print("The file does not exist")
         delete_answer(answer_id)
-        return redirect("/")
+        return redirect(url_for("display_a_question", question_id=question_id))
 
 
 @app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
@@ -330,7 +348,6 @@ def askm8():
     return render_template('projectinfo.html')
 
 
-
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "GET":
@@ -342,6 +359,7 @@ def login():
             user_data = get_user_data(username, password)
             user_password = user_data["password"]
             if bcrypt.checkpw(password.encode('utf-8'), user_password.encode('utf-8')):
+                session["user_id"] = get_user_id(username)
                 session["username"] = username
                 return redirect("/")
             else:
@@ -356,6 +374,9 @@ def login():
 def logout():
     session.pop("username", None)
     return redirect("/")
+
+
+
 
 
 if __name__ == "__main__":
