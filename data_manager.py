@@ -61,6 +61,7 @@ def get_answer_by_question_id(cursor: RealDictCursor, question_id: int) -> list:
     cursor.execute(query)
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def get_answers(cursor: RealDictCursor, answer_id: int) -> list:
     query = """
@@ -124,15 +125,38 @@ def add_a_question(cursor, dictionary):
 @database_common.connection_handler
 def delete_a_question(cursor, question_id):
     cursor.execute("""
-                   DELETE FROM comment
-                   WHERE question_id = %(question_id)s;
-                   
-                   DELETE FROM answer
-                   WHERE question_id = %(question_id)s;
-                
-                   DELETE FROM question
-                   WHERE id = %(question_id)s;
-                   """,
+                           DELETE FROM question_tag
+                           WHERE question_id = %(question_id)s;
+                           """,
+                   {'question_id': question_id})
+
+    cursor.execute("""
+                       DELETE FROM comment
+                       WHERE question_id = %(question_id)s;
+                       """,
+                   {'question_id': question_id})
+
+    cursor.execute("""
+                       DELETE FROM comment
+                       WHERE EXISTS(
+                       SELECT comment.* 
+                       FROM comment, answer
+                       WHERE comment.answer_id = answer.id 
+                       AND answer.question_id = %(question_id)s
+                               );
+                       """,
+                   {'question_id': question_id})
+
+    cursor.execute("""
+                       DELETE FROM answer
+                       WHERE question_id = %(question_id)s;
+                       """,
+                   {'question_id': question_id})
+
+    cursor.execute("""
+                       DELETE FROM question
+                       WHERE id = %(question_id)s;
+                       """,
                    {'question_id': question_id})
 
 
@@ -212,6 +236,7 @@ def get_search_results(cursor: RealDictCursor, phrase: str) -> list:
     var = {'PHRASE': f'%{phrase}%'}
     cursor.execute(query, var)
     return cursor.fetchall()
+
 
 @database_common.connection_handler
 def get_answers_by_phrase(cursor: RealDictCursor, phrase: str) -> list:
@@ -323,6 +348,7 @@ def get_answer_comments(cursor: RealDictCursor, answer_id:int):
     cursor.execute(query)
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def get_user_data(cursor: RealDictCursor ,username:str, password:int):
     query = """
@@ -332,6 +358,7 @@ def get_user_data(cursor: RealDictCursor ,username:str, password:int):
         WHERE username= %(username)s"""
     cursor.execute(query, {'username': username,})
     return cursor.fetchone()
+
 
 @database_common.connection_handler
 def show_tags(cursor, question_id):
@@ -370,6 +397,7 @@ def add_new_tag(cursor, dictionary, question_id):
                     """,
                    {'question_id': question_id,
                     'tag_id': tag_id})
+
 
 @database_common.connection_handler
 def add_new_user(cursor: RealDictCursor, username, password, registration_date, count_of_asked_questions, count_of_answers, count_of_comments, reputation):
