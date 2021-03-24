@@ -458,7 +458,7 @@ def get_user_details(cursor: RealDictCursor, user_id: str):
         SELECT id, username, registration_date, count_of_asked_questions,
          count_of_answers, count_of_comments, reputation
         FROM users
-        WHERE username = %(usr_id)s"""
+        WHERE id = %(usr_id)s"""
     usr_id = {'usr_id': user_id}
     cursor.execute(query, usr_id)
     return cursor.fetchone()

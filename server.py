@@ -360,7 +360,8 @@ def login():
             user_data = get_user_data(username, password)
             user_password = user_data["password"]
             if bcrypt.checkpw(password.encode('utf-8'), user_password.encode('utf-8')):
-                session["user_id"] = get_user_id(username)
+                ID = get_user_id(username)
+                session["user_id"] = ID['id']
                 session["username"] = username
                 return redirect("/")
             else:
