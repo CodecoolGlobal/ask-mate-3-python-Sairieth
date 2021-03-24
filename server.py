@@ -366,8 +366,9 @@ def edit_comment(comment_id):
             "submission_time": current_time}
         print(updated_comment)
         question_id = get_question_id_from_comment(comment_id)['question_id']
-        update_comments(updated_comment)
         increase_edit_number(comment_id)
+
+        update_comments(updated_comment)
         if question_id:
             return redirect('/question/' + str(question_id))
         else:

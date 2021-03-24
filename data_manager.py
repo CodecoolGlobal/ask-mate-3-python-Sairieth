@@ -413,17 +413,17 @@ def get_comment_by_id(cursor : RealDictCursor, id: int):
 
 
 @database_common.connection_handler
-def increase_edit_number(cursor: RealDictCursor, comment_id : int):
+def increase_edit_number(cursor: RealDictCursor, comment_id):
     query = """
             UPDATE comment
             SET edited_count = edited_count + 1
             WHERE id = (%s)
     """
-    cursor.execute(query, (comment_id))
+    cursor.execute(query, (comment_id,))
 
 
 @database_common.connection_handler
-def get_question_id_from_comment(cursor: RealDictCursor, comment_id: int) -> list:
+def get_question_id_from_comment(cursor: RealDictCursor, comment_id) -> list:
     query = """
         SELECT question_id 
         FROM comment
