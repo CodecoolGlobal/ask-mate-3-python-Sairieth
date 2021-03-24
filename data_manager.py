@@ -111,15 +111,17 @@ def answer_vote_down(cursor: RealDictCursor, answer_id: int) -> list:
 @database_common.connection_handler
 def add_a_question(cursor, dictionary):
     cursor.execute("""
-                    INSERT INTO question(submission_time, view_number, vote_number, title, message, image)
-                    VALUES(%(submission_time)s, %(view_number)s, %(vote_number)s, %(title)s, %(message)s, %(image)s);
+                    INSERT INTO question(submission_time, view_number, vote_number, title, message, image, user_id)
+                    VALUES(%(submission_time)s, %(view_number)s, %(vote_number)s, %(title)s, %(message)s, %(image)s,
+                     %(user_id)s);
                      """,
                    {'submission_time': datedata,
                     'view_number': dictionary['view_number'],
                     'vote_number': dictionary['vote_number'],
                     'title': dictionary['title'],
                     'message': dictionary['message'],
-                    'image': dictionary['image']})
+                    'image': dictionary['image'],
+                    'user_id': dictionary['user_id']})
 
 
 @database_common.connection_handler
@@ -431,6 +433,7 @@ def delete_tag(cursor, tag_id):
                     """,
                    {'tag_id': tag_id})
 
+
 @database_common.connection_handler
 def get_all_users(cursor: RealDictCursor) -> list:
     query = """
@@ -439,3 +442,14 @@ def get_all_users(cursor: RealDictCursor) -> list:
         ORDER BY username ASC"""
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_user_id(cursor: RealDictCursor, username: str):
+    query = """
+        SELECT id
+        FROM users
+        WHERE username = %(usr)s"""
+    usr = {'usr': username}
+    cursor.execute(query, usr)
+    return cursor.fetchone()

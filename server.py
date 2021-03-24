@@ -109,7 +109,8 @@ def add_question():
                         "vote_number": 0,
                         "title": request.form.get("title"),
                         "message": request.form.get("message"),
-                        "image": image_name}
+                        "image": image_name,
+                        "user_id": session.get('user_id')}
         add_a_question(new_question)
         return redirect("/")
 
@@ -349,6 +350,8 @@ def login():
             user_password = user_data["password"]
             if bcrypt.checkpw(password.encode('utf-8'), user_password.encode('utf-8')):
                 session["username"] = username
+                ID = get_user_id(username)
+                session["user_id"] = ID['id']
                 return redirect("/")
             else:
                 error = "Invalid login attempt!"
