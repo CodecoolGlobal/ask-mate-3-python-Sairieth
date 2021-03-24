@@ -52,6 +52,7 @@ def list_users():
     else:
         return redirect(url_for("main"))
 
+
 @app.route('/user/<user_id>')
 def get_user_page(user_id):
     if "username" in session:
@@ -373,6 +374,7 @@ def login():
 @app.route("/logout")
 def logout():
     session.pop("username", None)
+    session.pop("user_id", None)
     return redirect("/")
 
 

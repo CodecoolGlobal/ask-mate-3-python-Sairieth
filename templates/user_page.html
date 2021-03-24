@@ -36,6 +36,7 @@
 <h1>Registered users:</h1>
 <table>
     <tr>
+        <th>ID</th>
         <th>User name</th>
         <th>Registration date</th>
         <th>Count of asked questions</th>
@@ -44,6 +45,7 @@
         <th>Reputation</th>
     </tr>
     <tr>
+        <td>{{ user['id'] }}</td>
         <td>{{ user['username'] }}</td>
         <td>{{ user['registration_date'] }}</td>
         <td>{{ user['count_of_asked_questions'] }}</td>
