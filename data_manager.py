@@ -407,10 +407,20 @@ def delete_tag(cursor, tag_id):
 
 
 @database_common.connection_handler
-def get_status_by_user_id(cursor, status):
+def get_status_by_user_id(cursor, user_id):
     query = """
     SELECT status
     FROM answers
-    WHERE status = %(status)s;"""
-    cursor.execute(query, {'status': status})
+    WHERE user_id = %(user_id)s;"""
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def set_status_by_user_id(cursor, user_id, status):
+    query = """
+    UPDATE table_name
+    SET status = %(status)s
+    WHERE user_id = %(user_id)s;"""
+    cursor.execute(query, {'user_id': user_id, 'status': status})
     return cursor.fetchall()
