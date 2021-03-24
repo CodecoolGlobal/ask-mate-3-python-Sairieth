@@ -366,6 +366,11 @@ def logout():
     return redirect("/")
 
 
+@app.route("/user/<user_id>")
+def user_page(user_id):
+    pass
+
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
