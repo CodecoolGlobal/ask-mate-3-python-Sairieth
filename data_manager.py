@@ -389,13 +389,14 @@ def add_new_user(cursor: RealDictCursor, username, password, registration_date, 
 #     cursor.execute(query, {'username': username, 'password': password, 'registration_date': registration_date},)
 
 @database_common.connection_handler
-def update_comments(cursor: RealDictCursor, updated_comment):
+def update_comments(cursor: RealDictCursor, message:dict):
     query = """ 
             UPDATE comment
             SET message = %(message)s
             WHERE id = %(id)s
         """
-    cursor.execute(query, {'message' : message, "id": id})
+    value = {'message' : message["message"], "id": message["id"]}
+    cursor.execute(query,value)
 
 
 @database_common.connection_handler

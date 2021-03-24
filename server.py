@@ -360,10 +360,11 @@ def edit_comment(comment_id):
         print(comment)
         return render_template("edit_comment.html", comment=comment, comment_id=comment_id)
     elif request.method == "POST":
-        updated_comment = {"message" : request.form.get("new-message")}
+        updated_comment = {"message" : request.form.get("new-message"), "id" : comment_id}
+        print(updated_comment)
         question_id = request.args.get('question_id')
         update_comments(updated_comment)
-        return redirect("/question" + str(question_id))
+        return redirect("/")
     return redirect(url_for("display_a_question", question_id=question_id))
 
 

@@ -38,9 +38,9 @@
 </head>
 <body>
     <h1>Edit comment</h1>
-        <form action="/comment/{{ comment_id}}/edit_comment" method="POST">
+        <form action="/comment/{{ comment_id}}/edit_comment"  method="POST">
             <label for="new-message">Message:</label><br>
-            <textarea id="new-message" rows="15" cols="40">{{ comment["message"] }}</textarea><br>
+            <textarea id="new-message" name="new-message" rows="15" cols="40">{{ comment["message"] }}</textarea><br>
             <button type="submit">Edit</button>
 </body>
 </html>
