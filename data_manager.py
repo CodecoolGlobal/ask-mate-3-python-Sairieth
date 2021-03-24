@@ -177,14 +177,16 @@ def update_question(cursor: RealDictCursor, edited_data: dict, question_id: int,
 @database_common.connection_handler
 def add_new_answer(cursor, dictionary):
     cursor.execute("""
-                    INSERT INTO answer(submission_time, vote_number, question_id, message, image)
-                    VALUES(%(submission_time)s, %(vote_number)s, %(question_id)s, %(message)s, %(image)s);
+                    INSERT INTO answer(submission_time, vote_number, question_id, message, image, accepted, user_id)
+                    VALUES(%(submission_time)s, %(vote_number)s, %(question_id)s, %(message)s, %(image)s, %(accepted)s, %(user_id)s);
                     """,
                    {'submission_time': datedata,
                     'vote_number': dictionary['vote_number'],
                     'question_id': dictionary['question_id'],
                     'message': dictionary['message'],
-                    'image': dictionary['image']})
+                    'image': dictionary['image'],
+                    'accepted': dictionary['accepted'],
+                    'user_id': dictionary['user_id']})
 
 
 @database_common.connection_handler
@@ -402,3 +404,13 @@ def delete_tag(cursor, tag_id):
                     WHERE id = %(tag_id)s;
                     """,
                    {'tag_id': tag_id})
+
+
+@database_common.connection_handler
+def get_status_by_user_id(cursor, status):
+    query = """
+    SELECT status
+    FROM answers
+    WHERE status = %(status)s;"""
+    cursor.execute(query, {'status': status})
+    return cursor.fetchall()
