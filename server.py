@@ -336,7 +336,7 @@ def login():
             password = request.form["password"]
             user_data = get_user_data(username, password)
             user_password = user_data["password"]
-            if user_password == password:
+            if bcrypt.checkpw(password.encode('utf-8'), user_password.encode('utf-8')):
                 session["username"] = username
                 return redirect("/")
             else:
@@ -346,10 +346,26 @@ def login():
             error = "Invalid login attempt!"
             return render_template("login.html", error=error)
 
+
 @app.route("/logout")
 def logout():
     session.pop("username", None)
     return redirect("/")
+
+
+@app.route("/comment/<comment_id>/edit_comment", methods=["POST", "GET"])
+def edit_comment(comment_id):
+    if request.method == "GET":
+        comment = get_comment_by_id(comment_id)
+        print(comment)
+        return render_template("edit_comment.html", comment=comment, comment_id=comment_id)
+    elif request.method == "POST":
+        updated_comment = {"message" : request.form.get("new-message")}
+        question_id = request.args.get('question_id')
+        update_comments(updated_comment)
+        return redirect("/question" + str(question_id))
+    return redirect(url_for("display_a_question", question_id=question_id))
+
 
 
 if __name__ == "__main__":
