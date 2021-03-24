@@ -224,7 +224,7 @@ def delete(answer_id):
         else:
             print("The file does not exist")
         delete_answer(answer_id)
-        return redirect("/")
+        return redirect(url_for("display_a_question", question_id=question_id))
 
 
 @app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
@@ -329,7 +329,6 @@ def register():
 @app.route("/ASKM8")
 def askm8():
     return render_template('projectinfo.html')
-
 
 
 @app.route("/login", methods=["POST", "GET"])
