@@ -78,14 +78,19 @@
     <tr>
         <th>Message</th>
         <th>Submission time</th>
+        <th>Edited count</th>
     </tr>
     {% for comment in question_comments%}
     <tr>
         <td>{{ comment["message"] }}</td>
         <td>{{ comment["submission_time"] }}</td>
+        <td>{{ comment["edited_count"] }}</td>
+
         <td><a href="{{url_for("are_you_sure", comment=comment["message"],
          comment_id=comment["id"], question_id=question_id)}}" >
+
             <button type="button" >&#9851;</button></a></td>
+         <td><a href="{{ url_for("edit_comment", comment_id=comment["id"]) }}">Edit comment</a> </td>
 
     </tr>
     {% endfor %}
@@ -108,6 +113,15 @@
             <td><a href="{{ url_for('edit_answer', answer_id=answer["id"], question_id=question_id) }}">Edit</a></td>
             <td><a href="/answer/{{ answer['id'] }}/new_comment">Comment to answer </a></td>
             <td><a href="{{ url_for("get_answers_comments", answer_id=answer["id"], question_id=question["id"]) }}">Show comments </a></td>
+            {% if not answer["accepted"] %}
+            <td>Not accepted yet</td>
+            <td><a href="{{ url_for('change_status', answer_id=answer["id"], question_id=question_id) }}"><button
+                        id='status_update' class="btn" type="submit">Mark as accepted</button></a></td>
+            {% else %}
+            <td>Accepted</td>
+            <td><a href="{{ url_for('change_status', answer_id=answer["id"], question_id=question_id) }}"><button
+                        id='status_update' class="btn" type="submit">Mark as not accepted</button></a></td>
+            {% endif %}
         </tr>
         {% endfor %}
     {% endif %}

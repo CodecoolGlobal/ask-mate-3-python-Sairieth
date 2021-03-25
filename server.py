@@ -100,7 +100,6 @@ def vote_down_question(question_id):
     return redirect(url_for("main"))
 
 
-
 @app.route('/answer/<answer_id>/vote_up')
 def vote_up_answer(answer_id):
     answer_vote_up(answer_id)
@@ -113,7 +112,6 @@ def vote_down_answer(answer_id):
     answer_vote_down(answer_id)
     question_id = get_question_id(answer_id)['question_id']
     return redirect(url_for("display_a_question", question_id=question_id))
-
 
 
 @app.route('/add_questions', methods=['GET', 'POST'])
@@ -191,7 +189,6 @@ def new_question_comment(question_id):
         write_question_comment(question_id, new_comment, user_id)
         return redirect("/question/" + str(question_id))
 
-
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -238,7 +235,8 @@ def route_add_answer(question_id):
                       'question_id': question_id,
                       'message': request.form.get('message'),
                       'image': image_name,
-                      "user_id": session.get('user_id')}
+                      'accepted': False,
+                      'user_id': session.get('user_id')}
         add_new_answer(new_answer)
         return redirect(url_for("display_a_question", question_id=question_id))
 
@@ -323,6 +321,12 @@ def get_answers_comments():
     return render_template("answers.html", question_id=question_id, answer_id=answer_id, answer_comments=answer_comments, answer=answer, question=question)
 
 
+@app.route('/tags')
+def route_tags():
+    tags_list = get_all_tags()
+    return render_template('tag_list.html', tags_list=tags_list)
+
+
 @app.route("/question/<question_id>/new-tag", methods=['GET', 'POST'])
 def add_tag(question_id):
     if request.method == 'GET':
@@ -392,8 +396,65 @@ def logout():
     session.pop("user_id", None)
     return redirect("/")
 
+# #@app.route("/set_status")
+# def set_status(user_id):
+#     #user_id = session.get('user_id')
+#     status_data = get_status_by_user_id(user_id)
+#     status = status_data["accepted"]
+#     if status:
+#         set_status_by_user_id(user_id, False)
+#     else:
+#         set_status_by_user_id(user_id, True)
 
 
+@app.route("/comment/<comment_id>/edit_comment", methods=["POST", "GET"])
+def edit_comment(comment_id):
+    if request.method == "GET":
+        comment = get_comment_by_id(comment_id)
+        return render_template("edit_comment.html", comment=comment, comment_id=comment_id)
+    elif request.method == "POST":
+        current_time = datedata
+        updated_comment = {
+            "message" : request.form.get("new-message"),
+            "id" : comment_id,
+            "submission_time": current_time}
+        question_id = get_question_id_from_comment(comment_id)['question_id']
+        increase_edit_number(comment_id)
+        update_comments(updated_comment)
+        if question_id:
+            return redirect('/question/' + str(question_id))
+        else:
+            return redirect("/")
+    return redirect(url_for("display_a_question", question_id=question_id))
+
+
+
+@app.route("/user/<user_id>")
+def user_page(user_id):
+    pass
+
+
+@app.route('/answer/<answer_id>/change_status', methods=["GET", "POST"])
+def change_status(answer_id):
+    if request.method == 'GET':
+        question_id = request.args.get('question_id')
+        user_id = session.get('user_id')
+        answer_user_id = validate_user_by_answer_id(answer_id)
+        check = answer_user_id['user_id']
+        print(user_id)
+        print(check)
+        if user_id == check:
+            status_data = get_status_by_answer_id(answer_id)
+            status = status_data["accepted"]
+            if status:
+                set_status_by_answer_id(answer_id, False)
+            else:
+                set_status_by_answer_id(answer_id, True)
+            return redirect(url_for("display_a_question", answer_id=answer_id, question_id=question_id))
+        else:
+            flash('You have no permission to mark this accepted.')
+            print('bug')
+            return redirect(url_for("display_a_question", question_id=question_id))
 
 
 if __name__ == "__main__":
