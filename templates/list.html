@@ -59,7 +59,10 @@
 <h1>Askm8</h1><br>
 <p align="right"><a href="{{ url_for('askm8') }}">About this project</a></p>
 {% if "username" in session %}
-    <a href="{{ url_for('logout') }}">Log out</a><br>
+    <div>
+    <button type="button"><a href="{{ url_for('logout') }}">Log out</a></button>
+    <button type="button"><a href="{{ url_for('list_users') }}">Users</a></button>
+    </div>
     <h3>Welcome {{ session["username"] }}</h3>
 {% else %}
 <p><a href="{{ url_for('login') }}">Login</a></p>
@@ -103,8 +106,8 @@
             <td>{{ question['submission_time'] }}</td>
             <td>{{ question['view_number'] }}</td>
             <td>{{ question['vote_number'] }}</td>
+            <td>{{ question['title'] }}</td>
             <td>{{ question['message']|replace(phrase, tag) }}</td>
-            <td>{{ question['message'] }}</td>
             <td><img src= {{ question['image'] }} alt="" onerror="this.style.display='none'"></td>
             <td><a href="/question/{{ question['id'] }}/vote_up">Vote up</a></td>
             <td><a href="/question/{{ question['id'] }}/vote_down">Vote down</a></td>
