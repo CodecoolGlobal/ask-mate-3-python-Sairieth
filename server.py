@@ -81,23 +81,21 @@ def display_a_question(question_id):
 
 @app.route('/question/<question_id>/vote_up')
 def vote_up_question(question_id):
-    data = get_question_by_id(question_id)[0]
-    print(data)
-    user_id = data.get("user_id")
-    print(user_id)
-    reputation_up(user_id, 5)
+    reputation_up(session.get("user_id"), 5)
     question_vote_up(question_id)
     return redirect(url_for("main"))
 
 
 @app.route('/question/<question_id>/vote_down')
 def vote_down_question(question_id):
+    reputation_down(session.get("user_id"), 2)
     question_vote_down(question_id)
     return redirect(url_for("main"))
 
 
 @app.route('/answer/<answer_id>/vote_up')
 def vote_up_answer(answer_id):
+    reputation_up(session.get("user_id"), 10)
     answer_vote_up(answer_id)
     question_id = get_question_id(answer_id)['question_id']
     return redirect(url_for("display_a_question", question_id=question_id))
@@ -105,6 +103,7 @@ def vote_up_answer(answer_id):
 
 @app.route('/answer/<answer_id>/vote_down')
 def vote_down_answer(answer_id):
+    reputation_down(session.get("user_id"), 2)
     answer_vote_down(answer_id)
     question_id = get_question_id(answer_id)['question_id']
     return redirect(url_for("display_a_question", question_id=question_id))
