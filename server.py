@@ -52,30 +52,19 @@ def list_users():
     else:
         return redirect(url_for("main"))
 
-
 @app.route("/question/<question_id>")
 def display_a_question(question_id):
-    if request.method == 'POST':
-        set_status()
-        user_id = session.get("user_id")
-        status_data = get_status_by_user_id(user_id)
-        status = status_data["accepted"]
-        return redirect(url_for('display_a_question', question_id=question_id, status=status))
-    else:
-        user_id = session.get("user_id")
-        status_data = get_status_by_user_id(user_id)
-        status = status_data["accepted"]
-        question = get_question(question_id)
-        increase_view_number(question_id)
-        question_tags = show_tags(question_id)
-        answers = get_answer_by_question_id(question_id)
-        question_comments = get_question_comments(question_id)
-        return render_template('display_a_question.html',
-                            question=question,
-                            question_id=question_id,
-                            answers=answers,
-                            question_comments=question_comments,
-                            question_tags=question_tags, status=status)
+    question = get_question(question_id)
+    increase_view_number(question_id)
+    question_tags = show_tags(question_id)
+    answers = get_answer_by_question_id(question_id)
+    question_comments = get_question_comments(question_id)
+    return render_template('display_a_question.html',
+                        question=question,
+                        question_id=question_id,
+                        answers=answers,
+                        question_comments=question_comments,
+                        question_tags=question_tags,)
 
 
 @app.route('/question/<question_id>/vote_up')
@@ -226,7 +215,7 @@ def route_add_answer(question_id):
                       'message': request.form.get('message'),
                       'image': image_name,
                       'accepted': False,
-                      'user_id': '5'}
+                      'user_id': session.get('user_id')}
         add_new_answer(new_answer)
         return redirect(url_for("display_a_question", question_id=question_id))
 
@@ -387,16 +376,15 @@ def logout():
     session.pop("username", None)
     return redirect("/")
 
-#@app.route("/set_status")
-def set_status():
-    user_id = 5
-    status_data = get_status_by_user_id(user_id)
-    status = status_data["accepted"]
-    print(status)
-    if status:
-        set_status_by_user_id(user_id, False)
-    else:
-        set_status_by_user_id(user_id, True)
+# #@app.route("/set_status")
+# def set_status(user_id):
+#     #user_id = session.get('user_id')
+#     status_data = get_status_by_user_id(user_id)
+#     status = status_data["accepted"]
+#     if status:
+#         set_status_by_user_id(user_id, False)
+#     else:
+#         set_status_by_user_id(user_id, True)
 
 
 @app.route("/comment/<comment_id>/edit_comment", methods=["POST", "GET"])
@@ -424,6 +412,29 @@ def edit_comment(comment_id):
 @app.route("/user/<user_id>")
 def user_page(user_id):
     pass
+
+
+@app.route('/answer/<answer_id>/change_status', methods=["GET", "POST"])
+def change_status(answer_id):
+    if request.method == 'GET':
+        question_id = request.args.get('question_id')
+        user_id = session.get('user_id')
+        answer_user_id = validate_user_by_answer_id(answer_id)
+        check = answer_user_id['user_id']
+        print(user_id)
+        print(check)
+        if user_id == check:
+            status_data = get_status_by_answer_id(answer_id)
+            status = status_data["accepted"]
+            if status:
+                set_status_by_answer_id(answer_id, False)
+            else:
+                set_status_by_answer_id(answer_id, True)
+            return redirect(url_for("display_a_question", answer_id=answer_id, question_id=question_id))
+        else:
+            flash('You have no permission to mark this accepted.')
+            print('bug')
+            return redirect(url_for("display_a_question", question_id=question_id))
 
 
 if __name__ == "__main__":
