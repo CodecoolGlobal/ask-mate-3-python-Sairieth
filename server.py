@@ -175,13 +175,11 @@ def new_question_comment(question_id):
         else:
             return redirect("/login")
     elif request.method == "POST":
-        submission_time = datedata
-        edited_count = 0
-        message = request.form["new_comment"]
+        new_comment = request.form["new_comment"]
+        write_question_comment(question_id, new_comment)
         user_id = session.get('user_id')
-        write_question_comment(question_id, message, submission_time, edited_count,user_id)
+        write_question_comment(question_id, new_comment, user_id)
         return redirect("/question/" + str(question_id))
-
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -298,13 +296,13 @@ def new_answer_comment(answer_id):
         else:
             return redirect("/login")
     elif request.method == "POST":
-        message = request.form["new_comment"]
+        new_comment = request.form["new_comment"]
         question_id = get_question_id(answer_id)['question_id']
-        edited_count = 0
-        submission_time = datedata
+        write_answer_comment(answer_id, new_comment)
         user_id = session.get('user_id')
-        write_answer_comment(answer_id, message, submission_time,edited_count, user_id)
+        write_answer_comment(answer_id, new_comment, user_id)
         return redirect(url_for("display_a_question",question_id=question_id))
+
 
 
 
