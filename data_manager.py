@@ -555,13 +555,24 @@ def get_user_id(cursor: RealDictCursor, username: str):
 def get_question_by_id(cursor: RealDictCursor, id:int):
     query = """
     SELECT *
-    FROM users
+    FROM question
     WHERE id = %(id)s
     """
     value ={"id": id}
     cursor.execute(query, value)
     return cursor.fetchall()
 
+
+@database_common.connection_handler
+def get_answer_by_comment_id(cursor: RealDictCursor, id:int):
+    query = """
+    SELECT *
+    FROM answer
+    WHERE id = %(id)s
+    """
+    value ={"id": id}
+    cursor.execute(query, value)
+    return cursor.fetchall()
 
 @database_common.connection_handler
 def get_all_tags(cursor):
