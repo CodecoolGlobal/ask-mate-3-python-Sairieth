@@ -57,12 +57,12 @@ def list_users():
 def display_a_question(question_id):
     if request.method == 'POST':
         set_status()
-        user_id = 5
+        user_id = session.get("user_id")
         status_data = get_status_by_user_id(user_id)
         status = status_data["accepted"]
         return redirect(url_for('display_a_question', question_id=question_id, status=status))
     else:
-        user_id = 5
+        user_id = session.get("user_id")
         status_data = get_status_by_user_id(user_id)
         status = status_data["accepted"]
         question = get_question(question_id)
@@ -175,7 +175,6 @@ def new_question_comment(question_id):
             return redirect("/login")
     elif request.method == "POST":
         new_comment = request.form["new_comment"]
-        write_question_comment(question_id, new_comment)
         user_id = session.get('user_id')
         write_question_comment(question_id, new_comment, user_id)
         return redirect("/question/" + str(question_id))
@@ -297,7 +296,6 @@ def new_answer_comment(answer_id):
     elif request.method == "POST":
         new_comment = request.form["new_comment"]
         question_id = get_question_id(answer_id)['question_id']
-        write_answer_comment(answer_id, new_comment)
         user_id = session.get('user_id')
         write_answer_comment(answer_id, new_comment, user_id)
         return redirect(url_for("display_a_question",question_id=question_id))
