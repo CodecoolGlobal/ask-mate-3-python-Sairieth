@@ -65,7 +65,7 @@
     <p>Tags: </p>
 {% if question_tags %}
     {% for tag in question_tags %}
-      <tr>{{ tag['name'] }}</tr>
+      <tr>{{ tag['name'] }} <a href="/question/{{ question['id'] }}/tag/{{ tag['id'] }}/delete">X</a></tr>
     {% endfor %}
 {% endif %}
 <br>
@@ -108,7 +108,7 @@
             <td>{{ answer["vote_number"]}}</td>
             <td><a href="/answer/{{ answer['id'] }}/vote_up">Vote up</a></td>
             <td><a href="/answer/{{ answer['id'] }}/vote_down">Vote down</a></td>
-            <td><a href="/answer/{{ answer['id'] }}/delete">Delete</a></td>
+            <td><a href="{{ url_for('delete', answer_id=answer["id"], question_id=question_id) }}">Delete</a></td>
             <td><img src= /{{ answer['image'] }} alt="" onerror="this.style.display='none'"></td>
             <td><a href="{{ url_for('edit_answer', answer_id=answer["id"], question_id=question_id) }}">Edit</a></td>
             <td><a href="/answer/{{ answer['id'] }}/new_comment">Comment to answer </a></td>

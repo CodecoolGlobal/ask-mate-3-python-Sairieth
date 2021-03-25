@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, make_response, session
+from flask import Flask, render_template, request, redirect, url_for, \
+    flash, send_from_directory, make_response, session, Markup
 from data_manager import *
 from werkzeug.utils import secure_filename
 import os
@@ -43,6 +44,15 @@ def main():
         return render_template('list.html', questions=questions)
 
 
+@app.route("/users")
+def list_users():
+    if "username" in session:
+        users = get_all_users()
+        return render_template('users.html', users=users)
+    else:
+        return redirect(url_for("main"))
+
+
 @app.route("/question/<question_id>")
 def display_a_question(question_id):
     question = get_question(question_id)
@@ -70,7 +80,6 @@ def vote_down_question(question_id):
     return redirect(url_for("main"))
 
 
-
 @app.route('/answer/<answer_id>/vote_up')
 def vote_up_answer(answer_id):
     answer_vote_up(answer_id)
@@ -83,7 +92,6 @@ def vote_down_answer(answer_id):
     answer_vote_down(answer_id)
     question_id = get_question_id(answer_id)['question_id']
     return redirect(url_for("display_a_question", question_id=question_id))
-
 
 
 @app.route('/add_questions', methods=['GET', 'POST'])
@@ -101,8 +109,8 @@ def add_question():
                         "vote_number": 0,
                         "title": request.form.get("title"),
                         "message": request.form.get("message"),
-                        "image": image_name}
-
+                        "image": image_name,
+                        "user_id": session.get('user_id')}
         add_a_question(new_question)
         return redirect("/")
 
@@ -157,7 +165,8 @@ def new_question_comment(question_id):
             return redirect("/login")
     elif request.method == "POST":
         new_comment = request.form["new_comment"]
-        write_question_comment(question_id, new_comment)
+        user_id = session.get('user_id')
+        write_question_comment(question_id, new_comment, user_id)
         return redirect("/question/" + str(question_id))
 
 
@@ -206,7 +215,8 @@ def route_add_answer(question_id):
         new_answer = {'vote_number': 0,
                       'question_id': question_id,
                       'message': request.form.get('message'),
-                      'image': image_name}
+                      'image': image_name,
+                      "user_id": session.get('user_id')}
         add_new_answer(new_answer)
         return redirect(url_for("display_a_question", question_id=question_id))
 
@@ -223,7 +233,7 @@ def delete(answer_id):
         else:
             print("The file does not exist")
         delete_answer(answer_id)
-        return redirect("/")
+        return redirect(url_for("display_a_question", question_id=question_id))
 
 
 @app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
@@ -276,7 +286,8 @@ def new_answer_comment(answer_id):
     elif request.method == "POST":
         new_comment = request.form["new_comment"]
         question_id = get_question_id(answer_id)['question_id']
-        write_answer_comment(answer_id, new_comment)
+        user_id = session.get('user_id')
+        write_answer_comment(answer_id, new_comment, user_id)
         return redirect(url_for("display_a_question",question_id=question_id))
 
 
@@ -299,6 +310,11 @@ def add_tag(question_id):
         add_new_tag(new_tag, question_id)
         return redirect(url_for("display_a_question", question_id=question_id))
 
+
+@app.route('/question/<question_id>/tag/<tag_id>/delete')
+def delete_a_tag(question_id, tag_id):
+    delete_tag(tag_id)
+    return redirect(url_for('display_a_question', question_id=question_id))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -325,7 +341,6 @@ def askm8():
     return render_template('projectinfo.html')
 
 
-
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "GET":
@@ -338,6 +353,8 @@ def login():
             user_password = user_data["password"]
             if bcrypt.checkpw(password.encode('utf-8'), user_password.encode('utf-8')):
                 session["username"] = username
+                ID = get_user_id(username)
+                session["user_id"] = ID['id']
                 return redirect("/")
             else:
                 error = "Invalid login attempt!"
@@ -375,6 +392,11 @@ def edit_comment(comment_id):
             return redirect("/")
     return redirect(url_for("display_a_question", question_id=question_id))
 
+
+
+@app.route("/user/<user_id>")
+def user_page(user_id):
+    pass
 
 
 if __name__ == "__main__":
