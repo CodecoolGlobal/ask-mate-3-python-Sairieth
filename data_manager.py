@@ -407,13 +407,13 @@ def delete_tag(cursor, tag_id):
 
 
 @database_common.connection_handler
-def get_status_by_user_id(cursor, user_id):
+def get_status_by_user_id(cursor: RealDictCursor, user_id:str):
     query = """
     SELECT accepted
     FROM answer
     WHERE user_id = %(user_id)s;"""
-    cursor.execute(query, {'user_id': user_id})
-    return cursor.fetchall()
+    cursor.execute(query, {'user_id': user_id,})
+    return cursor.fetchone()
 
 
 @database_common.connection_handler
