@@ -61,6 +61,7 @@ def get_answer_by_question_id(cursor: RealDictCursor, question_id: int) -> list:
     cursor.execute(query)
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def get_answers(cursor: RealDictCursor, answer_id: int) -> list:
     query = """
@@ -376,7 +377,6 @@ def show_tags(cursor, question_id):
     return question_tags
 
 
-# Strategy: First add new name, Second collect ID of the tag, Third Insert tag into related table to form conection WIN
 @database_common.connection_handler
 def add_new_tag(cursor, dictionary, question_id):
     cursor.execute("""
@@ -515,3 +515,16 @@ def get_question_id_from_comment(cursor: RealDictCursor, comment_id) -> list:
         WHERE id = {}""".format(comment_id)
     cursor.execute(query)
     return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_all_tags(cursor):
+    cursor.execute("""
+                    SELECT name, 
+                    COUNT(question_id) AS Number_of_Questions
+                    FROM tag 
+                    JOIN question_tag ON tag.id = question_tag.tag_id
+                    GROUP BY name;
+                    """)
+    all_tags = cursor.fetchall()
+    return all_tags
