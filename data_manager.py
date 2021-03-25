@@ -54,7 +54,7 @@ def get_question(cursor: RealDictCursor, question_id: int) -> list:
 @database_common.connection_handler
 def get_answer_by_question_id(cursor: RealDictCursor, question_id: int) -> list:
     query = """
-        SELECT id, message, submission_time, vote_number, image
+        SELECT id, message, submission_time, vote_number, image, accepted, user_id
         FROM answer
         WHERE question_id = {}
         ORDER BY id""".format(question_id)
@@ -376,7 +376,6 @@ def show_tags(cursor, question_id):
     return question_tags
 
 
-# Strategy: First add new name, Second collect ID of the tag, Third Insert tag into related table to form conection WIN
 @database_common.connection_handler
 def add_new_tag(cursor, dictionary, question_id):
     cursor.execute("""
@@ -457,22 +456,23 @@ def get_user_id(cursor: RealDictCursor, username: str):
 
 
 @database_common.connection_handler
-def get_status_by_user_id(cursor: RealDictCursor, user_id:str):
+def get_status_by_answer_id(cursor: RealDictCursor, answer_id):
     query = """
     SELECT accepted
     FROM answer
-    WHERE user_id = %(user_id)s;"""
-    cursor.execute(query, {'user_id': user_id,})
+    WHERE id = %(answer_id)s;"""
+    cursor.execute(query, {'answer_id': answer_id, })
     return cursor.fetchone()
 
 
 @database_common.connection_handler
-def set_status_by_user_id(cursor, user_id, status):
+def set_status_by_answer_id(cursor, answer_id, status):
     query = """
     UPDATE answer
     SET accepted = %(status)s
-    WHERE user_id = %(user_id)s;"""
-    cursor.execute(query, {'user_id': user_id, 'status': status})
+    WHERE id = %(answer_id)s;"""
+    cursor.execute(query, {'answer_id': answer_id, 'status': status})
+
 
 @database_common.connection_handler
 def update_comments(cursor: RealDictCursor, updated_comment:dict):
@@ -483,7 +483,7 @@ def update_comments(cursor: RealDictCursor, updated_comment:dict):
             WHERE id = %(id)s
         """
     value = {'message' : updated_comment["message"], "id": updated_comment["id"], "submission_time": updated_comment["submission_time"]}
-    cursor.execute(query,value)
+    cursor.execute(query, value)
 
 
 @database_common.connection_handler
@@ -561,3 +561,36 @@ def get_question_by_id(cursor: RealDictCursor, id:int):
     value ={"id": id}
     cursor.execute(query, value)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_all_tags(cursor):
+    cursor.execute("""
+                    SELECT name, 
+                    COUNT(question_id) AS Number_of_Questions
+                    FROM tag 
+                    JOIN question_tag ON tag.id = question_tag.tag_id
+                    GROUP BY name;
+                    """)
+    all_tags = cursor.fetchall()
+    return all_tags
+
+
+# @database_common.connection_handler
+# def check_user_id_by_question_id(cursor: RealDictCursor, user_id: str):
+#     query = """
+#     SELECT id
+#     FROM answer
+#     WHERE user_id = %(user_id)s;"""
+#     cursor.execute(query, {'user_id': user_id, })
+#     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def validate_user_by_answer_id(cursor: RealDictCursor, answer_id: str):
+    query = """
+    SELECT user_id
+    FROM answer
+    WHERE id = %(answer_id)s;"""
+    cursor.execute(query, {'answer_id': answer_id, })
+    return cursor.fetchone()
