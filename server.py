@@ -59,9 +59,16 @@ def get_user_page(user_id):
         user_details = get_user_details(user_id)
         user_questions = get_user_questions(user_id)
         user_answers = get_user_answers(user_id)
-        user_comments = get_user_comments(user_id)
+        user_question_comments = get_comments_for_question(user_id)
+        user_answer_comments = get_comment_for_answer(user_id)
+        # for answer in user_answers:
+        #     answer_comment = get_comment_for_answer(answer_id=answer['answer_id'])
+        #     answer["comment"] = answer_comment['comment_message']
+        #     user_answer_comments.append(answer)
+
         return render_template('user_page.html', user_details=user_details, user_questions=user_questions,
-                               user_answers=user_answers, user_comments=user_comments )
+                               user_answers=user_answers, user_question_comments=user_question_comments,
+                               user_answer_comments=user_answer_comments)
     else:
         return redirect(url_for("main"))
 

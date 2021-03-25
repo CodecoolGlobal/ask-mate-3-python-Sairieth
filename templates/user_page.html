@@ -79,9 +79,9 @@
     </tr>
 {% for answer in user_answers %}
     <tr>
-        <td><a href="{{ url_for('display_a_question', question_id=answer['id']) }}">{{ answer['id'] }}</a></td>
+        <td><a href="{{ url_for('display_a_question', question_id=answer['question_id']) }}">{{ answer['question_id'] }}</a></td>
         <td>{{ answer['title'] }}</td>
-        <td>{{ answer['a_message'] }}</td>
+        <td>{{ answer['answer_message'] }}</td>
     </tr>
 {% endfor %}
 </table><br><br>
@@ -90,14 +90,21 @@
 <table>
     <tr>
         <th>QuestionID</th>
-        <th>Title</th>
-        <th>Message</th>
+        <th>AnswerID</th>
+        <th>Comment</th>
     </tr>
-{% for comment in user_comments %}
+{% for comment in user_question_comments %}
     <tr>
-        <td><a href="{{ url_for('display_a_question', question_id=comment['id']) }}">{{ comment['id'] }}</a></td>
-        <td>{{ comment['title'] }}</td>
-        <td>{{ comment['c_message'] }}</td>
+        <td><a href="{{ url_for('display_a_question', question_id=comment['question_id']) }}">{{ comment['question_id'] }}</a></td>
+        <td>Nothing to see!</td>
+        <td>{{ comment['comment_message'] }}</td>
+    </tr>
+{% endfor %}
+{% for comment in user_answer_comments %}
+    <tr>
+        <td><a href="{{ url_for('display_a_question', question_id=comment['question_id']) }}">{{ comment['question_id'] }}</a></td>
+        <td>{{ comment['answer_id'] }}</td>
+        <td>{{ comment['comment_message'] }}</td>
     </tr>
 {% endfor %}
 </table><br><br>
