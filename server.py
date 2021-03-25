@@ -44,7 +44,6 @@ def main():
         return render_template('list.html', questions=questions)
 
 
-@app.route("/question/<question_id>", methods=['GET', 'POST'])
 @app.route("/users")
 def list_users():
     if "username" in session:
