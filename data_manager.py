@@ -376,7 +376,6 @@ def show_tags(cursor, question_id):
     return question_tags
 
 
-# Strategy: First add new name, Second collect ID of the tag, Third Insert tag into related table to form conection WIN
 @database_common.connection_handler
 def add_new_tag(cursor, dictionary, question_id):
     cursor.execute("""
