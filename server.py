@@ -72,7 +72,6 @@ def vote_up_question(question_id):
     if "user_id" in session:
         reputation_up(user_id, 5)
         return redirect(url_for("main"))
-
     else:
         question_vote_up(question_id)
         return redirect(url_for("main"))

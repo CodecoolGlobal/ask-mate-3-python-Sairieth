@@ -460,7 +460,7 @@ def reputation_down(cursor: RealDictCursor, user_id: int, value:int):
     WHERE id = %(user_id)s
     """
     dict = {"user_id": user_id, "value": value}
-    cursor.execute(query, dict)
+    cursor.execute(query, dict)#
 
 
 @database_common.connection_handler
