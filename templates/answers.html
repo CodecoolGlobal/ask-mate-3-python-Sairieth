@@ -51,6 +51,7 @@
 <tr>
     <th>Message</th>
     <th>Submission time</th>
+    <th>Status</th>
 </tr>
     {% for answer in answer %}
 
@@ -65,14 +66,18 @@
     <tr>
         <th>Message</th>
         <th>Submission_time</th>
+        <th>Edited count</th>
     </tr>
         {% for comment in answer_comments %}
     <tr>
         <td>{{ comment['message'] }}</td>
         <td>{{ comment['submission_time'] }}</td>
+        <td>{{ comment['edited_count'] }}</td>
         <td><a href="{{url_for("are_you_sure", comment=comment["message"],
          comment_id=comment["id"], question_id=question_id)}}" >
-            <button type="button" >&#9851;</button></a></td>
+        <button type="button" >&#9851;</button></a></td>
+         <td><a href="{{ url_for("edit_comment", comment_id=comment["id"]) }}">Edit comment</a> </td>
+
     </tr>
     {% endfor %}
 </table><br>

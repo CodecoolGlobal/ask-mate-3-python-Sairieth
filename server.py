@@ -44,6 +44,7 @@ def main():
         return render_template('list.html', questions=questions)
 
 
+@app.route("/question/<question_id>", methods=['GET', 'POST'])
 @app.route("/users")
 def list_users():
     if "username" in session:
@@ -52,19 +53,30 @@ def list_users():
     else:
         return redirect(url_for("main"))
 
+
 @app.route("/question/<question_id>")
 def display_a_question(question_id):
-    question = get_question(question_id)
-    increase_view_number(question_id)
-    question_tags = show_tags(question_id)
-    answers = get_answer_by_question_id(question_id)
-    question_comments = get_question_comments(question_id)
-    return render_template('display_a_question.html',
-                           question=question,
-                           question_id=question_id,
-                           answers=answers,
-                           question_comments=question_comments,
-                           question_tags=question_tags)
+    if request.method == 'POST':
+        set_status()
+        user_id = 5
+        status_data = get_status_by_user_id(user_id)
+        status = status_data["accepted"]
+        return redirect(url_for('display_a_question', question_id=question_id, status=status))
+    else:
+        user_id = 5
+        status_data = get_status_by_user_id(user_id)
+        status = status_data["accepted"]
+        question = get_question(question_id)
+        increase_view_number(question_id)
+        question_tags = show_tags(question_id)
+        answers = get_answer_by_question_id(question_id)
+        question_comments = get_question_comments(question_id)
+        return render_template('display_a_question.html',
+                            question=question,
+                            question_id=question_id,
+                            answers=answers,
+                            question_comments=question_comments,
+                            question_tags=question_tags, status=status)
 
 
 @app.route('/question/<question_id>/vote_up')
@@ -83,7 +95,6 @@ def vote_down_question(question_id):
     return redirect(url_for("main"))
 
 
-
 @app.route('/answer/<answer_id>/vote_up')
 def vote_up_answer(answer_id):
     answer_vote_up(answer_id)
@@ -96,7 +107,6 @@ def vote_down_answer(answer_id):
     answer_vote_down(answer_id)
     question_id = get_question_id(answer_id)['question_id']
     return redirect(url_for("display_a_question", question_id=question_id))
-
 
 
 @app.route('/add_questions', methods=['GET', 'POST'])
@@ -114,8 +124,8 @@ def add_question():
                         "vote_number": 0,
                         "title": request.form.get("title"),
                         "message": request.form.get("message"),
-                        "image": image_name}
-
+                        "image": image_name,
+                        "user_id": session.get('user_id')}
         add_a_question(new_question)
         return redirect("/")
 
@@ -171,8 +181,9 @@ def new_question_comment(question_id):
     elif request.method == "POST":
         new_comment = request.form["new_comment"]
         write_question_comment(question_id, new_comment)
+        user_id = session.get('user_id')
+        write_question_comment(question_id, new_comment, user_id)
         return redirect("/question/" + str(question_id))
-
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -219,7 +230,9 @@ def route_add_answer(question_id):
         new_answer = {'vote_number': 0,
                       'question_id': question_id,
                       'message': request.form.get('message'),
-                      'image': image_name}
+                      'image': image_name,
+                      'accepted': False,
+                      'user_id': '5'}
         add_new_answer(new_answer)
         return redirect(url_for("display_a_question", question_id=question_id))
 
@@ -290,7 +303,11 @@ def new_answer_comment(answer_id):
         new_comment = request.form["new_comment"]
         question_id = get_question_id(answer_id)['question_id']
         write_answer_comment(answer_id, new_comment)
+        user_id = session.get('user_id')
+        write_answer_comment(answer_id, new_comment, user_id)
         return redirect(url_for("display_a_question",question_id=question_id))
+
+
 
 
 @app.route('/answer/show_answers')
@@ -356,6 +373,8 @@ def login():
             if bcrypt.checkpw(password.encode('utf-8'), user_password.encode('utf-8')):
                 session["user_id"] = get_user_id(username)
                 session["username"] = username
+                ID = get_user_id(username)
+                session["user_id"] = ID['id']
                 return redirect("/")
             else:
                 error = "Invalid login attempt!"
@@ -371,6 +390,44 @@ def logout():
     session.pop("user_id", None)
 
     return redirect("/")
+
+#@app.route("/set_status")
+def set_status():
+    user_id = 5
+    status_data = get_status_by_user_id(user_id)
+    status = status_data["accepted"]
+    print(status)
+    if status:
+        set_status_by_user_id(user_id, False)
+    else:
+        set_status_by_user_id(user_id, True)
+
+
+@app.route("/comment/<comment_id>/edit_comment", methods=["POST", "GET"])
+def edit_comment(comment_id):
+    if request.method == "GET":
+        comment = get_comment_by_id(comment_id)
+        return render_template("edit_comment.html", comment=comment, comment_id=comment_id)
+    elif request.method == "POST":
+        current_time = datedata
+        updated_comment = {
+            "message" : request.form.get("new-message"),
+            "id" : comment_id,
+            "submission_time": current_time}
+        question_id = get_question_id_from_comment(comment_id)['question_id']
+        increase_edit_number(comment_id)
+        update_comments(updated_comment)
+        if question_id:
+            return redirect('/question/' + str(question_id))
+        else:
+            return redirect("/")
+    return redirect(url_for("display_a_question", question_id=question_id))
+
+
+
+@app.route("/user/<user_id>")
+def user_page(user_id):
+    pass
 
 
 if __name__ == "__main__":

@@ -61,7 +61,6 @@ def get_answer_by_question_id(cursor: RealDictCursor, question_id: int) -> list:
     cursor.execute(query)
     return cursor.fetchall()
 
-
 @database_common.connection_handler
 def get_answers(cursor: RealDictCursor, answer_id: int) -> list:
     query = """
@@ -111,15 +110,17 @@ def answer_vote_down(cursor: RealDictCursor, answer_id: int) -> list:
 @database_common.connection_handler
 def add_a_question(cursor, dictionary):
     cursor.execute("""
-                    INSERT INTO question(submission_time, view_number, vote_number, title, message, image)
-                    VALUES(%(submission_time)s, %(view_number)s, %(vote_number)s, %(title)s, %(message)s, %(image)s);
+                    INSERT INTO question(submission_time, view_number, vote_number, title, message, image, user_id)
+                    VALUES(%(submission_time)s, %(view_number)s, %(vote_number)s, %(title)s, %(message)s, %(image)s,
+                     %(user_id)s);
                      """,
                    {'submission_time': datedata,
                     'view_number': dictionary['view_number'],
                     'vote_number': dictionary['vote_number'],
                     'title': dictionary['title'],
                     'message': dictionary['message'],
-                    'image': dictionary['image']})
+                    'image': dictionary['image'],
+                    'user_id': dictionary['user_id']})
 
 
 @database_common.connection_handler
@@ -181,10 +182,10 @@ def get_question_id(cursor: RealDictCursor, answer_id: int) -> list:
 
 
 @database_common.connection_handler
-def write_question_comment(cursor: RealDictCursor, question_id: int, new_comment: str) -> list:
+def write_question_comment(cursor: RealDictCursor, question_id: int, new_comment: str, user_id: int) -> list:
     query = """
-    INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
-    VALUES ({}, NULL ,'{}',CURRENT_TIMESTAMP,0);""".format(question_id, new_comment)
+    INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count, user_id)
+    VALUES ({}, NULL ,'{}',CURRENT_TIMESTAMP,0, {});""".format(question_id, new_comment, user_id)
     cursor.execute(query)
 
 
@@ -201,14 +202,16 @@ def update_question(cursor: RealDictCursor, edited_data: dict, question_id: int,
 @database_common.connection_handler
 def add_new_answer(cursor, dictionary):
     cursor.execute("""
-                    INSERT INTO answer(submission_time, vote_number, question_id, message, image)
-                    VALUES(%(submission_time)s, %(vote_number)s, %(question_id)s, %(message)s, %(image)s);
+                    INSERT INTO answer(submission_time, vote_number, question_id, message, image, accepted, user_id)
+                    VALUES(%(submission_time)s, %(vote_number)s, %(question_id)s, %(message)s, %(image)s, %(accepted)s, %(user_id)s);
                     """,
                    {'submission_time': datedata,
                     'vote_number': dictionary['vote_number'],
                     'question_id': dictionary['question_id'],
                     'message': dictionary['message'],
-                    'image': dictionary['image']})
+                    'image': dictionary['image'],
+                    'accepted': dictionary['accepted'],
+                    'user_id': dictionary['user_id']})
 
 
 @database_common.connection_handler
@@ -322,10 +325,10 @@ def increase_view_number(cursor: RealDictCursor, question_id: str) -> list:
 
 
 @database_common.connection_handler
-def write_answer_comment(cursor: RealDictCursor, answer_id: int, new_comment: str) -> list:
+def write_answer_comment(cursor: RealDictCursor, answer_id: int, new_comment: str, user_id: int) -> list:
     query = """
-    INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
-    VALUES (NULl, {} ,'{}',CURRENT_TIMESTAMP,0);""".format( answer_id, new_comment)
+    INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count, user_id)
+    VALUES (NULl, {} ,'{}',CURRENT_TIMESTAMP,0,{});""".format(answer_id, new_comment, user_id)
     cursor.execute(query)
 
 
@@ -431,6 +434,7 @@ def delete_tag(cursor, tag_id):
                     """,
                    {'tag_id': tag_id})
 
+
 @database_common.connection_handler
 def get_all_users(cursor: RealDictCursor) -> list:
     query = """
@@ -439,6 +443,78 @@ def get_all_users(cursor: RealDictCursor) -> list:
         ORDER BY username ASC"""
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_user_id(cursor: RealDictCursor, username: str):
+    query = """
+        SELECT id
+        FROM users
+        WHERE username = %(usr)s"""
+    usr = {'usr': username}
+    cursor.execute(query, usr)
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_status_by_user_id(cursor: RealDictCursor, user_id:str):
+    query = """
+    SELECT accepted
+    FROM answer
+    WHERE user_id = %(user_id)s;"""
+    cursor.execute(query, {'user_id': user_id,})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def set_status_by_user_id(cursor, user_id, status):
+    query = """
+    UPDATE answer
+    SET accepted = %(status)s
+    WHERE user_id = %(user_id)s;"""
+    cursor.execute(query, {'user_id': user_id, 'status': status})
+@database_common.connection_handler
+def update_comments(cursor: RealDictCursor, updated_comment:dict):
+    query = """ 
+            UPDATE comment
+            SET message = %(message)s,
+            submission_time = %(submission_time)s
+            WHERE id = %(id)s
+        """
+    value = {'message' : updated_comment["message"], "id": updated_comment["id"], "submission_time": updated_comment["submission_time"]}
+    cursor.execute(query,value)
+
+
+@database_common.connection_handler
+def get_comment_by_id(cursor : RealDictCursor, id: int):
+    query = """
+            SELECT *
+            FROM comment
+            WHERE id = %(id)s
+            """
+    data = {'id': id}
+    cursor.execute(query, data)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def increase_edit_number(cursor: RealDictCursor, comment_id):
+    query = """
+            UPDATE comment
+            SET edited_count = edited_count + 1
+            WHERE id = (%s)
+    """
+    cursor.execute(query, (comment_id,))
+
+
+@database_common.connection_handler
+def get_question_id_from_comment(cursor: RealDictCursor, comment_id) -> list:
+    query = """
+        SELECT question_id 
+        FROM comment
+        WHERE id = {}""".format(comment_id)
+    cursor.execute(query)
+    return cursor.fetchone()
 
 
 @database_common.connection_handler
