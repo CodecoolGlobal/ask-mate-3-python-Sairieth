@@ -61,7 +61,6 @@ def get_answer_by_question_id(cursor: RealDictCursor, question_id: int) -> list:
     cursor.execute(query)
     return cursor.fetchall()
 
-
 @database_common.connection_handler
 def get_answers(cursor: RealDictCursor, answer_id: int) -> list:
     query = """
@@ -474,3 +473,45 @@ def set_status_by_user_id(cursor, user_id, status):
     SET accepted = %(status)s
     WHERE user_id = %(user_id)s;"""
     cursor.execute(query, {'user_id': user_id, 'status': status})
+@database_common.connection_handler
+def update_comments(cursor: RealDictCursor, updated_comment:dict):
+    query = """ 
+            UPDATE comment
+            SET message = %(message)s,
+            submission_time = %(submission_time)s
+            WHERE id = %(id)s
+        """
+    value = {'message' : updated_comment["message"], "id": updated_comment["id"], "submission_time": updated_comment["submission_time"]}
+    cursor.execute(query,value)
+
+
+@database_common.connection_handler
+def get_comment_by_id(cursor : RealDictCursor, id: int):
+    query = """
+            SELECT *
+            FROM comment
+            WHERE id = %(id)s
+            """
+    data = {'id': id}
+    cursor.execute(query, data)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def increase_edit_number(cursor: RealDictCursor, comment_id):
+    query = """
+            UPDATE comment
+            SET edited_count = edited_count + 1
+            WHERE id = (%s)
+    """
+    cursor.execute(query, (comment_id,))
+
+
+@database_common.connection_handler
+def get_question_id_from_comment(cursor: RealDictCursor, comment_id) -> list:
+    query = """
+        SELECT question_id 
+        FROM comment
+        WHERE id = {}""".format(comment_id)
+    cursor.execute(query)
+    return cursor.fetchone()
