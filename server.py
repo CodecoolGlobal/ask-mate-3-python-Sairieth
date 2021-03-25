@@ -301,6 +301,12 @@ def get_answers_comments():
     return render_template("answers.html", question_id=question_id, answer_id=answer_id, answer_comments=answer_comments, answer=answer, question=question)
 
 
+@app.route('/tags')
+def route_tags():
+    tags_list = get_all_tags()
+    return render_template('tag_list.html', tags_list=tags_list)
+
+
 @app.route("/question/<question_id>/new-tag", methods=['GET', 'POST'])
 def add_tag(question_id):
     if request.method == 'GET':
