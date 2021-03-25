@@ -73,7 +73,7 @@ def vote_up_question(question_id):
     user_id = data.get("user_id")
     reputation_up(user_id, 5)
     question_vote_up(question_id)
-    return redirect(url_for("main"))
+    return redirect("/")
 
 
 @app.route('/question/<question_id>/vote_down')
@@ -82,7 +82,7 @@ def vote_down_question(question_id):
     user_id = data.get("user_id")
     reputation_down(user_id, 2)
     question_vote_down(question_id)
-    return redirect(url_for("main"))
+    return redirect("/")
 
 
 @app.route('/answer/<answer_id>/vote_up')
@@ -439,10 +439,14 @@ def change_status(answer_id):
         if user_id == check:
             status_data = get_status_by_answer_id(answer_id)
             status = status_data["accepted"]
+            data = get_answer_by_comment_id(answer_id)[0]
+            user_id = data.get("user_id")
             if status:
                 set_status_by_answer_id(answer_id, False)
+                reputation_down(user_id, 15)
             else:
                 set_status_by_answer_id(answer_id, True)
+                reputation_up(user_id, 15)
             return redirect(url_for("display_a_question", answer_id=answer_id, question_id=question_id))
         else:
             flash('You have no permission to mark this accepted.')

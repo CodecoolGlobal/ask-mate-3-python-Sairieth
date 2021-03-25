@@ -517,6 +517,14 @@ def get_question_id_from_comment(cursor: RealDictCursor, comment_id) -> list:
     cursor.execute(query)
     return cursor.fetchone()
 
+@database_common.connection_handler
+def get_question_id(cursor: RealDictCursor, answer_id: int) -> list:
+    query = """
+        SELECT question_id 
+        FROM answer
+        WHERE id = {}""".format(answer_id)
+    cursor.execute(query)
+    return cursor.fetchone()
 
 @database_common.connection_handler
 def reputation_up(cursor: RealDictCursor, user_id: int, value:int):
@@ -573,6 +581,7 @@ def get_answer_by_comment_id(cursor: RealDictCursor, id:int):
     value ={"id": id}
     cursor.execute(query, value)
     return cursor.fetchall()
+
 
 @database_common.connection_handler
 def get_all_tags(cursor):
