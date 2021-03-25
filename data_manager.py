@@ -453,3 +453,16 @@ def get_user_id(cursor: RealDictCursor, username: str):
     usr = {'usr': username}
     cursor.execute(query, usr)
     return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_all_tags(cursor):
+    cursor.execute("""
+                    SELECT name, 
+                    COUNT(question_id) AS Number_of_Questions
+                    FROM tag 
+                    JOIN question_tag ON tag.id = question_tag.tag_id
+                    GROUP BY name;
+                    """)
+    all_tags = cursor.fetchall()
+    return all_tags
