@@ -43,19 +43,29 @@ def main():
         return render_template('list.html', questions=questions)
 
 
-@app.route("/question/<question_id>")
+@app.route("/question/<question_id>", methods=['GET', 'POST'])
 def display_a_question(question_id):
-    question = get_question(question_id)
-    increase_view_number(question_id)
-    question_tags = show_tags(question_id)
-    answers = get_answer_by_question_id(question_id)
-    question_comments = get_question_comments(question_id)
-    return render_template('display_a_question.html',
-                           question=question,
-                           question_id=question_id,
-                           answers=answers,
-                           question_comments=question_comments,
-                           question_tags=question_tags)
+    if request.method == 'POST':
+        set_status()
+        user_id = 5
+        status_data = get_status_by_user_id(user_id)
+        status = status_data["accepted"]
+        return redirect(url_for('display_a_question', question_id=question_id, status=status))
+    else:
+        user_id = 5
+        status_data = get_status_by_user_id(user_id)
+        status = status_data["accepted"]
+        question = get_question(question_id)
+        increase_view_number(question_id)
+        question_tags = show_tags(question_id)
+        answers = get_answer_by_question_id(question_id)
+        question_comments = get_question_comments(question_id)
+        return render_template('display_a_question.html',
+                            question=question,
+                            question_id=question_id,
+                            answers=answers,
+                            question_comments=question_comments,
+                            question_tags=question_tags, status=status)
 
 
 @app.route('/question/<question_id>/vote_up')
@@ -206,7 +216,9 @@ def route_add_answer(question_id):
         new_answer = {'vote_number': 0,
                       'question_id': question_id,
                       'message': request.form.get('message'),
-                      'image': image_name}
+                      'image': image_name,
+                      'accepted': False,
+                      'user_id': '5'}
         add_new_answer(new_answer)
         return redirect(url_for("display_a_question", question_id=question_id))
 
@@ -218,6 +230,8 @@ def delete(answer_id):
         image_path = get_image_name_by_answer_id(answer_id)
         for answer in image_path:
             image_name = answer["image"]
+            print("EZZEZ")
+            print(image_name)
         if os.path.exists(image_name):
             os.remove(image_name)
         else:
@@ -284,11 +298,12 @@ def new_answer_comment(answer_id):
 def get_answers_comments():
     answer_id = request.args.get("answer_id")
     question_id = request.args.get("question_id")
+    print(question_id)
+    print(answer_id)
     answer = get_answers(answer_id)
     question = get_question(question_id)
     answer_comments = get_answer_comments(answer_id)
-    status = set_status()
-    return render_template("answers.html", question_id=question_id, answer_id=answer_id, answer_comments=answer_comments, answer=answer, question=question, status=status)
+    return render_template("answers.html", question_id=question_id, answer_id=answer_id, answer_comments=answer_comments, answer=answer, question=question)
 
 
 @app.route("/question/<question_id>/new-tag", methods=['GET', 'POST'])
@@ -342,6 +357,7 @@ def login():
             password = request.form["password"]
             user_data = get_user_data(username, password)
             user_password = user_data["password"]
+            print(user_data)
             if bcrypt.checkpw(password.encode('utf-8'), user_password.encode('utf-8')):
                 session["username"] = username
                 return redirect("/")
@@ -357,15 +373,16 @@ def logout():
     session.pop("username", None)
     return redirect("/")
 
-
-def set_status(status):
-    try:
-        if status:
-            status = False
-        else:
-            status = True
-    except NameError:
-        status = "Not Set"
+#@app.route("/set_status")
+def set_status():
+    user_id = 5
+    status_data = get_status_by_user_id(user_id)
+    status = status_data["accepted"]
+    print(status)
+    if status:
+        set_status_by_user_id(user_id, False)
+    else:
+        set_status_by_user_id(user_id, True)
 
 
 if __name__ == "__main__":
