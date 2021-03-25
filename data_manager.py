@@ -471,8 +471,9 @@ def set_status_by_answer_id(cursor, answer_id, status):
     query = """
     UPDATE answer
     SET accepted = %(status)s
-    WHERE user_id = %(user_id)s;"""
-    cursor.execute(query, {'user_id': user_id, 'status': status})
+    WHERE id = %(answer_id)s;"""
+    cursor.execute(query, {'answer_id': answer_id, 'status': status})
+
 
 @database_common.connection_handler
 def update_comments(cursor: RealDictCursor, updated_comment:dict):
@@ -483,7 +484,7 @@ def update_comments(cursor: RealDictCursor, updated_comment:dict):
             WHERE id = %(id)s
         """
     value = {'message' : updated_comment["message"], "id": updated_comment["id"], "submission_time": updated_comment["submission_time"]}
-    cursor.execute(query,value)
+    cursor.execute(query, value)
 
 
 @database_common.connection_handler
@@ -529,9 +530,6 @@ def get_all_tags(cursor):
                     """)
     all_tags = cursor.fetchall()
     return all_tags
-
-    WHERE id = %(answer_id)s;"""
-    cursor.execute(query, {'answer_id': answer_id, 'status': status})
 
 
 # @database_common.connection_handler
