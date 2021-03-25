@@ -473,6 +473,8 @@ def set_status_by_user_id(cursor, user_id, status):
     SET accepted = %(status)s
     WHERE user_id = %(user_id)s;"""
     cursor.execute(query, {'user_id': user_id, 'status': status})
+
+
 @database_common.connection_handler
 def update_comments(cursor: RealDictCursor, updated_comment:dict):
     query = """ 
