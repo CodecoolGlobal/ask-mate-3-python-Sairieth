@@ -52,7 +52,7 @@ def list_users():
     else:
         return redirect(url_for("main"))
 
-
+@app.route("/question/<question_id>")
 def display_a_question(question_id):
     question = get_question(question_id)
     increase_view_number(question_id)
@@ -433,7 +433,8 @@ def change_status(answer_id):
             return redirect(url_for("display_a_question", answer_id=answer_id, question_id=question_id))
         else:
             flash('You have no permission to mark this accepted.')
-            return redirect(url_for("display_a_question", answer_id=answer_id, question_id=question_id))
+            print('bug')
+            return redirect(url_for("display_a_question", question_id=question_id))
 
 
 if __name__ == "__main__":
