@@ -81,12 +81,13 @@ def display_a_question(question_id):
 
 @app.route('/question/<question_id>/vote_up')
 def vote_up_question(question_id):
-    if "user_id" in session:
-        reputation_up(user_id, 5)
-        return redirect(url_for("main"))
-    else:
-        question_vote_up(question_id)
-        return redirect(url_for("main"))
+    data = get_question_by_id(question_id)[0]
+    print(data)
+    user_id = data.get("user_id")
+    print(user_id)
+    reputation_up(user_id, 5)
+    question_vote_up(question_id)
+    return redirect(url_for("main"))
 
 
 @app.route('/question/<question_id>/vote_down')

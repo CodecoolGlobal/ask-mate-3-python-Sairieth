@@ -172,7 +172,7 @@ def get_comments(cursor: RealDictCursor, question_id) -> list:
 
 
 @database_common.connection_handler
-def get_question_id(cursor: RealDictCursor, answer_id: int) -> list:
+def get_question_id_from_answer(cursor: RealDictCursor, answer_id: int) -> list:
     query = """
         SELECT question_id 
         FROM answer
@@ -473,6 +473,7 @@ def set_status_by_user_id(cursor, user_id, status):
     SET accepted = %(status)s
     WHERE user_id = %(user_id)s;"""
     cursor.execute(query, {'user_id': user_id, 'status': status})
+
 @database_common.connection_handler
 def update_comments(cursor: RealDictCursor, updated_comment:dict):
     query = """ 
@@ -550,4 +551,13 @@ def get_user_id(cursor: RealDictCursor, username: str):
     return cursor.fetchone()
 
 
-
+@database_common.connection_handler
+def get_question_by_id(cursor: RealDictCursor, id:int):
+    query = """
+    SELECT *
+    FROM users
+    WHERE id = %(id)s
+    """
+    value ={"id": id}
+    cursor.execute(query, value)
+    return cursor.fetchall()
