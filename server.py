@@ -53,7 +53,6 @@ def list_users():
         return redirect(url_for("main"))
 
 
-@app.route("/question/<question_id>", methods=['GET', 'POST'])
 def display_a_question(question_id):
     question = get_question(question_id)
     increase_view_number(question_id)
@@ -168,7 +167,6 @@ def new_question_comment(question_id):
         user_id = session.get('user_id')
         write_question_comment(question_id, new_comment, user_id)
         return redirect("/question/" + str(question_id))
-
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -292,6 +290,8 @@ def new_answer_comment(answer_id):
         return redirect(url_for("display_a_question",question_id=question_id))
 
 
+
+
 @app.route('/answer/show_answers')
 def get_answers_comments():
     answer_id = request.args.get("answer_id")
@@ -300,6 +300,12 @@ def get_answers_comments():
     question = get_question(question_id)
     answer_comments = get_answer_comments(answer_id)
     return render_template("answers.html", question_id=question_id, answer_id=answer_id, answer_comments=answer_comments, answer=answer, question=question)
+
+
+@app.route('/tags')
+def route_tags():
+    tags_list = get_all_tags()
+    return render_template('tag_list.html', tags_list=tags_list)
 
 
 @app.route("/question/<question_id>/new-tag", methods=['GET', 'POST'])
@@ -381,6 +387,28 @@ def logout():
 #         set_status_by_user_id(user_id, True)
 
 
+@app.route("/comment/<comment_id>/edit_comment", methods=["POST", "GET"])
+def edit_comment(comment_id):
+    if request.method == "GET":
+        comment = get_comment_by_id(comment_id)
+        return render_template("edit_comment.html", comment=comment, comment_id=comment_id)
+    elif request.method == "POST":
+        current_time = datedata
+        updated_comment = {
+            "message" : request.form.get("new-message"),
+            "id" : comment_id,
+            "submission_time": current_time}
+        question_id = get_question_id_from_comment(comment_id)['question_id']
+        increase_edit_number(comment_id)
+        update_comments(updated_comment)
+        if question_id:
+            return redirect('/question/' + str(question_id))
+        else:
+            return redirect("/")
+    return redirect(url_for("display_a_question", question_id=question_id))
+
+
+
 @app.route("/user/<user_id>")
 def user_page(user_id):
     pass
@@ -398,7 +426,7 @@ def change_status(answer_id):
         if user_id == check:
             status_data = get_status_by_answer_id(answer_id)
             status = status_data["accepted"]
-            if status:  
+            if status:
                 set_status_by_answer_id(answer_id, False)
             else:
                 set_status_by_answer_id(answer_id, True)

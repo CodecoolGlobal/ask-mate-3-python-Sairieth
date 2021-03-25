@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Edit comment</title>
-        <style>
+    <meta charset="UTF-8">
+    <title>Tags</title>
+    <style>
         body
         {
         background-image:url('https://cdn.suwalls.com/wallpapers/anime/totoro-33207-2560x1440.jpg');
@@ -11,10 +11,6 @@
         }
     </style>
     <style>
-        body {
-            background-color: #bbd1aa;
-        }
-
         h1 {
             color: #0d420c;
         }
@@ -36,14 +32,20 @@
         }
     </style>
 </head>
-
 <body>
-    <h1>Edit comment</h1>
-        <form action="/comment/{{ comment_id}}/edit_comment"  method="POST">
-            <label for="new-message:">Message:</label><br>
-            {% for c in comment %}
-                <textarea id="new-message" name="new-message" cols="30" rows="10" required>{{ c["message"] }}</textarea>
-            {% endfor %}
-        <button type="submit">Edit</button>
+<h1>All Tags</h1>
+<table>
+    <tr>
+        <th>Tag</th>
+        <th>How many question has this tag</th>
+    </tr>
+    {% for tag in tags_list %}
+    <tr>
+        <td>{{ tag['name'] }}</td>
+        <td>{{ tag['number_of_questions'] }}</td>
+    </tr>
+    {% endfor %}
+</table><br><br>
+<button type="button"><a href="/">Back to main page</a></button>
 </body>
 </html>

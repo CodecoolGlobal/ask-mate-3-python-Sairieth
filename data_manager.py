@@ -377,7 +377,6 @@ def show_tags(cursor, question_id):
     return question_tags
 
 
-# Strategy: First add new name, Second collect ID of the tag, Third Insert tag into related table to form conection WIN
 @database_common.connection_handler
 def add_new_tag(cursor, dictionary, question_id):
     cursor.execute("""
@@ -472,6 +471,65 @@ def set_status_by_answer_id(cursor, answer_id, status):
     query = """
     UPDATE answer
     SET accepted = %(status)s
+    WHERE user_id = %(user_id)s;"""
+    cursor.execute(query, {'user_id': user_id, 'status': status})
+
+@database_common.connection_handler
+def update_comments(cursor: RealDictCursor, updated_comment:dict):
+    query = """ 
+            UPDATE comment
+            SET message = %(message)s,
+            submission_time = %(submission_time)s
+            WHERE id = %(id)s
+        """
+    value = {'message' : updated_comment["message"], "id": updated_comment["id"], "submission_time": updated_comment["submission_time"]}
+    cursor.execute(query,value)
+
+
+@database_common.connection_handler
+def get_comment_by_id(cursor : RealDictCursor, id: int):
+    query = """
+            SELECT *
+            FROM comment
+            WHERE id = %(id)s
+            """
+    data = {'id': id}
+    cursor.execute(query, data)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def increase_edit_number(cursor: RealDictCursor, comment_id):
+    query = """
+            UPDATE comment
+            SET edited_count = edited_count + 1
+            WHERE id = (%s)
+    """
+    cursor.execute(query, (comment_id,))
+
+
+@database_common.connection_handler
+def get_question_id_from_comment(cursor: RealDictCursor, comment_id) -> list:
+    query = """
+        SELECT question_id 
+        FROM comment
+        WHERE id = {}""".format(comment_id)
+    cursor.execute(query)
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_all_tags(cursor):
+    cursor.execute("""
+                    SELECT name, 
+                    COUNT(question_id) AS Number_of_Questions
+                    FROM tag 
+                    JOIN question_tag ON tag.id = question_tag.tag_id
+                    GROUP BY name;
+                    """)
+    all_tags = cursor.fetchall()
+    return all_tags
+
     WHERE id = %(answer_id)s;"""
     cursor.execute(query, {'answer_id': answer_id, 'status': status})
 
