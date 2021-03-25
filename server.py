@@ -164,9 +164,11 @@ def new_question_comment(question_id):
         else:
             return redirect("/login")
     elif request.method == "POST":
-        new_comment = request.form["new_comment"]
+        submission_time = datedata
+        edited_count = 0
+        message = request.form["new_comment"]
         user_id = session.get('user_id')
-        write_question_comment(question_id, new_comment, user_id)
+        write_question_comment(question_id, message, submission_time, edited_count,user_id)
         return redirect("/question/" + str(question_id))
 
 
@@ -284,11 +286,14 @@ def new_answer_comment(answer_id):
         else:
             return redirect("/login")
     elif request.method == "POST":
-        new_comment = request.form["new_comment"]
+        message = request.form["new_comment"]
         question_id = get_question_id(answer_id)['question_id']
+        edited_count = 0
+        submission_time = datedata
         user_id = session.get('user_id')
-        write_answer_comment(answer_id, new_comment, user_id)
+        write_answer_comment(answer_id, message, submission_time,edited_count, user_id)
         return redirect(url_for("display_a_question",question_id=question_id))
+
 
 
 @app.route('/answer/show_answers')
@@ -381,10 +386,8 @@ def edit_comment(comment_id):
             "message" : request.form.get("new-message"),
             "id" : comment_id,
             "submission_time": current_time}
-        print(updated_comment)
         question_id = get_question_id_from_comment(comment_id)['question_id']
         increase_edit_number(comment_id)
-
         update_comments(updated_comment)
         if question_id:
             return redirect('/question/' + str(question_id))
