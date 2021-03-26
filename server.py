@@ -90,18 +90,27 @@ def display_a_question(question_id):
 
 @app.route('/question/<question_id>/vote_up')
 def vote_up_question(question_id):
+    data = get_question_by_id(question_id)[0]
+    user_id = data.get("user_id")
+    reputation_up(user_id, 5)
     question_vote_up(question_id)
-    return redirect(url_for("main"))
+    return redirect("/")
 
 
 @app.route('/question/<question_id>/vote_down')
 def vote_down_question(question_id):
+    data = get_question_by_id(question_id)[0]
+    user_id = data.get("user_id")
+    reputation_down(user_id, 2)
     question_vote_down(question_id)
-    return redirect(url_for("main"))
+    return redirect("/")
 
 
 @app.route('/answer/<answer_id>/vote_up')
 def vote_up_answer(answer_id):
+    data = get_answer_by_comment_id(answer_id)[0]
+    user_id = data.get("user_id")
+    reputation_up(user_id, 10)
     answer_vote_up(answer_id)
     question_id = get_question_id(answer_id)['question_id']
     return redirect(url_for("display_a_question", question_id=question_id))
@@ -109,6 +118,9 @@ def vote_up_answer(answer_id):
 
 @app.route('/answer/<answer_id>/vote_down')
 def vote_down_answer(answer_id):
+    data = get_answer_by_comment_id(answer_id)[0]
+    user_id = data.get("user_id")
+    reputation_down(user_id, 2)
     answer_vote_down(answer_id)
     question_id = get_question_id(answer_id)['question_id']
     return redirect(url_for("display_a_question", question_id=question_id))
@@ -311,6 +323,8 @@ def new_answer_comment(answer_id):
         return redirect(url_for("display_a_question",question_id=question_id))
 
 
+
+
 @app.route('/answer/show_answers')
 def get_answers_comments():
     answer_id = request.args.get("answer_id")
@@ -446,10 +460,14 @@ def change_status(answer_id):
         if user_id == check:
             status_data = get_status_by_answer_id(answer_id)
             status = status_data["accepted"]
+            data = get_answer_by_comment_id(answer_id)[0]
+            user_id = data.get("user_id")
             if status:
                 set_status_by_answer_id(answer_id, False)
+                reputation_down(user_id, 15)
             else:
                 set_status_by_answer_id(answer_id, True)
+                reputation_up(user_id, 15)
             return redirect(url_for("display_a_question", answer_id=answer_id, question_id=question_id))
         else:
             flash('You have no permission to mark this accepted.')

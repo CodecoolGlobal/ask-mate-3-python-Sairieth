@@ -61,7 +61,6 @@ def get_answer_by_question_id(cursor: RealDictCursor, question_id: int) -> list:
     cursor.execute(query)
     return cursor.fetchall()
 
-
 @database_common.connection_handler
 def get_answers(cursor: RealDictCursor, answer_id: int) -> list:
     query = """
@@ -173,7 +172,7 @@ def get_comments(cursor: RealDictCursor, question_id) -> list:
 
 
 @database_common.connection_handler
-def get_question_id(cursor: RealDictCursor, answer_id: int) -> list:
+def get_question_id_from_answer(cursor: RealDictCursor, answer_id: int) -> list:
     query = """
         SELECT question_id 
         FROM answer
@@ -577,6 +576,71 @@ def get_question_id_from_comment(cursor: RealDictCursor, comment_id) -> list:
         WHERE id = {}""".format(comment_id)
     cursor.execute(query)
     return cursor.fetchone()
+
+@database_common.connection_handler
+def get_question_id(cursor: RealDictCursor, answer_id: int) -> list:
+    query = """
+        SELECT question_id 
+        FROM answer
+        WHERE id = {}""".format(answer_id)
+    cursor.execute(query)
+    return cursor.fetchone()
+
+@database_common.connection_handler
+def reputation_up(cursor: RealDictCursor, user_id: int, value:int):
+    query = """
+    UPDATE users
+    SET reputation = reputation + %(value)s
+    WHERE id = %(user_id)s
+    """
+    dict = {"user_id": user_id, "value": value}
+    cursor.execute(query, dict)
+
+
+@database_common.connection_handler
+def reputation_down(cursor: RealDictCursor, user_id: int, value:int):
+    query = """
+    UPDATE users
+    SET reputation = reputation - %(value)s
+    WHERE id = %(user_id)s
+    """
+    dict = {"user_id": user_id, "value": value}
+    cursor.execute(query, dict)#
+
+
+@database_common.connection_handler
+def get_user_id(cursor: RealDictCursor, username: str):
+    query = """
+        SELECT id
+        FROM users
+        WHERE username = %(usr)s"""
+    usr = {'usr': username}
+    cursor.execute(query, usr)
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_question_by_id(cursor: RealDictCursor, id:int):
+    query = """
+    SELECT *
+    FROM question
+    WHERE id = %(id)s
+    """
+    value ={"id": id}
+    cursor.execute(query, value)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_answer_by_comment_id(cursor: RealDictCursor, id:int):
+    query = """
+    SELECT *
+    FROM answer
+    WHERE id = %(id)s
+    """
+    value ={"id": id}
+    cursor.execute(query, value)
+    return cursor.fetchall()
 
 
 @database_common.connection_handler
