@@ -52,6 +52,27 @@ def list_users():
     else:
         return redirect(url_for("main"))
 
+
+@app.route('/user/<user_id>')
+def get_user_page(user_id):
+    if "username" in session:
+        user_details = get_user_details(user_id)
+        user_questions = get_user_questions(user_id)
+        user_answers = get_user_answers(user_id)
+        user_question_comments = get_comments_for_question(user_id)
+        user_answer_comments = get_comment_for_answer(user_id)
+        # for answer in user_answers:
+        #     answer_comment = get_comment_for_answer(answer_id=answer['answer_id'])
+        #     answer["comment"] = answer_comment['comment_message']
+        #     user_answer_comments.append(answer)
+
+        return render_template('user_page.html', user_details=user_details, user_questions=user_questions,
+                               user_answers=user_answers, user_question_comments=user_question_comments,
+                               user_answer_comments=user_answer_comments)
+    else:
+        return redirect(url_for("main"))
+
+
 @app.route("/question/<question_id>")
 def display_a_question(question_id):
     question = get_question(question_id)
@@ -60,11 +81,11 @@ def display_a_question(question_id):
     answers = get_answer_by_question_id(question_id)
     question_comments = get_question_comments(question_id)
     return render_template('display_a_question.html',
-                        question=question,
-                        question_id=question_id,
-                        answers=answers,
-                        question_comments=question_comments,
-                        question_tags=question_tags,)
+                           question=question,
+                           question_id=question_id,
+                           answers=answers,
+                           question_comments=question_comments,
+                           question_tags=question_tags)
 
 
 @app.route('/question/<question_id>/vote_up')
@@ -302,6 +323,8 @@ def new_answer_comment(answer_id):
         return redirect(url_for("display_a_question",question_id=question_id))
 
 
+
+
 @app.route('/answer/show_answers')
 def get_answers_comments():
     answer_id = request.args.get("answer_id")
@@ -369,10 +392,9 @@ def login():
             user_data = get_user_data(username, password)
             user_password = user_data["password"]
             if bcrypt.checkpw(password.encode('utf-8'), user_password.encode('utf-8')):
-                session["user_id"] = get_user_id(username)
-                session["username"] = username
                 ID = get_user_id(username)
                 session["user_id"] = ID['id']
+                session["username"] = username
                 return redirect("/")
             else:
                 error = "Invalid login attempt!"
@@ -386,7 +408,6 @@ def login():
 def logout():
     session.pop("username", None)
     session.pop("user_id", None)
-
     return redirect("/")
 
 # #@app.route("/set_status")

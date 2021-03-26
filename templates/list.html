@@ -60,8 +60,9 @@
 <p align="right"><a href="{{ url_for('askm8') }}">About this project</a></p>
 {% if "username" in session %}
     <div>
+    <button type="button"><a href="{{ url_for('get_user_page', user_id=session["user_id"]) }}">{{ session["username"] }}</a></button>
     <button type="button"><a href="{{ url_for('logout') }}">Log out</a></button>
-    <button type="button"><a href="{{ url_for('list_users') }}">Users</a></button>
+    <button style="float: right; padding: 10px; background-color: wheat" type="button"><a href="{{ url_for('list_users') }}">Users</a></button>
     </div>
     <h3>Welcome {{ session["username"] }}</h3>
 {% else %}

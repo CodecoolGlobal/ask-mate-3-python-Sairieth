@@ -456,6 +456,66 @@ def get_user_id(cursor: RealDictCursor, username: str):
 
 
 @database_common.connection_handler
+def get_user_details(cursor: RealDictCursor, user_id: str):
+    query = """
+        SELECT id, username, registration_date, count_of_asked_questions,
+         count_of_answers, count_of_comments, reputation
+        FROM users
+        WHERE id = %(usr_id)s"""
+    usr_id = {'usr_id': user_id}
+    cursor.execute(query, usr_id)
+    return cursor.fetchone()
+
+@database_common.connection_handler
+def get_user_questions(cursor: RealDictCursor, user_id: str):
+    query = """
+        SELECT id, title, message
+        FROM question
+        WHERE question.user_id = %(usr_id)s"""
+    usr_id = {'usr_id': user_id}
+    cursor.execute(query, usr_id)
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_user_answers(cursor: RealDictCursor, user_id: str):
+    query = """
+        SELECT question.id as question_id, question.title as title, question.message as question_message,
+         answer.message as answer_message, answer.id as answer_id
+        FROM question
+        INNER JOIN answer ON answer.question_id = question.id
+        WHERE question.user_id = %(usr_id)s"""
+    usr_id = {'usr_id': user_id}
+    cursor.execute(query, usr_id)
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_comments_for_question(cursor: RealDictCursor, user_id: str):
+    query = """
+        SELECT question.id as question_id, question.title as title,
+         comment.message as comment_message
+        FROM question
+        INNER JOIN comment ON comment.question_id = question.id
+        WHERE comment.user_id = %(usr_id)s;
+        """
+    usr_id = {'usr_id': user_id}
+    cursor.execute(query, usr_id)
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_comment_for_answer(cursor: RealDictCursor, user_id: str):
+    query = """
+        SELECT DISTINCT comment.message as comment_message, answer.question_id as question_id, answer.id as answer_id
+        FROM comment
+        LEFT JOIN answer ON comment.user_id = answer.user_id 
+        WHERE comment.user_id = %(user_id)s and answer.id = comment.answer_id;
+        """
+    user_id = {'user_id': user_id}
+    cursor.execute(query, user_id)
+    return cursor.fetchall()
+
+
+
+@database_common.connection_handler
 def get_status_by_answer_id(cursor: RealDictCursor, answer_id):
     query = """
     SELECT accepted
